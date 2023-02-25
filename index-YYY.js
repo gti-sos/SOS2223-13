@@ -36,7 +36,7 @@ const totalPopulation = populationArray.reduce((acc, val) => acc + val, 0); // S
 
 const populationMean = totalPopulation / populationArray.length; // Divide el resultado por la longitud del array para obtener la media
 
-console.log(populationMean); // Muestra la media en la consola
+//console.log(populationMean); // Muestra la media en la consola
 
 
 
@@ -79,5 +79,5 @@ for (let i = 0; i<datos_ciudad.length; i++){
 
 var media = cantidad / datos_ciudad.length
 
-console.log(media);
+//console.log(media);
 
