@@ -32,5 +32,5 @@ for (let i = 0; i<datos_ciudad.length; i++){
 
 var media = cantidad / datos_ciudad.length
 
-//console.log(media);
+console.log(media);
 
