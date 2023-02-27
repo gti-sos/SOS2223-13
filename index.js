@@ -18,24 +18,162 @@ app.listen(port,()=>{
 app.get("/samples/index-LMG", (request,response) => {
     //a.Inicializa un array con los datos de ejemplo pestaña individual de la ficha de trabajo.
 ///
-const xlsx = require('xlsx');
-const workbook = xlsx.readFile('C:\\Users\\Usuario\\OneDrive\\Escritorio\\CURSO 3 2022-2023\\SOS\\PestañaIndividual.xlsx');
-const worksheet = workbook.Sheets[workbook.SheetNames[0]];
-const range = xlsx.utils.decode_range(worksheet['!ref']);
-
-// Inicializar el array para almacenar los datos
-const data = [];
-
-// Iterar sobre cada celda en el rango de datos y agregarla al array
-for (let row = range.s.r; row <= range.e.r; row++) {
-  const rowValues = [];
-  for (let col = range.s.c; col <= range.e.c; col++) {
-    const cellAddress = xlsx.utils.encode_cell({ r: row, c: col });
-    const cellValue = worksheet[cellAddress]?.v;
-    rowValues.push(cellValue);
-  }
-  data.push(rowValues);
-}
+var data = [
+  [
+    'period',
+    'territory',
+    'total_population',
+    'man',
+    'woman',
+    'under_sixteen_years',
+    'from_sixteen_to_sixty_four_years',
+    'sixty_five_and_over'
+  ],
+  [
+    1980,   'Almería',
+    407049, 200870,
+    206179, 126573,
+    237986, 42490
+  ],
+  [
+    1980,   'Cádiz',
+    978033, 486193,
+    491840, 336323,
+    564655, 77056
+  ],
+  [
+    1980,   'Córdoba',
+    723500, 353491,
+    370009, 211329,
+    429267, 82904
+  ],
+  [
+    1980,   'Granada',
+    757908, 372127,
+    385781, 228777,
+    448458, 80673
+  ],
+  [
+    1980,   'Huelva',
+    416795, 205034,
+    211762, 124960,
+    242563, 49272
+  ],
+  [
+    1980,   'Jaén',
+    642418, 316540,
+    325878, 189355,
+    378264, 74800
+  ],
+  [
+    1980,    'Málaga',
+    1005166, 495474,
+    509692,  314321,
+    595677,  95169
+  ],
+  [
+    1980,    'Sevilla',
+    1466006, 718237,
+    747768,  473646,
+    856207,  136152
+  ],
+  [
+    1981,   'Almería',
+    410149, 202522,
+    207628, 126054,
+    240718, 43378
+  ],
+  [
+    1981,   'Cádiz',
+    986913, 490709,
+    496204, 333916,
+    574163, 78834
+  ],
+  [
+    1981,   'Córdoba',
+    721446, 352398,
+    369048, 206851,
+    430649, 83947
+  ],
+  [
+    1981,   'Granada',
+    758607, 372517,
+    386089, 224458,
+    452025, 82123
+  ],
+  [
+    1981,   'Huelva',
+    418120, 205932,
+    212188, 124519,
+    243760, 49842
+  ],
+  [
+    1981,   'Jaén',
+    640103, 315247,
+    324855, 185723,
+    378964, 75415
+  ],
+  [
+    1981,    'Málaga',
+    1022386, 503948,
+    518438,  314563,
+    609016,  98807
+  ],
+  [
+    1981,    'Sevilla',
+    1476330, 723670,
+    752659,  469193,
+    867787,  139349
+  ],
+  [
+    1982,   'Almería',
+    415261, 205152,
+    210109, 126010,
+    245476, 43776
+  ],
+  [
+    1982,   'Cádiz',
+    999385, 497050,
+    502335, 333241,
+    586146, 79998
+  ],
+  [
+    1982,   'Córdoba',
+    725044, 354301,
+    370743, 203305,
+    436913, 84825
+  ],
+  [
+    1982,   'Granada',
+    762941, 374615,
+    388327, 220528,
+    459429, 82985
+  ],
+  [
+    1982,   'Huelva',
+    421660, 207739,
+    213921, 124533,
+    247075, 50051
+  ],
+  [
+    1982,   'Jaén',
+    640864, 315913,
+    324951, 181619,
+    383614, 75631
+  ],
+  [
+    1982,    'Málaga',
+    1038489, 511716,
+    526773,  314007,
+    623660,  100822
+  ],
+  [
+    1982,    'Sevilla',
+    1494347, 732722,
+    761624,  468201,
+    884345,  141800
+  ]
+]
     const huelvaData = data.filter(row => row[1] === 'Huelva'); // Crea un subconjunto de filas donde el territory sea "Huelva"
     const populationArray = huelvaData.map(row => row[2]); // Obtiene el valor de total_population de cada fila y los almacena en un array
     const totalPopulation = populationArray.reduce((acc, val) => acc + val, 0); // Suma todos los valores del array

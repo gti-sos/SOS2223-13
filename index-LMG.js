@@ -22,7 +22,7 @@ for (let row = range.s.r; row <= range.e.r; row++) {
   data.push(rowValues);
 }
 // Imprimir el array de datos
-//console.log(data);
+console.log(data);
 
 //Realice un algoritmo usando iteradores (forEach, Map, filter, …) que permita calcular la media de valores de alguna 
 //de los campos numéricos del subconjunto de filas que comparten un determinado valor en el campo de información geográfica.
@@ -36,4 +36,4 @@ const totalPopulation = populationArray.reduce((acc, val) => acc + val, 0); // S
 
 const populationMean = totalPopulation / populationArray.length; // Divide el resultado por la longitud del array para obtener la media
 
-console.log(populationMean); // Muestra la media en la consola
+//console.log(populationMean); // Muestra la media en la consola
