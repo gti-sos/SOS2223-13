@@ -15,7 +15,7 @@ app.listen(port,()=>{
 });
 
 // ruta de /samples/index-LMG.js
-app.get("/samples/index-LMG", (request,response) => {
+app.get("/samples/LMG", (request,response) => {
     //a.Inicializa un array con los datos de ejemplo pestaña individual de la ficha de trabajo.
 ///
 var data = [
@@ -183,7 +183,7 @@ var data = [
 });
 
 //ruta de /samples/index-JLB.js
-app.get("/samples/index-JLB", (request,response) => {
+app.get("/samples/JLB", (request,response) => {
     var datos = [
         {year:2017 , period:"T1" , date:"2017-T1" , region:"Almeria" , employed_person:347.3 , inactive_person:220.8 , unemployed_person:74.2 },
         {year:2017 , period:"T2" , date:"2017-T2" , region:"Almeria" , employed_person:345.2 , inactive_person:223.6 , unemployed_person:79.5},
@@ -219,7 +219,7 @@ app.get("/samples/index-JLB", (request,response) => {
 });
 
 // ruta de /samples/index-IFR.js
-app.get("/samples/index-IFR", (request,response) => {
+app.get("/samples/IFR", (request,response) => {
     var datos = [
         {province:"Almeria" , landline:950351228 , first_name:"ANTONIO MANUEL" , second_name:"ORTIZ" , president_appointment_date: "6/13/2015 0:00:00" , surface_extension: 45.24, population:1342.00, expense: 2224600.00, income: 2224600.00},
         {province:"Almeria" , landline:950350001 , first_name:"ANTONIO" , second_name:"TORRES" , president_appointment_date:"6/13/2015 0:00:00" , surface_extension: 83.68 , population:1279.00, expense: 1602733.00 , income: 1602733.00 },
