@@ -39,11 +39,6 @@ app.get(BASE_API_URL + "/evolution_stats", (request,response) => {
   console.log("New GET to /evolution_stats"); //console.log en el servidor    
 });
 
-app.get(BASE_API_URL + "/evolution_stats/loadInitialData", (request,response) => {
-  response.json(evolution_stats);
-  console.log("New GET to /evolution_stats"); //console.log en el servidor    
-});
-
 app.post(BASE_API_URL + "/evolution_stats", (request,response) => {
   var newEvolution = request.body;
   console.log(`newEvolution = <${newEvolution}>`);
