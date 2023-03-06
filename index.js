@@ -52,7 +52,7 @@ var datos_random = []
 app.get(BASE_API_URL + "/evolution_stats/loadInitialData", (req, res) => {
   if (datos_random.length === 0) {
     for (let i = 0; i < 10; i++) {
-      data.push({
+      datos_random.push({
         period: 1980 + i,
         territory: 'Territorio ' + i,
         total_population: Math.floor(Math.random() * 1000000),
@@ -63,9 +63,13 @@ app.get(BASE_API_URL + "/evolution_stats/loadInitialData", (req, res) => {
         sixty_five_and_over: Math.floor(Math.random() * 500000)
       });
     }
-    res.send('Se han creado ' + data.length + ' datos');
+    res.json(datos_random)
+    //res.json('Se han creado ' + datos_random.length + ' datos');
+    console.log("Se han creado datos")
   } else {
     res.send('El arreglo ya contiene datos');
+    //res.json(datos_random)
+    console.log('El arreglo ya contiene datos')
   }
 });
 
