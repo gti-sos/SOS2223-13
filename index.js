@@ -4,6 +4,7 @@ var cool = require("cool-ascii-faces");
 
 var app = express();
 var port = process.env.PORT || 8080;
+// CODIGO LUIS MIGUEL PARA ENTREGA F05.
 var evolution_stats = [
   {period:1980 , territory:"Almería" , total_population:407049 , man:200870 , woman:206179 , under_sixteen_years:126573 , from_sixteen_to_sixty_four_years:237986, sixty_five_and_over:42490},
   {period:1980 , territory:"Cádiz" , total_population:978033 , man:486193 , woman:491840 , under_sixteen_years:336323 , from_sixteen_to_sixty_four_years:564655, sixty_five_and_over:77056},
@@ -29,7 +30,20 @@ var evolution_stats = [
   {period:1982 , territory:"Jaén" , total_population:640864 , man:315913 , woman:324951 , under_sixteen_years:181619 , from_sixteen_to_sixty_four_years:383614, sixty_five_and_over:75631},
   {period:1982 , territory:"Málaga" , total_population:1038489 , man:511716 , woman:526773 , under_sixteen_years:314007 , from_sixteen_to_sixty_four_years:623660, sixty_five_and_over:100822},
   {period:1982 , territory:"Sevilla" , total_population:1494347 , man:732722 , woman:761624 , under_sixteen_years:468201 , from_sixteen_to_sixty_four_years:884345, sixty_five_and_over:141800}
-];                                   
+];               
+ 
+const BASE_API_URL = "/api/v1";
+
+app.get(BASE_API_URL + "/evolution_stats", (request,response) => {
+  response.json(evolution_stats);
+  console.log("New GET to /evolution_stats"); //console.log en el servidor    
+});
+
+app.post(BASE_API_URL + "/evolution_stats", (request,response) => {
+  var newEvolution = request.body;
+  console.log(`newEvolution = <${newEvolution}>`);
+  console.log("New POST to /evolution_stats"); //console.log en el servidor    
+});
 
 app.get("/cool", (request,response) => {
     response.send(cool());
