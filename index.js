@@ -39,11 +39,42 @@ app.get(BASE_API_URL + "/evolution_stats", (request,response) => {
   console.log("New GET to /evolution_stats"); //console.log en el servidor    
 });
 
+app.get(BASE_API_URL + "/evolution_stats/loadInitialData", (request,response) => {
+  response.json(evolution_stats);
+  console.log("New GET to /evolution_stats"); //console.log en el servidor    
+});
+
 app.post(BASE_API_URL + "/evolution_stats", (request,response) => {
   var newEvolution = request.body;
   console.log(`newEvolution = <${newEvolution}>`);
   console.log("New POST to /evolution_stats"); //console.log en el servidor    
 });
+
+//APARTADO CREAR 10 O MÁS DATOS RANDOM
+
+var datos_random = []
+
+app.get(BASE_API_URL + "/evolution_stats/loadInitialData", (req, res) => {
+  if (datos_random.length === 0) {
+    for (let i = 0; i < 10; i++) {
+      data.push({
+        period: 1980 + i,
+        territory: 'Territorio ' + i,
+        total_population: Math.floor(Math.random() * 1000000),
+        man: Math.floor(Math.random() * 500000),
+        woman: Math.floor(Math.random() * 500000),
+        under_sixteen_years: Math.floor(Math.random() * 500000),
+        from_sixteen_to_sixty_four_years: Math.floor(Math.random() * 500000),
+        sixty_five_and_over: Math.floor(Math.random() * 500000)
+      });
+    }
+    res.send('Se han creado ' + data.length + ' datos');
+  } else {
+    res.send('El arreglo ya contiene datos');
+  }
+});
+
+//HASTA AQUÍ LLEGA MI CÓDIGO.
 
 app.get("/cool", (request,response) => {
     response.send(cool());
