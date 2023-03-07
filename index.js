@@ -148,29 +148,6 @@ app.delete(rutaEspecifica, (req, res) => {
   res.status(200).send('Los datos se han borrado correctamente');
 });
 
-// Manejador de errores
-// Manejador de errores
-app.use((err, req, res, next) => {
-  if (err instanceof SyntaxError) {
-  // Enviar una respuesta con un código de estado 400 Bad Request si hay un error de sintaxis en el JSON
-  res.status(400).send('La solicitud contiene un JSON no válido');
-  } else if (err.status === 401) {
-  // Enviar una respuesta con un código de estado 401 Unauthorized si no se proporcionó un token de autenticación válido
-  res.status(401).send('No se proporcionó un token de autenticación válido');
-  } else {
-  // Enviar una respuesta con un código de estado 500 Internal Server Error si ocurrió un error no previsto
-  res.status(500).send('Ha ocurrido un error interno en el servidor');
-  }
-  });
-
-// Manejador de rutas no encontradas
-app.use((req, res) => {
-  // Enviar una respuesta con un código de estado 404 Not Found si la ruta no se encuentra
-  res.status(404).send('La ruta solicitada no existe');
-});
-
-
-
 //HASTA AQUÍ LLEGA MI CÓDIGO.
 
 app.get("/cool", (request,response) => {
@@ -416,4 +393,25 @@ app.get("/samples/IFR", (request,response) => {
       
     response.send(`Media de personas de Almeria con más de 2 millones de ingresos: ${mediaIngresos}`);
     console.log("New request"); //console.log en el servidor    
+});
+
+
+// Manejador de errores
+app.use((err, req, res, next) => {
+  if (err instanceof SyntaxError) {
+  // Enviar una respuesta con un código de estado 400 Bad Request si hay un error de sintaxis en el JSON
+  res.status(400).send('La solicitud contiene un JSON no válido');
+  } else if (err.status === 401) {
+  // Enviar una respuesta con un código de estado 401 Unauthorized si no se proporcionó un token de autenticación válido
+  res.status(401).send('No se proporcionó un token de autenticación válido');
+  } else {
+  // Enviar una respuesta con un código de estado 500 Internal Server Error si ocurrió un error no previsto
+  res.status(500).send('Ha ocurrido un error interno en el servidor');
+  }
+  });
+
+// Manejador de rutas no encontradas
+app.use((req, res) => {
+  // Enviar una respuesta con un código de estado 404 Not Found si la ruta no se encuentra
+  res.status(404).send('La ruta solicitada no existe');
 });
