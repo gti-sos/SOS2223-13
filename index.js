@@ -73,6 +73,102 @@ app.get(BASE_API_URL + "/evolution_stats/loadInitialData", (req, res) => {
   }
 });
 
+//MÉTODOS TABLA AZUL.
+const rutaBase = '/api/v1/evolution_stats';
+
+// Método GET Ruta Base
+app.get(rutaBase, (req, res) => {
+  res.json(evolution_stats);
+  res.status(200).send(variable);
+});
+
+// Método POST para la ruta base
+app.post(rutaBase, (req, res) => {
+  // Verificar que el cuerpo de la solicitud contenga datos
+  if (!req.body) {
+    // Enviar una respuesta con un código de estado 400 Bad Request si no se proporcionaron datos
+    res.status(400).send('No se proporcionaron datos');
+  } else {
+    // Verificar si el nuevo objeto ya existe en el arreglo
+    const exists = evolution_stats.some(stat => stat.name === req.body.name);
+    if (exists) {
+      // Enviar una respuesta con un código de estado 409 Conflict si el objeto ya existe
+      res.status(409).send('El objeto ya existe: Conflicto');
+    } else {
+      // Agregar los nuevos datos a la variable
+      evolution_stats.push(req.body);
+      // Enviar una respuesta con un código de estado 201 Created
+      res.status(201).send('Los datos se han creado correctamente');
+    }
+  }
+});
+
+// Método PUT para la ruta base
+app.put(rutaBase, (req, res) => {
+  res.status(405).send('El método PUT no está permitido en esta ruta');
+});
+
+// Método DELETE para la ruta base
+app.delete(rutaBase, (req, res) => {
+  evolution_stats = [];
+  res.status(200).send('Los datos se han borrado correctamente');
+});
+
+// Ruta específica que no permite el método POST
+const rutaEspecifica = '/api/v1/evolution_stats/loadInitialData';
+app.post(rutaEspecifica, (req, res) => {
+  res.status(405).send('El método POST no está permitido en esta ruta');
+});
+
+// Ruta Específica Método GET
+app.get(rutaEspecifica, (req, res) => {
+  res.json(datos_random);
+  res.status(200).send(variable);
+});
+
+// Ruta Específica Método PUT
+app.put(rutaEspecifica, (req, res) => {
+  // Verificar que el cuerpo de la solicitud contenga datos
+  if (!req.body) {
+    // Enviar una respuesta con un código de estado 400 Bad Request si no se proporcionaron datos
+    res.status(400).send('No se proporcionaron datos');
+  } else {
+    // Reemplazar los datos existentes con los nuevos datos
+    datos_random = req.body;
+    // Enviar una respuesta con un código de estado 200 OK
+    res.status(200).send('Los datos se han actualizado correctamente');
+  }
+});
+
+//Método DELETE de la ruta específica.
+app.delete(rutaEspecifica, (req, res) => {
+  datos_random = [];
+  res.status(200).send('Los datos se han borrado correctamente');
+});
+
+// Manejador de errores
+// Manejador de errores
+app.use((err, req, res, next) => {
+  if (err instanceof SyntaxError) {
+  // Enviar una respuesta con un código de estado 400 Bad Request si hay un error de sintaxis en el JSON
+  res.status(400).send('La solicitud contiene un JSON no válido');
+  } else if (err.status === 401) {
+  // Enviar una respuesta con un código de estado 401 Unauthorized si no se proporcionó un token de autenticación válido
+  res.status(401).send('No se proporcionó un token de autenticación válido');
+  } else {
+  // Enviar una respuesta con un código de estado 500 Internal Server Error si ocurrió un error no previsto
+  res.status(500).send('Ha ocurrido un error interno en el servidor');
+  }
+  });
+
+// Manejador de rutas no encontradas
+app.use((req, res) => {
+  // Enviar una respuesta con un código de estado 404 Not Found si la ruta no se encuentra
+  res.status(404).send('La ruta solicitada no existe');
+});
+
+
+
 //HASTA AQUÍ LLEGA MI CÓDIGO.
 
 app.get("/cool", (request,response) => {
