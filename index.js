@@ -1,9 +1,10 @@
 // Tener una ruta dinámica “/cool” que muestre una cara ascii tal como se vió en el L05.
 var express = require("express");
 var cool = require("cool-ascii-faces");
-
+var bodyParser = require("body-parser");
 var app = express();
 var port = process.env.PORT || 8080;
+app.use(bodyParser.json());
 // CODIGO LUIS MIGUEL PARA ENTREGA F05.
 var evolution_stats = [
   {period:1980 , territory:"Almería" , total_population:407049 , man:200870 , woman:206179 , under_sixteen_years:126573 , from_sixteen_to_sixty_four_years:237986, sixty_five_and_over:42490},
@@ -34,15 +35,12 @@ var evolution_stats = [
  
 const BASE_API_URL = "/api/v1";
 
-app.get(BASE_API_URL + "/evolution_stats", (request,response) => {
-  response.json(evolution_stats);
-  console.log("New GET to /evolution_stats"); //console.log en el servidor    
-});
-
 app.post(BASE_API_URL + "/evolution_stats", (request,response) => {
   var newEvolution = request.body;
-  console.log(`newEvolution = <${newEvolution}>`);
-  console.log("New POST to /evolution_stats"); //console.log en el servidor    
+  console.log(`newEvolution = ${JSON.stringify(newEvolution,null,2)}`);
+  console.log("New POST to /evolution_stats"); //console.log en el servidor  
+  evolution_stats.push(newEvolution); 
+  response.sendStatus(201); 
 });
 
 //APARTADO CREAR 10 O MÁS DATOS RANDOM
@@ -79,9 +77,18 @@ app.get(BASE_API_URL + "/evolution_stats/loadInitialData", (req, res) => {
 const rutaBase = '/api/v1/evolution_stats';
 
 // Método GET Ruta Base
-app.get(rutaBase, (req, res) => {
-  res.json(evolution_stats);
-  res.status(200).send(variable);
+app.get(BASE_API_URL + "/evolution_stats", (req, res) => {
+  const { period } = req.query;
+
+  if (period) {
+    const filteredStats = evolution_stats.filter(stat => stat.period === parseInt(period));
+    console.log("New GET to /evolution_stats"); //console.log en el servidor
+    res.json(filteredStats);  
+  } else {
+    console.log("New GET to /evolution_stats"); //console.log en el servidor 
+    res.json(evolution_stats);
+    res.status(200); 
+  }
 });
 
 // Método POST para la ruta base
@@ -125,7 +132,7 @@ app.post(rutaEspecifica, (req, res) => {
 // Ruta Específica Método GET
 app.get(rutaEspecifica, (req, res) => {
   res.json(datos_random);
-  res.status(200).send(variable);
+  res.status(200);
 });
 
 // Ruta Específica Método PUT
@@ -148,15 +155,100 @@ app.delete(rutaEspecifica, (req, res) => {
   res.status(200).send('Los datos se han borrado correctamente');
 });
 
+//CODIGO PARA PODER HACER GET A UNA CIUDAD ESPECÍFICA. y para el periodo de una ciudad concreta.
+/*app.get('/api/v1/evolution_stats/:city', (req, res) => {
+  const city = req.params.city.toLowerCase();
+  const filteredStats = evolution_stats.filter(stat => stat.territory.toLowerCase() === city);
+  res.json(filteredStats);
+});*/
+app.get('/api/v1/evolution_stats/:city', (req, res) => {
+  const { city } = req.params;
+
+  // Si la petición es para la ruta /api/v1/evolution_stats/:city
+  if (city) {
+    const filteredStats = evolution_stats.filter(stat => stat.territory.toLowerCase() === city.toLowerCase());
+    res.json(filteredStats);
+  } else {
+    // Si la petición es para la ruta /api/v1/evolution_stats/city
+    const { from, to } = req.query;
+    if (isNaN(from) || isNaN(to) || from >= to) {
+      res.status(400).send("El rango de años especificado es inválido");
+    } else {
+      const filteredStats = evolution_stats.filter(
+        stat => stat.city.toLowerCase() === city.toLowerCase() &&
+        stat.period >= from && stat.period <= to
+      );
+      console.log(`New GET to /evolution_stats/${city}?from=${from}&to=${to}`); //console.log en el servidor
+      res.json(filteredStats);
+    }
+  }
+});
+
+
+//CODIGO PARA PODER HACER UN GET A UNA CIUDAD Y FECHA ESPECÍFICA.
+app.get('/api/v1/evolution_stats/:territory/:year', (req, res) => {
+  const { territory, year } = req.params;
+  
+  // Buscamos las estadísticas para el territorio y el año indicados
+  const stats = evolution_stats.find(
+    s => s.territory.toLowerCase() === territory.toLowerCase() && s.period === parseInt(year)
+  );
+  
+  if (stats) {
+    res.status(200).json(stats);
+  } else {
+    res.status(404).json({ message: `No se encontraron estadísticas para ${territory} en el año ${year}` });
+  }
+  console.log("Solicitud /GET")
+});
+
+//CODIGO PARA ACCEDER A TODAS LAS ESTADISTICAS DE UN AÑO CONCRETO
+//ESCRITO EN EL GET DE LA RUTA BASE.
+
+//CODIGO PARA ACTUALIZAR MEDIANTE PUT UNA RUTA CONCRETA.
+app.put('/api/v1/evolution_stats/:city/:year', (req, res) => {
+  const city = req.params.city;
+  const year = parseInt(req.params.year);
+
+  const stat = evolution_stats.find(s => s.territory === city && s.period === year);
+
+  if (!stat) {
+    return res.status(404).send('Estadística no encontrada');
+  }
+
+  stat.total_population = req.body.total_population || stat.total_population;
+  stat.man = req.body.man || stat.man;
+  stat.woman = req.body.woman || stat.woman;
+  stat.under_sixteen_years = req.body.under_sixteen_years || stat.under_sixteen_years;
+  stat.from_sixteen_to_sixty_four_years = req.body.from_sixteen_to_sixty_four_years || stat.from_sixteen_to_sixty_four_years;
+  stat.sixty_five_and_over = req.body.sixty_five_and_over || stat.sixty_five_and_over;
+
+  res.send('Estadística actualizada correctamente');
+});
+
+//CÓDIGO PARA BUSCAR UNA CIUDAD EN UN PERIODO.
+/*app.get(BASE_API_URL + "/evolution_stats/:city", (req, res) => {
+  const city = req.params.city;
+  const from = parseInt(req.query.from);
+  const to = parseInt(req.query.to);
+
+  if (isNaN(from) || isNaN(to) || from >= to) {
+    res.status(400).send("El rango de años especificado es inválido");
+  } else {
+    const filteredStats = evolution_stats.filter(
+      stat => stat.city.toLowerCase() === city.toLowerCase() &&
+      stat.period >= from && stat.period <= to
+    );
+    console.log(`New GET to /evolution_stats/${city}?from=${from}&to=${to}`); //console.log en el servidor
+    res.json(filteredStats);
+  }
+});*/
+
 //HASTA AQUÍ LLEGA MI CÓDIGO.
 
 app.get("/cool", (request,response) => {
     response.send(cool());
     console.log("New request"); //console.log en el servidor    
-});
-
-app.listen(port,()=>{
-    console.log(`Server ready in port ${port}`);
 });
 
 // ruta de /samples/index-LMG.js
@@ -431,6 +523,7 @@ app.post(BASE_API_URL + "/localentities_stats", (request,response) => {
   var newEvolution = request.body;
   console.log(`newEvolution = <${newEvolution}>`);
   console.log("New POST to /localentities_stats"); //console.log en el servidor    
+  response.sendStatus(201); 
 });
 
 //10 o más datos
@@ -466,7 +559,7 @@ const rutaIrene = '/api/v1/localentities_stats';
 //GET Ruta Irene 
 app.get(rutaIrene, (req, res) => {
   res.json(localentities_stats);
-  res.status(200).send(variable);
+  res.status(200);
 });
 
 
@@ -511,7 +604,7 @@ app.post(rutaEspecif, (req, res) => {
 // Ruta Específica Método GET
 app.get(rutaEspecif, (req, res) => {
   res.json(datos_random);
-  res.status(200).send(variable);
+  res.status(200);
 });
 
 // Ruta Específica Método PUT
@@ -562,4 +655,9 @@ app.use((err, req, res, next) => {
 app.use((req, res) => {
   // Enviar una respuesta con un código de estado 404 Not Found si la ruta no se encuentra
   res.status(404).send('La ruta solicitada no existe');
+});
+
+//ARRANCAR EL SERVIDOR.
+app.listen(port,()=>{
+  console.log(`Server ready in port ${port}`);
 });
