@@ -73,23 +73,44 @@ app.get(BASE_API_URL + "/evolution_stats/loadInitialData", (req, res) => {
   }
 });
 
-//MÉTODOS TABLA AZUL.
-const rutaBase = '/api/v1/evolution_stats';
+//CODIGO PARA MOSTRAR LAS ESTADÍSTICAS DE TODAS LAS CIUDADES EN UN PERIODO CONCRETO.
+app.get('/api/v1/evolution_stats', (req, res) => {
+  const from = req.query.from;
+  const to = req.query.to;
 
-// Método GET Ruta Base
-app.get(BASE_API_URL + "/evolution_stats", (req, res) => {
-  const { period } = req.query;
+  // Lógica para buscar todas las ciudades en el período especificado
+  if (from && to) {
+  const ciudadesEnPeriodo = evolution_stats.filter(ciudad => {
+    return ciudad.period >= from && ciudad.period <= to;
+  });
+
+  if (from >= to) {
+    res.status(400).send("El rango de años especificado es inválido");
+  }else{
+
+  res.status(200);
+  res.json(ciudadesEnPeriodo);
+  console.log(`/GET to /evolution_stats?from=${from}&to=${to}`); //console.log en el servidor
+  }
+  }else{
+    const { period } = req.query;
 
   if (period) {
     const filteredStats = evolution_stats.filter(stat => stat.period === parseInt(period));
     console.log("New GET to /evolution_stats"); //console.log en el servidor
     res.json(filteredStats);  
+    res.sendStatus(200);
   } else {
     console.log("New GET to /evolution_stats"); //console.log en el servidor 
     res.json(evolution_stats);
-    res.status(200); 
+    res.status(200);
+  }
+
   }
 });
+
+//MÉTODOS TABLA AZUL.
+const rutaBase = '/api/v1/evolution_stats';
 
 // Método POST para la ruta base
 app.post(rutaBase, (req, res) => {
@@ -155,32 +176,28 @@ app.delete(rutaEspecifica, (req, res) => {
   res.status(200).send('Los datos se han borrado correctamente');
 });
 
-//CODIGO PARA PODER HACER GET A UNA CIUDAD ESPECÍFICA. y para el periodo de una ciudad concreta.
-/*app.get('/api/v1/evolution_stats/:city', (req, res) => {
-  const city = req.params.city.toLowerCase();
-  const filteredStats = evolution_stats.filter(stat => stat.territory.toLowerCase() === city);
-  res.json(filteredStats);
-});*/
-app.get('/api/v1/evolution_stats/:city', (req, res) => {
-  const { city } = req.params;
 
-  // Si la petición es para la ruta /api/v1/evolution_stats/:city
-  if (city) {
-    const filteredStats = evolution_stats.filter(stat => stat.territory.toLowerCase() === city.toLowerCase());
+//CODIGO PARA PODER HACER GET A UNA CIUDAD ESPECÍFICA Y A UNA CIUDAD Y PERIODO CONCRETO.
+app.get('/api/v1/evolution_stats/:city', (req, res) => {
+  const city = req.params.city.toLowerCase();
+  const from = req.query.from;
+  const to = req.query.to;
+
+  if (from && to) {
+    // Lógica para devolver los datos de la ciudad para el periodo especificado
+    const filteredStats = evolution_stats.filter(
+      stat => stat.territory.toLowerCase() === city &&
+      stat.period >= from && stat.period <= to
+    );
     res.json(filteredStats);
+    console.log(`/GET to /evolution_stats/${city}?from=${from}&to=${to}`); //console.log en el servidor
+    res.status(200);
   } else {
-    // Si la petición es para la ruta /api/v1/evolution_stats/city
-    const { from, to } = req.query;
-    if (isNaN(from) || isNaN(to) || from >= to) {
-      res.status(400).send("El rango de años especificado es inválido");
-    } else {
-      const filteredStats = evolution_stats.filter(
-        stat => stat.city.toLowerCase() === city.toLowerCase() &&
-        stat.period >= from && stat.period <= to
-      );
-      console.log(`New GET to /evolution_stats/${city}?from=${from}&to=${to}`); //console.log en el servidor
-      res.json(filteredStats);
-    }
+    // Lógica para devolver los datos de la ciudad
+    const filteredStats = evolution_stats.filter(stat => stat.territory.toLowerCase() === city);
+    res.json(filteredStats);
+    console.log("/GET a una ciudad concreta");
+    res.status(200);
   }
 });
 
@@ -225,24 +242,6 @@ app.put('/api/v1/evolution_stats/:city/:year', (req, res) => {
 
   res.send('Estadística actualizada correctamente');
 });
-
-//CÓDIGO PARA BUSCAR UNA CIUDAD EN UN PERIODO.
-/*app.get(BASE_API_URL + "/evolution_stats/:city", (req, res) => {
-  const city = req.params.city;
-  const from = parseInt(req.query.from);
-  const to = parseInt(req.query.to);
-
-  if (isNaN(from) || isNaN(to) || from >= to) {
-    res.status(400).send("El rango de años especificado es inválido");
-  } else {
-    const filteredStats = evolution_stats.filter(
-      stat => stat.city.toLowerCase() === city.toLowerCase() &&
-      stat.period >= from && stat.period <= to
-    );
-    console.log(`New GET to /evolution_stats/${city}?from=${from}&to=${to}`); //console.log en el servidor
-    res.json(filteredStats);
-  }
-});*/
 
 //HASTA AQUÍ LLEGA MI CÓDIGO.
 
