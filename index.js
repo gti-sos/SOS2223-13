@@ -35,13 +35,24 @@ var evolution_stats = [
  
 const BASE_API_URL = "/api/v1";
 
-app.post(BASE_API_URL + "/evolution_stats", (request,response) => {
-  var newEvolution = request.body;
-  console.log(`newEvolution = ${JSON.stringify(newEvolution,null,2)}`);
+app.post(BASE_API_URL + "/evolution_stats", (request, response) => {
+  const territory = request.body.territory;
+  const period = request.body.period;
   console.log("New POST to /evolution_stats"); //console.log en el servidor  
-  evolution_stats.push(newEvolution); 
-  response.sendStatus(201); 
+
+  // Verificar si el recurso ya existe
+  const existingObject = evolution_stats.find(obj => obj.territory === territory && obj.period === period);
+
+  if (existingObject){
+    // Si el recurso ya existe, devolver un código de respuesta 409
+    response.status(409).send(`El recurso ya existe.`);
+  } else {
+    // Si el recurso no existe, agregarlo a la lista y devolver un código de respuesta 201
+    evolution_stats.push(request.body);
+    response.sendStatus(201);
+  }
 });
+
 
 //APARTADO CREAR 10 O MÁS DATOS RANDOM
 
@@ -226,14 +237,15 @@ app.get('/api/v1/evolution_stats/:territory/:year', (req, res) => {
 app.put('/api/v1/evolution_stats/:city/:year', (req, res) => {
   const city = req.params.city;
   const year = parseInt(req.params.year);
-
+  const citybody = req.body.territory;
+  const yearbody = req.body.period;
+  
   const stat = evolution_stats.find(s => s.territory === city && s.period === year);
-
-  if (!stat) {
-    return res.status(404).send('Estadística no encontrada');
-  }
-
-  stat.total_population = req.body.total_population || stat.total_population;
+  
+  if (!stat || city!==citybody || year!==yearbody) {
+    return res.status(400).send('Estadística errónea');
+  }else{
+    stat.total_population = req.body.total_population || stat.total_population;
   stat.man = req.body.man || stat.man;
   stat.woman = req.body.woman || stat.woman;
   stat.under_sixteen_years = req.body.under_sixteen_years || stat.under_sixteen_years;
@@ -241,6 +253,8 @@ app.put('/api/v1/evolution_stats/:city/:year', (req, res) => {
   stat.sixty_five_and_over = req.body.sixty_five_and_over || stat.sixty_five_and_over;
 
   res.send('Estadística actualizada correctamente');
+  console.log("Estadística encontrada");
+  }
 });
 
 //HASTA AQUÍ LLEGA MI CÓDIGO.
