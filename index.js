@@ -488,6 +488,12 @@ app.get(BASE_API_URL + "/employment_stats/loadInitialData", (req, res) => {
   }
 });
 
+//Implementacion de buenas practicas en la API
+
+
+
+
+
 //ruta de /samples/index-JLB.js
 app.get("/samples/JLB", (request,response) => {
     var datos = [
