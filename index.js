@@ -1,9 +1,10 @@
 // Tener una ruta dinámica “/cool” que muestre una cara ascii tal como se vió en el L05.
 var express = require("express");
 var cool = require("cool-ascii-faces");
-
+var bodyParser = require("body-parser");
 var app = express();
 var port = process.env.PORT || 8080;
+app.use(bodyParser.json());
 // CODIGO LUIS MIGUEL PARA ENTREGA F05.
 var evolution_stats = [
   {period:1980 , territory:"Almería" , total_population:407049 , man:200870 , woman:206179 , under_sixteen_years:126573 , from_sixteen_to_sixty_four_years:237986, sixty_five_and_over:42490},
@@ -34,16 +35,24 @@ var evolution_stats = [
  
 const BASE_API_URL = "/api/v1";
 
-app.get(BASE_API_URL + "/evolution_stats", (request,response) => {
-  response.json(evolution_stats);
-  console.log("New GET to /evolution_stats"); //console.log en el servidor    
+app.post(BASE_API_URL + "/evolution_stats", (request, response) => {
+  const territory = request.body.territory;
+  const period = request.body.period;
+  console.log("New POST to /evolution_stats"); //console.log en el servidor  
+
+  // Verificar si el recurso ya existe
+  const existingObject = evolution_stats.find(obj => obj.territory === territory && obj.period === period);
+
+  if (existingObject){
+    // Si el recurso ya existe, devolver un código de respuesta 409
+    response.status(409).send(`El recurso ya existe.`);
+  } else {
+    // Si el recurso no existe, agregarlo a la lista y devolver un código de respuesta 201
+    evolution_stats.push(request.body);
+    response.sendStatus(201);
+  }
 });
 
-app.post(BASE_API_URL + "/evolution_stats", (request,response) => {
-  var newEvolution = request.body;
-  console.log(`newEvolution = <${newEvolution}>`);
-  console.log("New POST to /evolution_stats"); //console.log en el servidor    
-});
 
 //APARTADO CREAR 10 O MÁS DATOS RANDOM
 
@@ -75,14 +84,44 @@ app.get(BASE_API_URL + "/evolution_stats/loadInitialData", (req, res) => {
   }
 });
 
+//CODIGO PARA MOSTRAR LAS ESTADÍSTICAS DE TODAS LAS CIUDADES EN UN PERIODO CONCRETO.
+app.get('/api/v1/evolution_stats', (req, res) => {
+  const from = req.query.from;
+  const to = req.query.to;
+
+  // Lógica para buscar todas las ciudades en el período especificado
+  if (from && to) {
+  const ciudadesEnPeriodo = evolution_stats.filter(ciudad => {
+    return ciudad.period >= from && ciudad.period <= to;
+  });
+
+  if (from >= to) {
+    res.status(400).send("El rango de años especificado es inválido");
+  }else{
+
+  res.status(200);
+  res.json(ciudadesEnPeriodo);
+  console.log(`/GET to /evolution_stats?from=${from}&to=${to}`); //console.log en el servidor
+  }
+  }else{
+    const { period } = req.query;
+
+  if (period) {
+    const filteredStats = evolution_stats.filter(stat => stat.period === parseInt(period));
+    console.log("New GET to /evolution_stats"); //console.log en el servidor
+    res.json(filteredStats);  
+    res.sendStatus(200);
+  } else {
+    console.log("New GET to /evolution_stats"); //console.log en el servidor 
+    res.json(evolution_stats);
+    res.status(200);
+  }
+
+  }
+});
+
 //MÉTODOS TABLA AZUL.
 const rutaBase = '/api/v1/evolution_stats';
-
-// Método GET Ruta Base
-app.get(rutaBase, (req, res) => {
-  res.json(evolution_stats);
-  res.status(200).send(variable);
-});
 
 // Método POST para la ruta base
 app.post(rutaBase, (req, res) => {
@@ -125,7 +164,7 @@ app.post(rutaEspecifica, (req, res) => {
 // Ruta Específica Método GET
 app.get(rutaEspecifica, (req, res) => {
   res.json(datos_random);
-  res.status(200).send(variable);
+  res.status(200);
 });
 
 // Ruta Específica Método PUT
@@ -148,15 +187,81 @@ app.delete(rutaEspecifica, (req, res) => {
   res.status(200).send('Los datos se han borrado correctamente');
 });
 
+
+//CODIGO PARA PODER HACER GET A UNA CIUDAD ESPECÍFICA Y A UNA CIUDAD Y PERIODO CONCRETO.
+app.get('/api/v1/evolution_stats/:city', (req, res) => {
+  const city = req.params.city.toLowerCase();
+  const from = req.query.from;
+  const to = req.query.to;
+
+  if (from && to) {
+    // Lógica para devolver los datos de la ciudad para el periodo especificado
+    const filteredStats = evolution_stats.filter(
+      stat => stat.territory.toLowerCase() === city &&
+      stat.period >= from && stat.period <= to
+    );
+    res.json(filteredStats);
+    console.log(`/GET to /evolution_stats/${city}?from=${from}&to=${to}`); //console.log en el servidor
+    res.status(200);
+  } else {
+    // Lógica para devolver los datos de la ciudad
+    const filteredStats = evolution_stats.filter(stat => stat.territory.toLowerCase() === city);
+    res.json(filteredStats);
+    console.log("/GET a una ciudad concreta");
+    res.status(200);
+  }
+});
+
+
+//CODIGO PARA PODER HACER UN GET A UNA CIUDAD Y FECHA ESPECÍFICA.
+app.get('/api/v1/evolution_stats/:territory/:year', (req, res) => {
+  const { territory, year } = req.params;
+  
+  // Buscamos las estadísticas para el territorio y el año indicados
+  const stats = evolution_stats.find(
+    s => s.territory.toLowerCase() === territory.toLowerCase() && s.period === parseInt(year)
+  );
+  
+  if (stats) {
+    res.status(200).json(stats);
+  } else {
+    res.status(404).json({ message: `No se encontraron estadísticas para ${territory} en el año ${year}` });
+  }
+  console.log("Solicitud /GET")
+});
+
+//CODIGO PARA ACCEDER A TODAS LAS ESTADISTICAS DE UN AÑO CONCRETO
+//ESCRITO EN EL GET DE LA RUTA BASE.
+
+//CODIGO PARA ACTUALIZAR MEDIANTE PUT UNA RUTA CONCRETA.
+app.put('/api/v1/evolution_stats/:city/:year', (req, res) => {
+  const city = req.params.city;
+  const year = parseInt(req.params.year);
+  const citybody = req.body.territory;
+  const yearbody = req.body.period;
+  
+  const stat = evolution_stats.find(s => s.territory === city && s.period === year);
+  
+  if (!stat || city!==citybody || year!==yearbody) {
+    return res.status(400).send('Estadística errónea');
+  }else{
+    stat.total_population = req.body.total_population || stat.total_population;
+  stat.man = req.body.man || stat.man;
+  stat.woman = req.body.woman || stat.woman;
+  stat.under_sixteen_years = req.body.under_sixteen_years || stat.under_sixteen_years;
+  stat.from_sixteen_to_sixty_four_years = req.body.from_sixteen_to_sixty_four_years || stat.from_sixteen_to_sixty_four_years;
+  stat.sixty_five_and_over = req.body.sixty_five_and_over || stat.sixty_five_and_over;
+
+  res.send('Estadística actualizada correctamente');
+  console.log("Estadística encontrada");
+  }
+});
+
 //HASTA AQUÍ LLEGA MI CÓDIGO.
 
 app.get("/cool", (request,response) => {
     response.send(cool());
     console.log("New request"); //console.log en el servidor    
-});
-
-app.listen(port,()=>{
-    console.log(`Server ready in port ${port}`);
 });
 
 // ruta de /samples/index-LMG.js
@@ -327,6 +432,89 @@ var data = [
     console.log("New request"); //console.log en el servidor    
 });
 
+
+//Código Jose López tarea F05
+var employment_stats = [
+  {year:2017 , period:"T1" , date:"2017-T1" , region:"Almeria" , employed_person:347.3 , inactive_person:220.8 , unemployed_person:74.2 },
+  {year:2017 , period:"T2" , date:"2017-T2" , region:"Almeria" , employed_person:345.2 , inactive_person:223.6 , unemployed_person:79.5},
+  {year:2017 , period:"T3" , date:"2017-T3" , region:"Almeria" , employed_person:348.5 , inactive_person:220.7 , unemployed_person:96.4 },
+  {year:2017 , period:"T4" , date:"2017-T4" , region:"Almeria" , employed_person:356 , inactive_person:213.2 , unemployed_person:90.5 },
+  {year:2018 , period:"T1" , date:"2018-T1" , region:"Almeria" , employed_person:349.1 , inactive_person:219.8 , unemployed_person:82 },
+  {year:2018 , period:"T2" , date:"2018-T2" , region:"Almeria" , employed_person:332 , inactive_person:236.7 , unemployed_person:74.8 },
+  {year:2018 , period:"T3" , date:"2018-T3" , region:"Almeria" , employed_person:336.2 , inactive_person:233.2 , unemployed_person:85.8 },
+  {year:2018 , period:"T4" , date:"2018-T4" , region:"Almeria" , employed_person:339.4 , inactive_person:232.6 , unemployed_person:63.7 },
+  {year:2017 , period:"T1" , date:"2017-T1" , region:"Cadiz" , employed_person:577.1 , inactive_person:443.2 , unemployed_person:195.5 },
+  {year:2017 , period:"T2" , date:"2017-T2" , region:"Cadiz" , employed_person:567.2 , inactive_person:453.1 , unemployed_person:168 }
+ ];
+
+
+app.get(BASE_API_URL + "/employment-stats",(request,response) => {
+  response.json(employment_stats);
+  console.log("New GET to /employment_stats");
+});
+
+app.post(BASE_API_URL + "/employment-stats",(request,response) => {
+  var newEmployment = request.body; 
+
+  console.log(`newEmployment = <${newEmployment}>`);
+  console.log("New POST to /employment_stats");
+
+}); 
+
+//Tarea crear 10 datos 
+
+var datos_10 = [];
+
+app.get(BASE_API_URL + "/employment-stats/loadInitialData", (req, res) => {
+  if (datos_10.length === 0) {
+    datos_10.push(
+     {year:2017 , period:"T1" , date:"2017-T1" , region:"Almeria" , employed_person:347.3 , inactive_person:220.8 , unemployed_person:74.2 },
+     {year:2017 , period:"T2" , date:"2017-T2" , region:"Almeria" , employed_person:345.2 , inactive_person:223.6 , unemployed_person:79.5},
+     {year:2017 , period:"T3" , date:"2017-T3" , region:"Almeria" , employed_person:348.5 , inactive_person:220.7 , unemployed_person:96.4 },
+     {year:2017 , period:"T4" , date:"2017-T4" , region:"Almeria" , employed_person:356 , inactive_person:213.2 , unemployed_person:90.5 },
+     {year:2018 , period:"T1" , date:"2018-T1" , region:"Almeria" , employed_person:349.1 , inactive_person:219.8 , unemployed_person:82 },
+     {year:2018 , period:"T2" , date:"2018-T2" , region:"Almeria" , employed_person:332 , inactive_person:236.7 , unemployed_person:74.8 },
+     {year:2018 , period:"T3" , date:"2018-T3" , region:"Almeria" , employed_person:336.2 , inactive_person:233.2 , unemployed_person:85.8 },
+     {year:2018 , period:"T4" , date:"2018-T4" , region:"Almeria" , employed_person:339.4 , inactive_person:232.6 , unemployed_person:63.7 },
+     {year:2017 , period:"T1" , date:"2017-T1" , region:"Cadiz" , employed_person:577.1 , inactive_person:443.2 , unemployed_person:195.5 },
+     {year:2017 , period:"T2" , date:"2017-T2" , region:"Cadiz" , employed_person:567.2 , inactive_person:453.1 , unemployed_person:168 }
+      
+    );
+    res.json(datos_10)
+    console.log("Se han creado 10 datos")
+  } else {
+    res.send('Ya hay datos contenido');
+    console.log('Ya hay datos contenido')
+  }
+});
+
+//Implementacion de buenas practicas en la API
+const rutaRaiz = '/api/v1/employment-stats';
+
+// Método POST para la ruta base
+app.post(rutaRaiz, (req, res) => {
+  // Verificar que el cuerpo de la solicitud contenga datos
+  if (!req.body) {
+    // Enviar una respuesta con un código de estado 400 Bad Request si no se proporcionaron datos
+    res.status(400).send('No se proporcionaron datos');
+  } else {
+    // Verificar si el nuevo objeto ya existe en el arreglo
+    const exists = employment_stats.some(stat => stat.name === req.body.name);
+    if (exists) {
+      // Enviar una respuesta con un código de estado 409 Conflict si el objeto ya existe
+      res.status(409).send('El objeto ya existe: Conflicto');
+    } else {
+      // Agregar los nuevos datos a la variable
+      employment_stats.push(req.body);
+      // Enviar una respuesta con un código de estado 201 Created
+      res.status(201).send('Los datos se han creado correctamente');
+    }
+  }
+});
+
+
+
+
 //ruta de /samples/index-JLB.js
 app.get("/samples/JLB", (request,response) => {
     var datos = [
@@ -372,34 +560,34 @@ app.get("/samples/JLB", (request,response) => {
 
 // ruta de /samples/index-IFR.js
 app.get("/samples/IFR", (request,response) => {
-    var datos = [
-        {province:"Almeria" , landline:950351228 , first_name:"ANTONIO MANUEL" , second_name:"ORTIZ" , president_appointment_date: "6/13/2015 0:00:00" , surface_extension: 45.24, population:1342.00, expense: 2224600.00, income: 2224600.00},
-        {province:"Almeria" , landline:950350001 , first_name:"ANTONIO" , second_name:"TORRES" , president_appointment_date:"6/13/2015 0:00:00" , surface_extension: 83.68 , population:1279.00, expense: 1602733.00 , income: 1602733.00 },
-        {province:"Cordoba" , landline:957166002 , first_name:"MANUELA" , second_name:"BOLLERO" , president_appointment_date:"6/13/2015 0:00:00" , surface_extension: 334.84, population:4317.00, expense: 4227447.74 , income: 4227447.74 },
-        {province:"Almeria" , landline:950400400 , first_name:"MANUEL" , second_name:"CORTES" , president_appointment_date:"6/13/2015 0:00:00" , surface_extension: 90.04 , population:24670.00, expense: 19128200.00 , income: 19128200.00 },
-        {province:"Granada" , landline:958557379 , first_name:"MARIA DEL PILAR" , second_name:"LOPEZ" , president_appointment_date:"6/13/2015 0:00:00" , surface_extension: 27.00 , population: 310.00, expense: 392000.00 , income: 392000.00},
-        {province:"Sevilla" , landline:954816021 , first_name:"ESTRELLA" , second_name:"MONTA?O" , president_appointment_date:"6/13/2015 0:00:00" , surface_extension: 13.69 , population: 2114.00, expense: 2137220.70 , income: 2137220.70 },
-        {province:"Cordoba" , landline:957660000 , first_name:"FRANCISCO JUAN" , second_name:"MARTIN" , president_appointment_date:"6/13/2015 0:00:00" , surface_extension: 166.48 , population: 13551.00, expense: 7222732.25 , income: 7257861.14 },
-        {province:"Huelva" , landline:959125710 , first_name:"M? CARMEN" , second_name:"OSORNO" , president_appointment_date:"6/13/2015 0:00:00" , surface_extension: 41.46 , population: 813.00, expense: 630073.18 , income: 630073.18 },
-        {province:"Malaga" , landline:952710025 , first_name:"JUAN LORENZO" , second_name:"PINEDA" , president_appointment_date:"6/13/2015 0:00:00" , surface_extension: 65.11 , population: 5403.00 , expense: 4325250.80 , income: 4325250.80 },
-        {province:"Granada" , landline:958392520 , first_name:"TORCUATO" , second_name:"CABRERIZO" , president_appointment_date:"6/13/2015 0:00:00" , surface_extension: 90.71 , population: 637.00 , expense: 779638.23 , income: 779638.23 },
-        {province:"Sevilla" , landline:954885004 , first_name:"EVA CRISTINA" , second_name:"RUIZ" , president_appointment_date:"24/ago/2016 12:00:00 AM" , surface_extension: 280.19 , population: 1820.00, expense: 1899419.45 , income: 1899419.45 }
-      
-      ];
-      
-      //console.log(localentities_stats);
+  var datos = [
+      {province:"Almeria" , landline:950351228 , first_name:"ANTONIO MANUEL" , second_name:"ORTIZ" , president_appointment_date:2015 , surface_extension: 45.24, population:1342.00, expense: 2224600.00, income: 2224600.00},
+      {province:"Almeria" , landline:950350001 , first_name:"ANTONIO" , second_name:"TORRES" , president_appointment_date:2015 , surface_extension: 83.68 , population:1279.00, expense: 1602733.00 , income: 1602733.00 },
+      {province:"Cordoba" , landline:957166002 , first_name:"MANUELA" , second_name:"BOLLERO" , president_appointment_date:2015 , surface_extension: 334.84, population:4317.00, expense: 4227447.74 , income: 4227447.74 },
+      {province:"Almeria" , landline:950400400 , first_name:"MANUEL" , second_name:"CORTES" , president_appointment_date:2015 , surface_extension: 90.04 , population:24670.00, expense: 19128200.00 , income: 19128200.00 },
+      {province:"Granada" , landline:958557379 , first_name:"MARIA DEL PILAR" , second_name:"LOPEZ" , president_appointment_date:2015 , surface_extension: 27.00 , population: 310.00, expense: 392000.00 , income: 392000.00},
+      {province:"Sevilla" , landline:954816021 , first_name:"ESTRELLA" , second_name:"MONTA?O" , president_appointment_date:2015 , surface_extension: 13.69 , population: 2114.00, expense: 2137220.70 , income: 2137220.70 },
+      {province:"Cordoba" , landline:957660000 , first_name:"FRANCISCO JUAN" , second_name:"MARTIN" , president_appointment_date:2015 , surface_extension: 166.48 , population: 13551.00, expense: 7222732.25 , income: 7257861.14 },
+      {province:"Huelva" , landline:959125710 , first_name:"M? CARMEN" , second_name:"OSORNO" , president_appointment_date:2015 , surface_extension: 41.46 , population: 813.00, expense: 630073.18 , income: 630073.18 },
+      {province:"Malaga" , landline:952710025 , first_name:"JUAN LORENZO" , second_name:"PINEDA" , president_appointment_date:2015 , surface_extension: 65.11 , population: 5403.00 , expense: 4325250.80 , income: 4325250.80 },
+      {province:"Granada" , landline:958392520 , first_name:"TORCUATO" , second_name:"CABRERIZO" , president_appointment_date:2015 , surface_extension: 90.71 , population: 637.00 , expense: 779638.23 , income: 779638.23 },
+      {province:"Sevilla" , landline:954885004 , first_name:"EVA CRISTINA" , second_name:"RUIZ" , president_appointment_date:2016 , surface_extension: 280.19 , population: 1820.00, expense: 1899419.45 , income: 1899419.45 }
+    
+    ];
+    
+    //console.log(localentities_stats);
 
-      //Calculo de la media de personas de Almeria con más de 2.000.000 de ingresos 
-      
-      
-      const ingresosAlmeria = datos.filter((data) => data.province === 'Almeria' && data.income > 2000000);
-      
-      const totalPoblacion = ingresosAlmeria.reduce((acc, data) => acc + data.population, 0);
-      
-      const mediaIngresos = totalPoblacion / ingresosAlmeria.length;
-      
-    response.send(`Media de personas de Almeria con más de 2 millones de ingresos: ${mediaIngresos}`);
-    console.log("New request"); //console.log en el servidor    
+    //Calculo de la media de personas de Almeria con más de 2.000.000 de ingresos 
+    
+    
+    const ingresosAlmeria = datos.filter((data) => data.province === 'Almeria' && data.income > 2000000);
+    
+    const totalPoblacion = ingresosAlmeria.reduce((acc, data) => acc + data.population, 0);
+    
+    const mediaIngresos = totalPoblacion / ingresosAlmeria.length;
+    
+  response.send(`Media de personas de Almeria con más de 2 millones de ingresos: ${mediaIngresos}`);
+  console.log("New request"); //console.log en el servidor    
 });
 
 
@@ -407,30 +595,36 @@ app.get("/samples/IFR", (request,response) => {
 //API
 
 var localentities_stats = [
-  {province:"Almeria" , landline:950351228 , first_name:"ANTONIO MANUEL" , second_name:"ORTIZ" , president_appointment_date: "6/13/2015 0:00:00" , surface_extension: 45.24, population:1342.00, expense: 2224600.00, income: 2224600.00},
-  {province:"Almeria" , landline:950350001 , first_name:"ANTONIO" , second_name:"TORRES" , president_appointment_date:"6/13/2015 0:00:00" , surface_extension: 83.68 , population:1279.00, expense: 1602733.00 , income: 1602733.00 },
-  {province:"Cordoba" , landline:957166002 , first_name:"MANUELA" , second_name:"BOLLERO" , president_appointment_date:"6/13/2015 0:00:00" , surface_extension: 334.84, population:4317.00, expense: 4227447.74 , income: 4227447.74 },
-  {province:"Almeria" , landline:950400400 , first_name:"MANUEL" , second_name:"CORTES" , president_appointment_date:"6/13/2015 0:00:00" , surface_extension: 90.04 , population:24670.00, expense: 19128200.00 , income: 19128200.00 },
-  {province:"Granada" , landline:958557379 , first_name:"MARIA DEL PILAR" , second_name:"LOPEZ" , president_appointment_date:"6/13/2015 0:00:00" , surface_extension: 27.00 , population: 310.00, expense: 392000.00 , income: 392000.00},
-  {province:"Sevilla" , landline:954816021 , first_name:"ESTRELLA" , second_name:"MONTA?O" , president_appointment_date:"6/13/2015 0:00:00" , surface_extension: 13.69 , population: 2114.00, expense: 2137220.70 , income: 2137220.70 },
-  {province:"Cordoba" , landline:957660000 , first_name:"FRANCISCO JUAN" , second_name:"MARTIN" , president_appointment_date:"6/13/2015 0:00:00" , surface_extension: 166.48 , population: 13551.00, expense: 7222732.25 , income: 7257861.14 },
-  {province:"Huelva" , landline:959125710 , first_name:"M? CARMEN" , second_name:"OSORNO" , president_appointment_date:"6/13/2015 0:00:00" , surface_extension: 41.46 , population: 813.00, expense: 630073.18 , income: 630073.18 },
-  {province:"Malaga" , landline:952710025 , first_name:"JUAN LORENZO" , second_name:"PINEDA" , president_appointment_date:"6/13/2015 0:00:00" , surface_extension: 65.11 , population: 5403.00 , expense: 4325250.80 , income: 4325250.80 },
-  {province:"Granada" , landline:958392520 , first_name:"TORCUATO" , second_name:"CABRERIZO" , president_appointment_date:"6/13/2015 0:00:00" , surface_extension: 90.71 , population: 637.00 , expense: 779638.23 , income: 779638.23 },
-  {province:"Sevilla" , landline:954885004 , first_name:"EVA CRISTINA" , second_name:"RUIZ" , president_appointment_date:"24/ago/2016 12:00:00 AM" , surface_extension: 280.19 , population: 1820.00, expense: 1899419.45 , income: 1899419.45 }
-
+{province:"Almeria" , landline:950351228 , first_name:"ANTONIO MANUEL" , second_name:"ORTIZ" , president_appointment_date:2015 , surface_extension: 45.24, population:1342.00, expense: 2224600.00, income: 2224600.00},
+      {province:"Almeria" , landline:950350001 , first_name:"ANTONIO" , second_name:"TORRES" , president_appointment_date:2015 , surface_extension: 83.68 , population:1279.00, expense: 1602733.00 , income: 1602733.00 },
+      {province:"Cordoba" , landline:957166002 , first_name:"MANUELA" , second_name:"BOLLERO" , president_appointment_date:2015 , surface_extension: 334.84, population:4317.00, expense: 4227447.74 , income: 4227447.74 },
+      {province:"Almeria" , landline:950400400 , first_name:"MANUEL" , second_name:"CORTES" , president_appointment_date:2015 , surface_extension: 90.04 , population:24670.00, expense: 19128200.00 , income: 19128200.00 },
+      {province:"Granada" , landline:958557379 , first_name:"MARIA DEL PILAR" , second_name:"LOPEZ" , president_appointment_date:2015 , surface_extension: 27.00 , population: 310.00, expense: 392000.00 , income: 392000.00},
+      {province:"Sevilla" , landline:954816021 , first_name:"ESTRELLA" , second_name:"MONTA?O" , president_appointment_date:2015 , surface_extension: 13.69 , population: 2114.00, expense: 2137220.70 , income: 2137220.70 },
+      {province:"Cordoba" , landline:957660000 , first_name:"FRANCISCO JUAN" , second_name:"MARTIN" , president_appointment_date:2015 , surface_extension: 166.48 , population: 13551.00, expense: 7222732.25 , income: 7257861.14 },
+      {province:"Huelva" , landline:959125710 , first_name:"M? CARMEN" , second_name:"OSORNO" , president_appointment_date:2015 , surface_extension: 41.46 , population: 813.00, expense: 630073.18 , income: 630073.18 },
+      {province:"Malaga" , landline:952710025 , first_name:"JUAN LORENZO" , second_name:"PINEDA" , president_appointment_date:2015 , surface_extension: 65.11 , population: 5403.00 , expense: 4325250.80 , income: 4325250.80 },
+      {province:"Granada" , landline:958392520 , first_name:"TORCUATO" , second_name:"CABRERIZO" , president_appointment_date:2015 , surface_extension: 90.71 , population: 637.00 , expense: 779638.23 , income: 779638.23 },
+      {province:"Sevilla" , landline:954885004 , first_name:"EVA CRISTINA" , second_name:"RUIZ" , president_appointment_date:2016 , surface_extension: 280.19 , population: 1820.00, expense: 1899419.45 , income: 1899419.45 }
+    
 ];
 
 
-app.get(BASE_API_URL + "/localentities_stats", (request,response) => {
-  response.json(localentities_stats);
-  console.log("New GET to /localentities_stats"); //console.log en el servidor    
-});
-
 app.post(BASE_API_URL + "/localentities_stats", (request,response) => {
-  var newEvolution = request.body;
-  console.log(`newEvolution = <${newEvolution}>`);
-  console.log("New POST to /localentities_stats"); //console.log en el servidor    
+const province = request.body.province;
+const president_appointment_date = request.body.president_appointment_date;
+
+console.log("New POST to /localentities_stats"); //console.log en el servidor    
+
+const existingObject = localentities_stats.find(obj =>obj.province === province && obj.president_appointment_date === president_appointment_date);
+if (existingObject){
+  response.status(409).send(`El recurso ya existe.`);
+} else {
+  localentities_stats.push(request.body);
+  response.sendStatus(201);
+}
+
+
 });
 
 //10 o más datos
@@ -438,39 +632,71 @@ app.post(BASE_API_URL + "/localentities_stats", (request,response) => {
 var datos_random = []
 
 app.get(BASE_API_URL + "/localentities_stats/loadInitialData", (req, res) => {
-  if (datos_random.length === 0) {
-    datos_random.push(
-      {province:"Almeria" , landline:950351228 , first_name:"ANTONIO MANUEL" , second_name:"ORTIZ" , president_appointment_date: "6/13/2015 0:00:00" , surface_extension: 45.24, population:1342.00, expense: 2224600.00, income: 2224600.00},
-      {province:"Almeria" , landline:950350001 , first_name:"ANTONIO" , second_name:"TORRES" , president_appointment_date:"6/13/2015 0:00:00" , surface_extension: 83.68 , population:1279.00, expense: 1602733.00 , income: 1602733.00 },
-      {province:"Cordoba" , landline:957166002 , first_name:"MANUELA" , second_name:"BOLLERO" , president_appointment_date:"6/13/2015 0:00:00" , surface_extension: 334.84, population:4317.00, expense: 4227447.74 , income: 4227447.74 },
-      {province:"Almeria" , landline:950400400 , first_name:"MANUEL" , second_name:"CORTES" , president_appointment_date:"6/13/2015 0:00:00" , surface_extension: 90.04 , population:24670.00, expense: 19128200.00 , income: 19128200.00 },
-      {province:"Granada" , landline:958557379 , first_name:"MARIA DEL PILAR" , second_name:"LOPEZ" , president_appointment_date:"6/13/2015 0:00:00" , surface_extension: 27.00 , population: 310.00, expense: 392000.00 , income: 392000.00},
-      {province:"Sevilla" , landline:954816021 , first_name:"ESTRELLA" , second_name:"MONTA?O" , president_appointment_date:"6/13/2015 0:00:00" , surface_extension: 13.69 , population: 2114.00, expense: 2137220.70 , income: 2137220.70 },
-      {province:"Cordoba" , landline:957660000 , first_name:"FRANCISCO JUAN" , second_name:"MARTIN" , president_appointment_date:"6/13/2015 0:00:00" , surface_extension: 166.48 , population: 13551.00, expense: 7222732.25 , income: 7257861.14 },
-      {province:"Huelva" , landline:959125710 , first_name:"M? CARMEN" , second_name:"OSORNO" , president_appointment_date:"6/13/2015 0:00:00" , surface_extension: 41.46 , population: 813.00, expense: 630073.18 , income: 630073.18 },
-      {province:"Malaga" , landline:952710025 , first_name:"JUAN LORENZO" , second_name:"PINEDA" , president_appointment_date:"6/13/2015 0:00:00" , surface_extension: 65.11 , population: 5403.00 , expense: 4325250.80 , income: 4325250.80 },
-      {province:"Granada" , landline:958392520 , first_name:"TORCUATO" , second_name:"CABRERIZO" , president_appointment_date:"6/13/2015 0:00:00" , surface_extension: 90.71 , population: 637.00 , expense: 779638.23 , income: 779638.23 },
-  );
-    res.json(datos_random)
-    console.log("Se han creado datos")
+if (datos_random.length === 0) {
+  datos_random.push(
+    {province:"Almeria" , landline:950351228 , first_name:"ANTONIO MANUEL" , second_name:"ORTIZ" , president_appointment_date:2015 , surface_extension: 45.24, population:1342.00, expense: 2224600.00, income: 2224600.00},
+      {province:"Almeria" , landline:950350001 , first_name:"ANTONIO" , second_name:"TORRES" , president_appointment_date:2015 , surface_extension: 83.68 , population:1279.00, expense: 1602733.00 , income: 1602733.00 },
+      {province:"Cordoba" , landline:957166002 , first_name:"MANUELA" , second_name:"BOLLERO" , president_appointment_date:2015 , surface_extension: 334.84, population:4317.00, expense: 4227447.74 , income: 4227447.74 },
+      {province:"Almeria" , landline:950400400 , first_name:"MANUEL" , second_name:"CORTES" , president_appointment_date:2015 , surface_extension: 90.04 , population:24670.00, expense: 19128200.00 , income: 19128200.00 },
+      {province:"Granada" , landline:958557379 , first_name:"MARIA DEL PILAR" , second_name:"LOPEZ" , president_appointment_date:2015 , surface_extension: 27.00 , population: 310.00, expense: 392000.00 , income: 392000.00},
+      {province:"Sevilla" , landline:954816021 , first_name:"ESTRELLA" , second_name:"MONTA?O" , president_appointment_date:2015 , surface_extension: 13.69 , population: 2114.00, expense: 2137220.70 , income: 2137220.70 },
+      {province:"Cordoba" , landline:957660000 , first_name:"FRANCISCO JUAN" , second_name:"MARTIN" , president_appointment_date:2015 , surface_extension: 166.48 , population: 13551.00, expense: 7222732.25 , income: 7257861.14 },
+      {province:"Huelva" , landline:959125710 , first_name:"M? CARMEN" , second_name:"OSORNO" , president_appointment_date:2015 , surface_extension: 41.46 , population: 813.00, expense: 630073.18 , income: 630073.18 },
+      {province:"Malaga" , landline:952710025 , first_name:"JUAN LORENZO" , second_name:"PINEDA" , president_appointment_date:2015 , surface_extension: 65.11 , population: 5403.00 , expense: 4325250.80 , income: 4325250.80 },
+      {province:"Granada" , landline:958392520 , first_name:"TORCUATO" , second_name:"CABRERIZO" , president_appointment_date:2015 , surface_extension: 90.71 , population: 637.00 , expense: 779638.23 , income: 779638.23 },
+     );
+  res.json(datos_random)
+  console.log("Se han creado datos")
+} else {
+  res.send('El arreglo ya contiene datos');
+  console.log('El arreglo ya contiene datos')
+}
+});
+
+
+
+
+//Código para mostrar las estadísticas de todas las ciudades en un período concreto
+
+app.get(`/api/v1/localentities_stats`, (req, res) => {
+const from = req.query.from;
+const to = req.query.to;
+
+if (from && to) {
+  const ciudadesPeriodo = localentities_stats.filter(c => {
+    return c.president_appointment_date >= from && c.president_appointment_date <= to;
+  });
+
+  if (from >= to) {
+    res.status(400).send("El rango de años especificado es inválido");
+  }else{
+
+  res.status(200);
+  res.json(ciudadesPeriodo);
+  console.log(`/GET to /localentities_stats?from=${from}&to=${to}`); //console.log en el servidor
+  }
+  }else{
+    const { date } = req.query;
+
+  if (date) {
+    const filteredStats = localentities_stats.filter(stat => stat.president_appointment_date === parseInt(president_appointment_date));
+    console.log("New GET to /localentities_stats"); //console.log en el servidor
+    res.json(filteredStats);  
+    res.sendStatus(200);
   } else {
-    res.send('El arreglo ya contiene datos');
-    console.log('El arreglo ya contiene datos')
+    console.log("New GET to /localentities_stats"); //console.log en el servidor 
+    res.json(localentities_stats);
+    res.status(200);
+  }
+
   }
 });
 
 
-//TABLITA AZUL 11.a)
+//MÉTODOS TABLA AZUL.
 const rutaIrene = '/api/v1/localentities_stats';
 
-//GET Ruta Irene 
-app.get(rutaIrene, (req, res) => {
-  res.json(localentities_stats);
-  res.status(200).send(variable);
-});
-
-
-//POST Ruta Irene
+// Método POST para la ruta base
 app.post(rutaIrene, (req, res) => {
   // Verificar que el cuerpo de la solicitud contenga datos
   if (!req.body) {
@@ -491,12 +717,12 @@ app.post(rutaIrene, (req, res) => {
   }
 });
 
-//PUT para la ruta Irene
+// Método PUT para la ruta base
 app.put(rutaIrene, (req, res) => {
   res.status(405).send('El método PUT no está permitido en esta ruta');
 });
 
-//DELETE para la ruta Irene
+// Método DELETE para la ruta base
 app.delete(rutaIrene, (req, res) => {
   localentities_stats = [];
   res.status(200).send('Los datos se han borrado correctamente');
@@ -511,7 +737,7 @@ app.post(rutaEspecif, (req, res) => {
 // Ruta Específica Método GET
 app.get(rutaEspecif, (req, res) => {
   res.json(datos_random);
-  res.status(200).send(variable);
+  res.status(200);
 });
 
 // Ruta Específica Método PUT
@@ -528,11 +754,93 @@ app.put(rutaEspecif, (req, res) => {
   }
 });
 
-//DELETE de la ruta específica.
+//Método DELETE de la ruta específica.
 app.delete(rutaEspecif, (req, res) => {
   datos_random = [];
   res.status(200).send('Los datos se han borrado correctamente');
 });
+
+
+
+
+//CODIGO PARA PODER HACER GET A UNA CIUDAD ESPECÍFICA Y A UNA CIUDAD Y PERIODO CONCRETO.
+app.get('/api/v1/localentities_stats/:city', (req, res) => {
+const city = req.params.city.toLowerCase();
+const from = req.query.from;
+const to = req.query.to;
+
+if (from && to) {
+  // Lógica para devolver los datos de la ciudad para el periodo especificado
+  const filteredStats = localentities_stats.filter(
+    stat => stat.province.toLowerCase() === city && stat.president_appointment_date >= from && stat.president_appointment_date <= to
+  );
+  res.json(filteredStats);
+  console.log(`/GET to /localentities_stats/${city}?from=${from}&to=${to}`); //console.log en el servidor
+  res.status(200);
+} else {
+  // Lógica para devolver los datos de la ciudad
+  const filteredStats = localentities_stats.filter(stat => stat.province.toLowerCase() === city);
+  res.json(filteredStats);
+  console.log("/GET a una ciudad concreta");
+  res.status(200);
+}
+});
+
+
+
+
+
+
+
+//CODIGO PARA PODER HACER UN GET A UNA CIUDAD Y FECHA ESPECÍFICA.
+app.get('/api/v1/localentities_stats/:province/:year', (req, res) => {
+const { province, year } = req.params;
+
+// Buscamos las estadísticas para el territorio y el año indicados
+const stats = evolution_stats.find(
+  s => s.province.toLowerCase() === province.toLowerCase() && s.president_appointment_date === parseInt(year)
+);
+
+if (stats) {
+  res.status(200).json(stats);
+} else {
+  res.status(404).json({ message: `No se encontraron estadísticas para ${province} en el año ${year}` });
+}
+console.log("Solicitud /GET")
+});
+
+//CODIGO PARA ACCEDER A TODAS LAS ESTADISTICAS DE UN AÑO CONCRETO
+//ESCRITO EN EL GET DE LA RUTA BASE.
+
+//CODIGO PARA ACTUALIZAR MEDIANTE PUT UNA RUTA CONCRETA.
+app.put('/api/v1/localentities_stats/:city/:year', (req, res) => {
+const city = req.params.city;
+const year = parseInt(req.params.year);
+const city_body = req.body.province;
+const year_body = req.body.president_appointment_date;
+
+const stat = evolution_stats.find(s => s.province === city && s.president_appointment_date === year);
+
+if (!stat || city!==city_body || year!==year_body) {
+  return res.status(400).send('Estadística errónea');
+}else{
+stat.landline = req.body.landline || stat.landline;
+stat.first_name = req.body.first_name || stat.first_name;
+stat.second_name = req.body.second_name || stat.second_name;
+stat.surface_extension = req.body.surface_extension || stat.surface_extension;
+stat.population = req.body.population || stat.population;
+stat.expense = req.body.expense || stat.expense;
+stat.income = req.body.income || stat.income;
+
+
+res.send('Estadística actualizada correctamente');
+console.log("Estadística encontrada");
+}
+});
+
+
+
+
 
 
 
@@ -562,4 +870,9 @@ app.use((err, req, res, next) => {
 app.use((req, res) => {
   // Enviar una respuesta con un código de estado 404 Not Found si la ruta no se encuentra
   res.status(404).send('La ruta solicitada no existe');
+});
+
+//ARRANCAR EL SERVIDOR.
+app.listen(port,()=>{
+  console.log(`Server ready in port ${port}`);
 });
