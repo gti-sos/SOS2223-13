@@ -514,7 +514,6 @@ app.post(rutaRaiz, (req, res) => {
 
 
 
-
 //ruta de /samples/index-JLB.js
 app.get("/samples/JLB", (request,response) => {
     var datos = [
