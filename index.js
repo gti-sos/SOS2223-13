@@ -512,7 +512,49 @@ app.post(rutaRaiz, (req, res) => {
   }
 });
 
+// Método PUT para la ruta base
+app.put(rutaRaiz, (req, res) => {
+  res.status(405).send('El método PUT no está permitido en esta ruta');
+});
 
+// Método DELETE para la ruta base
+app.delete(rutaRaiz, (req, res) => {
+  employment_stats = [];
+  res.status(200).send('Los datos se han borrado correctamente');
+});
+
+// Ruta específica que no permite el método POST
+const rutaEsp = '/api/v1/employment-stats/loadInitialData';
+app.post(rutaEsp, (req, res) => {
+  res.status(405).send('El método POST no está permitido en esta ruta');
+});
+
+// Ruta Específica Método GET
+app.get(rutaEsp, (req, res) => {
+  res.json(datos_10);
+  res.status(200);
+});
+
+// Ruta Específica Método PUT
+app.put(rutaEsp, (req, res) => {
+  // Verificar que el cuerpo de la solicitud contenga datos
+  if (!req.body) {
+    // Enviar una respuesta con un código de estado 400 Bad Request si no se proporcionaron datos
+    res.status(400).send('No se proporcionaron datos');
+  } else {
+    // Reemplazar los datos existentes con los nuevos datos
+    datos_10 = req.body;
+    // Enviar una respuesta con un código de estado 200 OK
+    res.status(200).send('Los datos se han actualizado correctamente');
+  }
+});
+
+//Método DELETE de la ruta específica.
+app.delete(rutaEsp, (req, res) => {
+  datos_10 = [];
+  res.status(200).send('Los datos se han borrado correctamente');
+});
+ 
 
 //ruta de /samples/index-JLB.js
 app.get("/samples/JLB", (request,response) => {
