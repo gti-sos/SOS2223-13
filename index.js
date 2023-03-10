@@ -448,12 +448,12 @@ var employment_stats = [
  ];
 
 
-app.get(BASE_API_URL + "/employment_stats",(request,response) => {
+app.get(BASE_API_URL + "/employment-stats",(request,response) => {
   response.json(employment_stats);
   console.log("New GET to /employment_stats");
 });
 
-app.post(BASE_API_URL + "/employment_stats",(request,response) => {
+app.post(BASE_API_URL + "/employment-stats",(request,response) => {
   var newEmployment = request.body; 
 
   console.log(`newEmployment = <${newEmployment}>`);
@@ -465,7 +465,7 @@ app.post(BASE_API_URL + "/employment_stats",(request,response) => {
 
 var datos_10 = [];
 
-app.get(BASE_API_URL + "/employment_stats/loadInitialData", (req, res) => {
+app.get(BASE_API_URL + "/employment-stats/loadInitialData", (req, res) => {
   if (datos_10.length === 0) {
     datos_10.push(
      {year:2017 , period:"T1" , date:"2017-T1" , region:"Almeria" , employed_person:347.3 , inactive_person:220.8 , unemployed_person:74.2 },
@@ -489,7 +489,28 @@ app.get(BASE_API_URL + "/employment_stats/loadInitialData", (req, res) => {
 });
 
 //Implementacion de buenas practicas en la API
+const rutaRaiz = '/api/v1/employment-stats';
 
+// Método POST para la ruta base
+app.post(rutaRaiz, (req, res) => {
+  // Verificar que el cuerpo de la solicitud contenga datos
+  if (!req.body) {
+    // Enviar una respuesta con un código de estado 400 Bad Request si no se proporcionaron datos
+    res.status(400).send('No se proporcionaron datos');
+  } else {
+    // Verificar si el nuevo objeto ya existe en el arreglo
+    const exists = employment_stats.some(stat => stat.name === req.body.name);
+    if (exists) {
+      // Enviar una respuesta con un código de estado 409 Conflict si el objeto ya existe
+      res.status(409).send('El objeto ya existe: Conflicto');
+    } else {
+      // Agregar los nuevos datos a la variable
+      employment_stats.push(req.body);
+      // Enviar una respuesta con un código de estado 201 Created
+      res.status(201).send('Los datos se han creado correctamente');
+    }
+  }
+});
 
 
 
