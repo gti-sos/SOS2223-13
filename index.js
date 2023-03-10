@@ -35,15 +35,29 @@ var evolution_stats = [
  
 const BASE_API_URL = "/api/v1";
 
-app.post(BASE_API_URL + "/evolution_stats", (request, response) => {
+app.post(BASE_API_URL + "/evolution-stats", (request, response) => {
   const territory = request.body.territory;
   const period = request.body.period;
-  console.log("New POST to /evolution_stats"); //console.log en el servidor  
+  console.log("New POST to /evolution-stats"); //console.log en el servidor
+  // Verificar que la solicitud se hizo en la ruta correcta
+  if (request.originalUrl !== '/api/v1/evolution-stats') {
+    res.status(405).send('Método no permitido');
+    return;
+  }else{  
+
+  // Validar que se envíen todos los campos necesarios
+  const requiredFields = ['period', 'territory', 'total_population', 'man', 'woman', 'under_sixteen_years', 'from_sixteen_to_sixty_four_years', 'sixty_five_and_over'];
+  for (const field of requiredFields) {
+    if (!request.body.hasOwnProperty(field)) {
+      response.status(400).send(`Missing required field: ${field}`);
+      return;
+    }
+  }
 
   // Verificar si el recurso ya existe
   const existingObject = evolution_stats.find(obj => obj.territory === territory && obj.period === period);
 
-  if (existingObject){
+  if (existingObject) {
     // Si el recurso ya existe, devolver un código de respuesta 409
     response.status(409).send(`El recurso ya existe.`);
   } else {
@@ -51,14 +65,16 @@ app.post(BASE_API_URL + "/evolution_stats", (request, response) => {
     evolution_stats.push(request.body);
     response.sendStatus(201);
   }
+}
 });
+
 
 
 //APARTADO CREAR 10 O MÁS DATOS RANDOM
 
 var datos_random = []
 
-app.get(BASE_API_URL + "/evolution_stats/loadInitialData", (req, res) => {
+app.get(BASE_API_URL + "/evolution-stats/loadInitialData", (req, res) => {
   if (datos_random.length === 0) {
     datos_random.push(
       {period:1980 , territory:"Almería" , total_population:407049 , man:200870 , woman:206179 , under_sixteen_years:126573 , from_sixteen_to_sixty_four_years:237986, sixty_five_and_over:42490},
@@ -85,7 +101,7 @@ app.get(BASE_API_URL + "/evolution_stats/loadInitialData", (req, res) => {
 });
 
 //CODIGO PARA MOSTRAR LAS ESTADÍSTICAS DE TODAS LAS CIUDADES EN UN PERIODO CONCRETO.
-app.get('/api/v1/evolution_stats', (req, res) => {
+app.get('/api/v1/evolution-stats', (req, res) => {
   const from = req.query.from;
   const to = req.query.to;
 
@@ -101,18 +117,18 @@ app.get('/api/v1/evolution_stats', (req, res) => {
 
   res.status(200);
   res.json(ciudadesEnPeriodo);
-  console.log(`/GET to /evolution_stats?from=${from}&to=${to}`); //console.log en el servidor
+  console.log(`/GET to /evolution-stats?from=${from}&to=${to}`); //console.log en el servidor
   }
   }else{
     const { period } = req.query;
 
   if (period) {
     const filteredStats = evolution_stats.filter(stat => stat.period === parseInt(period));
-    console.log("New GET to /evolution_stats"); //console.log en el servidor
+    console.log("New GET to /evolution-stats"); //console.log en el servidor
     res.json(filteredStats);  
     res.sendStatus(200);
   } else {
-    console.log("New GET to /evolution_stats"); //console.log en el servidor 
+    console.log("New GET to /evolution-stats"); //console.log en el servidor 
     res.json(evolution_stats);
     res.status(200);
   }
@@ -121,27 +137,40 @@ app.get('/api/v1/evolution_stats', (req, res) => {
 });
 
 //MÉTODOS TABLA AZUL.
-const rutaBase = '/api/v1/evolution_stats';
+const rutaBase = '/api/v1/evolution-stats';
 
 // Método POST para la ruta base
-app.post(rutaBase, (req, res) => {
-  // Verificar que el cuerpo de la solicitud contenga datos
-  if (!req.body) {
-    // Enviar una respuesta con un código de estado 400 Bad Request si no se proporcionaron datos
-    res.status(400).send('No se proporcionaron datos');
-  } else {
-    // Verificar si el nuevo objeto ya existe en el arreglo
-    const exists = evolution_stats.some(stat => stat.name === req.body.name);
-    if (exists) {
-      // Enviar una respuesta con un código de estado 409 Conflict si el objeto ya existe
-      res.status(409).send('El objeto ya existe: Conflicto');
-    } else {
-      // Agregar los nuevos datos a la variable
-      evolution_stats.push(req.body);
-      // Enviar una respuesta con un código de estado 201 Created
-      res.status(201).send('Los datos se han creado correctamente');
+app.post(rutaBase + "/evolution-stats", (request, response) => {
+  const territory = request.body.territory;
+  const period = request.body.period;
+  console.log("New POST to /evolution-stats"); //console.log en el servidor  
+
+  // Verificar que la solicitud se hizo en la ruta correcta
+  if (request.originalUrl !== '/api/v1/evolution-stats') {
+    res.status(405).send('Método no permitido');
+    return;
+  }else{
+  // Validar que se envíen todos los campos necesarios
+  const requiredFields = ['period', 'territory', 'total_population', 'man', 'woman', 'under_sixteen_years', 'from_sixteen_to_sixty_four_years', 'sixty_five_and_over'];
+  for (const field of requiredFields) {
+    if (!request.body.hasOwnProperty(field)) {
+      response.status(400).send(`Missing required field: ${field}`);
+      return;
     }
   }
+
+  // Verificar si el recurso ya existe
+  const existingObject = evolution_stats.find(obj => obj.territory === territory && obj.period === period);
+
+  if (existingObject) {
+    // Si el recurso ya existe, devolver un código de respuesta 409
+    response.status(409).send(`El recurso ya existe.`);
+  } else {
+    // Si el recurso no existe, agregarlo a la lista y devolver un código de respuesta 201
+    evolution_stats.push(request.body);
+    response.sendStatus(201);
+  }
+}
 });
 
 // Método PUT para la ruta base
@@ -149,14 +178,9 @@ app.put(rutaBase, (req, res) => {
   res.status(405).send('El método PUT no está permitido en esta ruta');
 });
 
-// Método DELETE para la ruta base
-app.delete(rutaBase, (req, res) => {
-  evolution_stats = [];
-  res.status(200).send('Los datos se han borrado correctamente');
-});
 
 // Ruta específica que no permite el método POST
-const rutaEspecifica = '/api/v1/evolution_stats/loadInitialData';
+const rutaEspecifica = '/api/v1/evolution-stats/loadInitialData';
 app.post(rutaEspecifica, (req, res) => {
   res.status(405).send('El método POST no está permitido en esta ruta');
 });
@@ -189,7 +213,7 @@ app.delete(rutaEspecifica, (req, res) => {
 
 
 //CODIGO PARA PODER HACER GET A UNA CIUDAD ESPECÍFICA Y A UNA CIUDAD Y PERIODO CONCRETO.
-app.get('/api/v1/evolution_stats/:city', (req, res) => {
+app.get('/api/v1/evolution-stats/:city', (req, res) => {
   const city = req.params.city.toLowerCase();
   const from = req.query.from;
   const to = req.query.to;
@@ -201,20 +225,25 @@ app.get('/api/v1/evolution_stats/:city', (req, res) => {
       stat.period >= from && stat.period <= to
     );
     res.json(filteredStats);
-    console.log(`/GET to /evolution_stats/${city}?from=${from}&to=${to}`); //console.log en el servidor
+    console.log(`/GET to /evolution-stats/${city}?from=${from}&to=${to}`); //console.log en el servidor
     res.status(200);
   } else {
     // Lógica para devolver los datos de la ciudad
     const filteredStats = evolution_stats.filter(stat => stat.territory.toLowerCase() === city);
+    console.log(filteredStats);
+    if(filteredStats.length === 0){
+      res.status(404).send('La ruta solicitada no existe');
+    }else{
     res.json(filteredStats);
     console.log("/GET a una ciudad concreta");
     res.status(200);
+    }
   }
 });
 
 
 //CODIGO PARA PODER HACER UN GET A UNA CIUDAD Y FECHA ESPECÍFICA.
-app.get('/api/v1/evolution_stats/:territory/:year', (req, res) => {
+app.get('/api/v1/evolution-stats/:territory/:year', (req, res) => {
   const { territory, year } = req.params;
   
   // Buscamos las estadísticas para el territorio y el año indicados
@@ -225,7 +254,7 @@ app.get('/api/v1/evolution_stats/:territory/:year', (req, res) => {
   if (stats) {
     res.status(200).json(stats);
   } else {
-    res.status(404).json({ message: `No se encontraron estadísticas para ${territory} en el año ${year}` });
+    res.status(404).send('La ruta solicitada no existe');;
   }
   console.log("Solicitud /GET")
 });
@@ -234,7 +263,7 @@ app.get('/api/v1/evolution_stats/:territory/:year', (req, res) => {
 //ESCRITO EN EL GET DE LA RUTA BASE.
 
 //CODIGO PARA ACTUALIZAR MEDIANTE PUT UNA RUTA CONCRETA.
-app.put('/api/v1/evolution_stats/:city/:year', (req, res) => {
+app.put('/api/v1/evolution-stats/:city/:year', (req, res) => {
   const city = req.params.city;
   const year = parseInt(req.params.year);
   const citybody = req.body.territory;
@@ -254,6 +283,48 @@ app.put('/api/v1/evolution_stats/:city/:year', (req, res) => {
 
   res.send('Estadística actualizada correctamente');
   console.log("Estadística encontrada");
+  }
+});
+
+//METODO DELETE PARA LA RUTA BASE PARA BORRAR DATO ESPECÍFICO.
+app.delete(BASE_API_URL + "/evolution-stats", (req, res) => {
+  if (!req.body || Object.keys(req.body).length === 0) {
+    evolution_stats = [];
+    res.status(200).send('Los datos se han borrado correctamente');
+  }else{
+  const { period, territory } = req.body;
+
+  // Buscar el objeto en la matriz evolution_stats
+  const objectIndex = evolution_stats.findIndex(obj => obj.period === period && obj.territory === territory);
+
+  if (objectIndex === -1) {
+    // Si el objeto no se encuentra, devolver un código de respuesta 404 Not Found
+    res.status(404).send('El objeto no existe');
+  } else {
+    // Si se encuentra el objeto, eliminarlo de la matriz y devolver un código de respuesta 200 OK
+    evolution_stats.splice(objectIndex, 1);
+    res.sendStatus(200);
+  }
+}
+});
+
+//DELETE PARA UNA RUTA ESPECÍFICA DE UNA CIUDAD.
+app.delete('/api/v1/evolution-stats/:territory', (req, res) => {
+  const territory = req.params.territory;
+  const filteredStats = evolution_stats.filter(stats => stats.territory === territory);
+  
+  if (filteredStats.length === 0) {
+    res.status(404).json(`No se encontraron datos para ${territory}`);
+  } else {
+    const newData = evolution_stats.filter(stats => stats.territory !== territory);
+    const deleted = newData.length !== evolution_stats.length;
+    evolution_stats = newData;
+
+    if (deleted) {
+      res.status(204).json(`Se ha borrado ${territory}`);
+    } else {
+      res.status(404).send(`No se encontraron datos que coincidan con los criterios de eliminación para ${territory}`);
+    }
   }
 });
 
@@ -907,6 +978,18 @@ app.use((err, req, res, next) => {
   }
   });
 
+//VERIFICAR SI METODO POST ES A ESA URL
+  app.use((req, res, next) => {
+    // Verificar si la solicitud es un POST y si no es en la ruta correcta
+    if (req.method === 'POST' && req.originalUrl !== '/api/v1/evolution-stats') {
+      res.status(405).send('Método no permitido');
+      return;
+    }
+  
+    // Enviar una respuesta con un código de estado 404 Not Found si la ruta no se encuentra
+    res.status(404).send('La ruta solicitada no existe');
+  });
+  
 // Manejador de rutas no encontradas
 app.use((req, res) => {
   // Enviar una respuesta con un código de estado 404 Not Found si la ruta no se encuentra
