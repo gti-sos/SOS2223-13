@@ -231,8 +231,8 @@ app.get('/api/v1/employment-stats/:territory/:year', (req, res) => {
 app.put('/api/v1/employment-stats/:city/:year', (req, res) => {
   const city = req.params.city;
   const year = parseInt(req.params.year);
-  const citybody = req.body.territory;
-  const yearbody = req.body.period;
+  const citybody = req.body.region;
+  const yearbody = req.body.year;
   
   const stat = employment_stats.find(s => s.region === city && s.year === year);
   
