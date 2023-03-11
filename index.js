@@ -9,21 +9,6 @@
 //const { datos_random } = require('./Modularizado-LMG/api');
 //const { rutaBase } = require('./Modularizado-LMG/api');
 
-
-
-
-//IMPORTACIÓN DE MODULOS DE IRENE
-//const { express } = require('./Modularizado-IFR/apiirene');
-//const { cool } = require'('./Modularizado-IFR/apiirene');
-//const { bodyParser } = require('./Modularizado-IFR/apiirene');
-//const { app } = require('./Modularizado-IFR/apiirene');
-//const { port } = require('./Modularizado-IFR/apiirene');
-//const { localentities_stats } = require('./Modularizado-IFR/apiirene');
-//const { BASE_API_URL } = require('./Modularizado-IFR/apiirene');
-//const { datos_random } = require('./Modularizado-IFR/apiirene');
-//const { rutaIrene } = require('./Modularizado-IFR/apiirene');
-
-
 var express = require("express");
 var cool = require("cool-ascii-faces");
 var bodyParser = require("body-parser");
@@ -314,6 +299,10 @@ app.get("/samples/JLB", (request,response) => {
 
 
 
+
+
+
+
 // ruta de /samples/index-IFR.js
 app.get("/samples/IFR", (request,response) => {
   var datos = [
@@ -374,18 +363,34 @@ app.get("/samples/IFR", (request,response) => {
   const president_appointment_date = request.body.president_appointment_date;
   
   console.log("New POST to /localentities_stats"); //console.log en el servidor
+  
 
+//verifica que se envían todos los campos necesarios  
+  if(request.originalUrl !== '/api/v1/localentities_stats'){
+    res.status(405).send('Método no permitido');
+    return;
+  } else {
+    const requiredFields = ['province', 'landline', 'first_name', 'second_name', 'president_appointment_date', 'surface_extension', 'population', 'expense', 'income'];
+    for(const field of requiredFields){
+      if(!request.body.hasOwnProperty(field)){
+        response.status(400).send(`Missing required field: ${field}`);
+        return;
+      }
+    }
 
+//verifica si el recurso ya existe
   const existingObject = localentities_stats.find(obj =>obj.province === province && obj.president_appointment_date === president_appointment_date);
   if (existingObject){
+    //si el recurso existe, devuelve error 409
       response.status(409).send(`El recurso ya existe.`);
   } else {
+    //si el recurso no existe, devuelve 201 y lo añade a la lista
       localentities_stats.push(request.body);
       response.sendStatus(201);
   }
   
-  
-  });
+}
+});
   
   //10 o más datos
   
@@ -394,7 +399,7 @@ app.get("/samples/IFR", (request,response) => {
   app.get(BASE_API_URL + "/localentities_stats/loadInitialData", (req, res) => {
   if (datos_random.length === 0) {
       datos_random.push(
-      {province:"Almeria" , landline:950351228 , first_name:"ANTONIO MANUEL" , second_name:"ORTIZ" , president_appointment_date:2015 , surface_extension: 45.24, population:1342.00, expense: 2224600.00, income: 2224600.00},
+          {province:"Almeria" , landline:950351228 , first_name:"ANTONIO MANUEL" , second_name:"ORTIZ" , president_appointment_date:2015 , surface_extension: 45.24, population:1342.00, expense: 2224600.00, income: 2224600.00},
           {province:"Almeria" , landline:950350001 , first_name:"ANTONIO" , second_name:"TORRES" , president_appointment_date:2015 , surface_extension: 83.68 , population:1279.00, expense: 1602733.00 , income: 1602733.00 },
           {province:"Cordoba" , landline:957166002 , first_name:"MANUELA" , second_name:"BOLLERO" , president_appointment_date:2015 , surface_extension: 334.84, population:4317.00, expense: 4227447.74 , income: 4227447.74 },
           {province:"Almeria" , landline:950400400 , first_name:"MANUEL" , second_name:"CORTES" , president_appointment_date:2015 , surface_extension: 90.04 , population:24670.00, expense: 19128200.00 , income: 19128200.00 },
@@ -416,23 +421,22 @@ app.get("/samples/IFR", (request,response) => {
 
 
   
-  //Código para mostrar las estadísticas de todas las ciudades en un período concreto
+//Motrar las ciudades en un año concreto
   
   app.get('/api/v1/localentities_stats', (req, res) => {
   const from = req.query.from;
   const to = req.query.to;
-  
+//buscar todas las ciudades en el año especificado  
   if (from && to) {
-      const ciudadesPeriodo = localentities_stats.filter(c => {
+      const ciudadesYear = localentities_stats.filter(c => {
       return c.president_appointment_date >= from && c.president_appointment_date <= to;
       });
   
       if (from >= to) {
       res.status(400).send("El rango de años especificado es inválido");
       }else{
-  
       res.status(200);
-      res.json(ciudadesPeriodo);
+      res.json(ciudadesYear);
       console.log(`/GET to /localentities_stats?from=${from}&to=${to}`); //console.log en el servidor
       }
       }else{
@@ -453,40 +457,49 @@ app.get("/samples/IFR", (request,response) => {
   });
   
   
-  //MÉTODOS TABLA AZUL.
+  //TABLITA AZUL
   const rutaIrene = '/api/v1/localentities_stats';
       
   // Método POST para la ruta base
-  app.post(rutaIrene, (req, res) => {
-      // Verificar que el cuerpo de la solicitud contenga datos
-      if (!req.body) {
-      // Enviar una respuesta con un código de estado 400 Bad Request si no se proporcionaron datos
-      res.status(400).send('No se proporcionaron datos');
-      } else {
-      // Verificar si el nuevo objeto ya existe en el arreglo
-      const exists = localentities_stats.some(stat => stat.name === req.body.name);
-      if (exists) {
-          // Enviar una respuesta con un código de estado 409 Conflict si el objeto ya existe
-          res.status(409).send('El objeto ya existe: Conflicto');
-      } else {
-          // Agregar los nuevos datos a la variable
-          localentities_stats.push(req.body);
-          // Enviar una respuesta con un código de estado 201 Created
-          res.status(201).send('Los datos se han creado correctamente');
+  app.post(rutaIrene + "/localentities_stats", (request, response) => {
+    const province = request.body.province;
+    const president_appointment_date = request.body.president_appointment_date;
+    console.log("New POST to /localentities_stats"); //console.log en el servidor  
+  
+    // Verificar que la solicitud se hizo en la ruta correcta
+    if (request.originalUrl !== '/api/v1/localentities_stats') {
+      res.status(405).send('Método no permitido');
+      return;
+    }else{
+    // Validar que se envíen todos los campos necesarios
+    const requiredFields = ['province', 'landline', 'first_name', 'second_name', 'president_appointment_date', 'surface_extension', 'population', 'expense', 'income'];
+    for (const field of requiredFields) {
+      if (!request.body.hasOwnProperty(field)) {
+        response.status(400).send(`Missing required field: ${field}`);
+        return;
       }
-      }
+    }
+  
+    // Verificar si el recurso ya existe
+    const existingObject = localentities_stats.find(obj => obj.province === province && obj.president_appointment_date === president_appointment_date);
+  
+    if (existingObject) {
+      // Si el recurso ya existe, devolver un código de respuesta 409
+      response.status(409).send(`El recurso ya existe.`);
+    } else {
+      // Si el recurso no existe, agregarlo a la lista y devolver un código de respuesta 201
+      localentities_stats.push(request.body);
+      response.sendStatus(201);
+    }
+  }
   });
   
+
   // Método PUT para la ruta base
   app.put(rutaIrene, (req, res) => {
       res.status(405).send('El método PUT no está permitido en esta ruta');
   });
   
-  // Método DELETE para la ruta base
-  app.delete(rutaIrene, (req, res) => {
-      localentities_stats = [];
-      res.status(200).send('Los datos se han borrado correctamente');
-  });
   
   // Ruta específica que no permite el método POST
   const rutaEspecif = '/api/v1/localentities_stats/loadInitialData';
@@ -542,8 +555,13 @@ app.get("/samples/IFR", (request,response) => {
       // Lógica para devolver los datos de la ciudad
       const filteredStats = localentities_stats.filter(stat => stat.province.toLowerCase() === city);
       res.json(filteredStats);
+      if(filteredStats.length === 0){
+        res.status(404).send('La ruta solicitada no existe');
+      }else{
+      res.json(filteredStats);
       console.log("/GET a una ciudad concreta");
       res.status(200);
+      }
   }
   });
   
@@ -562,8 +580,8 @@ app.get("/samples/IFR", (request,response) => {
   if (stats) {
       res.status(200).json(stats);
   } else {
-      res.status(404).json({ message: `No se encontraron estadísticas para ${province} en el año ${year}` });
-  }
+    res.status(404).send('La ruta solicitada no existe');
+   }
   console.log("Solicitud /GET")
   });
 
@@ -599,7 +617,47 @@ app.put('/api/v1/localentities_stats/:city/:year', (req, res) => {
 });
 
 
+//METODO DELETE PARA LA RUTA BASE PARA BORRAR DATO ESPECÍFICO.
+app.delete(BASE_API_URL + "/localentities_-stats", (req, res) => {
+  if (!req.body || Object.keys(req.body).length === 0) {
+    localentities_stats = [];
+    res.status(200).send('Los datos se han borrado correctamente');
+  }else{
+  const { province, president_appointment_date } = req.body;
 
+  // Buscar el objeto en la matriz localentities
+  const objectIndex = localentities_stats.findIndex(obj => obj.province === province && obj.president_appointment_date === president_appointment_date);
+
+  if (objectIndex === -1) {
+    // Si el objeto no se encuentra, devolver un código de respuesta 404 Not Found
+    res.status(404).send('El objeto no existe');
+  } else {
+    // Si se encuentra el objeto, eliminarlo de la matriz y devolver un código de respuesta 200 OK
+    localentities_stats.splice(objectIndex, 1);
+    res.sendStatus(200);
+  }
+}
+});
+
+//DELETE PARA UNA RUTA ESPECÍFICA DE UNA CIUDAD.
+app.delete('/api/v1/localentities_stats/:province', (req, res) => {
+  const province = req.params.province;
+  const filteredStats = localentities_stats.filter(stats => stats.province === province);
+  
+  if (filteredStats.length === 0) {
+    res.status(404).json(`No se encontraron datos para ${province}`);
+  } else {
+    const newData = localentities_stats.filter(stats => stats.province !== province);
+    const deleted = newData.length !== localentities_stats.length;
+    localentities_stats = newData;
+
+    if (deleted) {
+      res.status(204).json(`Se ha borrado ${province}`);
+    } else {
+      res.status(404).send(`No se encontraron datos que coincidan con los criterios de eliminación para ${province}`);
+    }
+  }
+});
 
 
 
