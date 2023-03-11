@@ -1,13 +1,21 @@
 //IMPORTACION DE MODULOS DE LUIS MIGUEL
-const { express } = require('./Modularizado-LMG/api');
-const { cool } = require('./Modularizado-LMG/api');
-const { bodyParser } = require('./Modularizado-LMG/api');
-const { app } = require('./Modularizado-LMG/api');
-const { port } = require('./Modularizado-LMG/api');
-const { evolution_stats } = require('./Modularizado-LMG/api');
-const { BASE_API_URL } = require('./Modularizado-LMG/api');
-const { datos_random } = require('./Modularizado-LMG/api');
-const { rutaBase } = require('./Modularizado-LMG/api');
+//const { express } = require('./Modularizado-LMG/api');
+//const { cool } = require('./Modularizado-LMG/api');
+//const { bodyParser } = require('./Modularizado-LMG/api');
+//const { app } = require('./Modularizado-LMG/api');
+//const { port } = require('./Modularizado-LMG/api');
+//const { evolution_stats } = require('./Modularizado-LMG/api');
+//const { BASE_API_URL } = require('./Modularizado-LMG/api');
+//const { datos_random } = require('./Modularizado-LMG/api');
+//const { rutaBase } = require('./Modularizado-LMG/api');
+
+var express = require("express");
+var cool = require("cool-ascii-faces");
+var bodyParser = require("body-parser");
+var app = express();
+var port = process.env.PORT || 8080;
+app.use(bodyParser.json());
+const BASE_API_URL = "/api/v1";
 
 //Código Jose López tarea F05
 var employment_stats = [
@@ -24,18 +32,19 @@ var employment_stats = [
  ];
 
 
-app.get(BASE_API_URL + "/employment-stats",(request,response) => {
-  response.json(employment_stats);
-  console.log("New GET to /employment_stats");
-});
 
-app.post(BASE_API_URL + "/employment-stats",(request,response) => {
-  var newEmployment = request.body; 
+//app.get(BASE_API_URL + "/employment-stats",(request,response) => {
+//  response.json(employment_stats);
+//  console.log("New GET to /employment-stats");
+//});
 
-  console.log(`newEmployment = <${newEmployment}>`);
-  console.log("New POST to /employment_stats");
-
-}); 
+//app.post(BASE_API_URL + "/employment-stats",(request,response) => {
+//  var newEmployment = request.body; 
+//
+//  console.log(`newEmployment = <${newEmployment}>`);
+//  console.log("New POST to /employment-stats");
+//
+//}); 
 
 //Tarea crear 10 datos 
 
@@ -64,29 +73,79 @@ app.get(BASE_API_URL + "/employment-stats/loadInitialData", (req, res) => {
   }
 });
 
+//CODIGO PARA MOSTRAR LAS ESTADÍSTICAS DE TODAS LAS CIUDADES EN UN PERIODO CONCRETO.
+app.get('/api/v1/employment-stats', (req, res) => {
+  const from = req.query.from;
+  const to = req.query.to;
+
+  // Lógica para buscar todas las ciudades en el período especificado
+  if (from && to) {
+  const ciudadesEnPeriodo = employment_stats.filter(ciudad => {
+    return ciudad.year >= from && ciudad.year <= to;
+  });
+
+  if (from > to) {
+    res.status(400).send("El rango de años especificado es inválido");
+  }else{
+
+  res.status(200);
+  res.json(ciudadesEnPeriodo);
+  console.log(`/GET to /employment-stats?from=${from}&to=${to}`); //console.log en el servidor
+  }
+  }else{
+    const { period } = req.query;
+
+  if (period) {
+    const filteredStats = employment_stats.filter(stat => stat.year === parseInt(period));
+    console.log(`New GET to /employment-stats?year=${period}`); //console.log en el servidor
+    res.json(filteredStats);  
+    res.sendStatus(200);
+  } else {
+    console.log("New GET to /employment-stats"); //console.log en el servidor 
+    res.json(employment_stats);
+    res.status(200);
+  }
+
+  }
+});
+
 //Implementacion de buenas practicas en la API
 const rutaRaiz = '/api/v1/employment-stats';
 
 // Método POST para la ruta base
-app.post(rutaRaiz, (req, res) => {
-  // Verificar que el cuerpo de la solicitud contenga datos
-  if (!req.body) {
-    // Enviar una respuesta con un código de estado 400 Bad Request si no se proporcionaron datos
-    res.status(400).send('No se proporcionaron datos');
-  } else {
-    // Verificar si el nuevo objeto ya existe en el arreglo
-    const exists = employment_stats.some(stat => stat.name === req.body.name);
-    if (exists) {
-      // Enviar una respuesta con un código de estado 409 Conflict si el objeto ya existe
-      res.status(409).send('El objeto ya existe: Conflicto');
-    } else {
-      // Agregar los nuevos datos a la variable
-      employment_stats.push(req.body);
-      // Enviar una respuesta con un código de estado 201 Created
-      res.status(201).send('Los datos se han creado correctamente');
+app.post(BASE_API_URL + "/employment-stats", (request, response) => {
+  const region = request.body.region;
+  const year = request.body.year;
+  console.log("New POST to /employment-stats"); //console.log en el servidor
+  // Verificar que la solicitud se hizo en la ruta correcta
+  if (request.originalUrl !== '/api/v1/employment-stats') {
+    res.status(405).send('Método no permitido');
+    return;
+  }else{  
+
+  // Validar que se envíen todos los campos necesarios
+  const requiredFields = ['year', 'period', 'date', 'region', 'employed_person', 'inactive_person', 'unemployed_person'];
+  for (const field of requiredFields) {
+    if (!request.body.hasOwnProperty(field)) {
+      response.status(400).send(`Missing required field: ${field}`);
+      return;
     }
   }
+
+  // Verificar si el recurso ya existe
+  const existingObject = employment_stats.find(obj => obj.region === region && obj.year === year);
+
+  if (existingObject) {
+    // Si el recurso ya existe, devolver un código de respuesta 409
+    response.status(409).send(`El recurso ya existe.`);
+  } else {
+    // Si el recurso no existe, agregarlo a la lista y devolver un código de respuesta 201
+    employment_stats.push(request.body);
+    response.sendStatus(201);
+  }
+}
 });
+
 
 // Método PUT para la ruta base
 app.put(rutaRaiz, (req, res) => {
@@ -130,6 +189,75 @@ app.delete(rutaEsp, (req, res) => {
   datos_10 = [];
   res.status(200).send('Los datos se han borrado correctamente');
 });
+
+
+//CODIGO PARA PODER HACER GET A UNA CIUDAD ESPECÍFICA Y A UNA CIUDAD Y PERIODO CONCRETO.
+app.get('/api/v1/employment-stats/:city', (req, res) => {
+  const city = req.params.city.toLowerCase();
+  const from = req.query.from;
+  const to = req.query.to;
+
+  if (from && to) {
+    // Lógica para devolver los datos de la ciudad para el periodo especificado
+    const filteredStats = employment_stats.filter(
+      stat => stat.region.toLowerCase() === city &&
+      stat.year >= from && stat.year <= to
+    );
+    res.json(filteredStats);
+    console.log(`/GET to /employment-stats/${city}?from=${from}&to=${to}`); //console.log en el servidor
+    res.status(200);
+  } else {
+    // Lógica para devolver los datos de la ciudad
+    const filteredStats = employment_stats.filter(stat => stat.region.toLowerCase() === city);
+    console.log(filteredStats);
+    if(filteredStats.length === 0){
+      res.status(404).send('La ruta solicitada no existe');
+    }else{
+    res.json(filteredStats);
+    console.log("/GET a una ciudad concreta");
+    res.status(200);
+    }
+  }
+});
+
+//CODIGO PARA PODER HACER UN GET A UNA CIUDAD Y FECHA ESPECÍFICA.
+app.get('/api/v1/employment-stats/:territory/:year', (req, res) => {
+  const { territory, year } = req.params;
+  
+  // Buscamos las estadísticas para el territorio y el año indicados
+  const stats = employment_stats.find(
+    s => s.region.toLowerCase() === territory.toLowerCase() && s.year === parseInt(year)
+  );
+  
+  if (stats) {
+    res.status(200).json(stats);
+  } else {
+    res.status(404).send('La ruta solicitada no existe');;
+  }
+  console.log("Solicitud /GET")
+});
+
+//CODIGO PARA FECHA
+
+app.get('/api/v1/employment-stats?year=:anyo', (req, res) => {
+  const { anyo } = req.params;
+  
+  // Buscamos las estadísticas para el territorio y el año indicados
+  const stats = employment_stats.find(
+    s => s.year === parseInt(anyo)
+  );
+  
+  if (stats) {
+    res.status(200).json(stats);
+  } else {
+    res.status(404).send('La ruta solicitada no existe');;
+  }
+  console.log("Solicitud /GET")
+});
+
+
+//CODIGO PARA ACCEDER A TODAS LAS ESTADISTICAS DE UN AÑO CONCRETO
+//ESCRITO EN EL GET DE LA RUTA BASE.
  
 
 //ruta de /samples/index-JLB.js
