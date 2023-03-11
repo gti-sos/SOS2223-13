@@ -1,21 +1,21 @@
 //IMPORTACION DE MODULOS DE LUIS MIGUEL
-//const { express } = require('./Modularizado-LMG/api');
-//const { cool } = require('./Modularizado-LMG/api');
-//const { bodyParser } = require('./Modularizado-LMG/api');
-//const { app } = require('./Modularizado-LMG/api');
-//const { port } = require('./Modularizado-LMG/api');
-//const { evolution_stats } = require('./Modularizado-LMG/api');
-//const { BASE_API_URL } = require('./Modularizado-LMG/api');
-//const { datos_random } = require('./Modularizado-LMG/api');
-//const { rutaBase } = require('./Modularizado-LMG/api');
+const { express } = require('./Modularizado-LMG/api');
+const { cool } = require('./Modularizado-LMG/api');
+const { bodyParser } = require('./Modularizado-LMG/api');
+const { app } = require('./Modularizado-LMG/api');
+const { port } = require('./Modularizado-LMG/api');
+const { evolution_stats } = require('./Modularizado-LMG/api');
+const { BASE_API_URL } = require('./Modularizado-LMG/api');
+const { datos_random } = require('./Modularizado-LMG/api');
+const { rutaBase } = require('./Modularizado-LMG/api');
 
-var express = require("express");
+/*var express = require("express");
 var cool = require("cool-ascii-faces");
 var bodyParser = require("body-parser");
 var app = express();
 var port = process.env.PORT || 8080;
 app.use(bodyParser.json());
-const BASE_API_URL = "/api/v1";
+const BASE_API_URL = "/api/v1";*/
 
 //Código Jose López tarea F05
 var employment_stats = [
@@ -394,11 +394,11 @@ app.get("/samples/IFR", (request,response) => {
   
   //10 o más datos
   
-  var datos_random = []
+  var datos_randomIFR = []
   
   app.get(BASE_API_URL + "/localentities_stats/loadInitialData", (req, res) => {
-  if (datos_random.length === 0) {
-      datos_random.push(
+  if (datos_randomIFR.length === 0) {
+      datos_randomIFR.push(
           {province:"Almeria" , landline:950351228 , first_name:"ANTONIO MANUEL" , second_name:"ORTIZ" , president_appointment_date:2015 , surface_extension: 45.24, population:1342.00, expense: 2224600.00, income: 2224600.00},
           {province:"Almeria" , landline:950350001 , first_name:"ANTONIO" , second_name:"TORRES" , president_appointment_date:2015 , surface_extension: 83.68 , population:1279.00, expense: 1602733.00 , income: 1602733.00 },
           {province:"Cordoba" , landline:957166002 , first_name:"MANUELA" , second_name:"BOLLERO" , president_appointment_date:2015 , surface_extension: 334.84, population:4317.00, expense: 4227447.74 , income: 4227447.74 },
@@ -410,7 +410,7 @@ app.get("/samples/IFR", (request,response) => {
           {province:"Malaga" , landline:952710025 , first_name:"JUAN LORENZO" , second_name:"PINEDA" , president_appointment_date:2015 , surface_extension: 65.11 , population: 5403.00 , expense: 4325250.80 , income: 4325250.80 },
           {province:"Granada" , landline:958392520 , first_name:"TORCUATO" , second_name:"CABRERIZO" , president_appointment_date:2015 , surface_extension: 90.71 , population: 637.00 , expense: 779638.23 , income: 779638.23 },
       );
-      res.json(datos_random)
+      res.json(datos_randomIFR)
       console.log("Se han creado datos")
   } else {
       res.send('El arreglo ya contiene datos');
@@ -509,7 +509,7 @@ app.get("/samples/IFR", (request,response) => {
   
   // Ruta Específica Método GET
   app.get(rutaEspecif, (req, res) => {
-      res.json(datos_random);
+      res.json(datos_randomIFR);
       res.status(200);
   });
 
@@ -521,7 +521,7 @@ app.get("/samples/IFR", (request,response) => {
       res.status(400).send('No se proporcionaron datos');
       } else {
       // Reemplazar los datos existentes con los nuevos datos
-      datos_random = req.body;
+      datos_randomIFR = req.body;
       // Enviar una respuesta con un código de estado 200 OK
       res.status(200).send('Los datos se han actualizado correctamente');
       }
@@ -529,7 +529,7 @@ app.get("/samples/IFR", (request,response) => {
   
   //Método DELETE de la ruta específica.
   app.delete(rutaEspecif, (req, res) => {
-      datos_random = [];
+      datos_randomIFR = [];
       res.status(200).send('Los datos se han borrado correctamente');
   });
   
