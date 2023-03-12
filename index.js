@@ -1,5 +1,5 @@
 //IMPORTACION DE MODULOS DE LUIS MIGUEL
-/*const { express } = require('./Modularizado-LMG/api');
+const { express } = require('./Modularizado-LMG/api');
 const { cool } = require('./Modularizado-LMG/api');
 const { bodyParser } = require('./Modularizado-LMG/api');
 const { app } = require('./Modularizado-LMG/api');
@@ -7,15 +7,15 @@ const { port } = require('./Modularizado-LMG/api');
 const { evolution_stats } = require('./Modularizado-LMG/api');
 const { BASE_API_URL } = require('./Modularizado-LMG/api');
 const { datos_random } = require('./Modularizado-LMG/api');
-const { rutaBase } = require('./Modularizado-LMG/api');*/
+const { rutaBase } = require('./Modularizado-LMG/api');
 
-var express = require("express");
+/*var express = require("express");
 var cool = require("cool-ascii-faces");
 var bodyParser = require("body-parser");
 var app = express();
 var port = process.env.PORT || 8080;
 app.use(bodyParser.json());
-const BASE_API_URL = "/api/v1";
+const BASE_API_URL = "/api/v1";*/
 
 //Código Jose López tarea F05
 var employment_stats = [

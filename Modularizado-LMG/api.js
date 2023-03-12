@@ -281,6 +281,32 @@ app.put('/api/v1/evolution-stats/:city/:year', (req, res) => {
   }
 });
 
+//CODIGO PARA ACTUALIZAR MEDIANTE PUT UNA CIUDAD
+app.put('/api/v1/evolution-stats/:city', (req, res) => {
+  const city = req.params.city;
+  const citybody = req.body.territory;
+
+  const statsToUpdate = evolution_stats.filter(s => s.territory === city);
+  
+  if (statsToUpdate.length === 0 || city !== citybody) {
+    return res.status(400).json('Estadística errónea');
+  } else {
+    for (let i = 0; i < statsToUpdate.length; i++) {
+      const stat = statsToUpdate[i];
+      stat.period = req.body.period || stat.period;
+      stat.total_population = req.body.total_population || stat.total_population;
+      stat.man = req.body.man || stat.man;
+      stat.woman = req.body.woman || stat.woman;
+      stat.under_sixteen_years = req.body.under_sixteen_years || stat.under_sixteen_years;
+      stat.from_sixteen_to_sixty_four_years = req.body.from_sixteen_to_sixty_four_years || stat.from_sixteen_to_sixty_four_years;
+      stat.sixty_five_and_over = req.body.sixty_five_and_over || stat.sixty_five_and_over;
+    }
+
+    res.json('Estadísticas actualizadas correctamente');
+    console.log("Estadísticas encontradas");
+  }
+});
+
 //METODO DELETE PARA LA RUTA BASE PARA BORRAR DATO ESPECÍFICO.
 app.delete(BASE_API_URL + "/evolution-stats", (req, res) => {
   if (!req.body || Object.keys(req.body).length === 0) {
