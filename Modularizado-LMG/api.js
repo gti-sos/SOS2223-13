@@ -343,6 +343,7 @@ app.delete('/api/v1/evolution-stats/:territory', (req, res) => {
 
     if (deleted) {
       res.status(204).json(`Se ha borrado ${territory}`);
+      console.log("Datos borrados");
     } else {
       res.status(404).json(`No se encontraron datos que coincidan con los criterios de eliminación para ${territory}`);
     }
