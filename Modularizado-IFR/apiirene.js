@@ -404,9 +404,6 @@ app.delete('/api/v1/localentities-stats/:province', (req, res) => {
 
 
 
-
-
-
 module.exports = {
   express,
   bodyParser,
