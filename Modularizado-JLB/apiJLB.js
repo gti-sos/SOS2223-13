@@ -1,9 +1,9 @@
 var express = require("express");
 var cool = require("cool-ascii-faces");
 var bodyParser = require("body-parser");
-var app = express();
-var port = process.env.PORT || 8080;
-app.use(bodyParser.json());
+var appJLB = express();
+var portJLB = process.env.PORT || 8082;
+appJLB.use(bodyParser.json());
 const BASE_API_URL = "/api/v1";
 
 //Código Jose López tarea F05
@@ -39,7 +39,7 @@ var employment_stats = [
 
 var datos_10 = [];
 
-app.get(BASE_API_URL + "/employment-stats/loadInitialData", (req, res) => {
+appJLB.get(BASE_API_URL + "/employment-stats/loadInitialData", (req, res) => {
   if (datos_10.length === 0) {
     datos_10.push(
      {year:2017 , period:"T1" , date:"2017-T1" , region:"Almeria" , employed_person:347.3 , inactive_person:220.8 , unemployed_person:74.2 },
@@ -63,7 +63,7 @@ app.get(BASE_API_URL + "/employment-stats/loadInitialData", (req, res) => {
 });
 
 //CODIGO PARA MOSTRAR LAS ESTADÍSTICAS DE TODAS LAS CIUDADES EN UN PERIODO CONCRETO.
-app.get('/api/v1/employment-stats', (req, res) => {
+appJLB.get('/api/v1/employment-stats', (req, res) => {
   const from = req.query.from;
   const to = req.query.to;
 
@@ -102,7 +102,7 @@ app.get('/api/v1/employment-stats', (req, res) => {
 const rutaRaiz = '/api/v1/employment-stats';
 
 // Método POST para la ruta base
-app.post(rutaRaiz, (req,res) => {
+appJLB.post(rutaRaiz, (req,res) => {
   const keys = Object.keys(req.body);
   if(keys.length<7){
     res.status(400).send("No se han introducido datos suficientes");
@@ -122,30 +122,30 @@ app.post(rutaRaiz, (req,res) => {
 
 
 // Método PUT para la ruta base
-app.put(rutaRaiz, (req, res) => {
+appJLB.put(rutaRaiz, (req, res) => {
   res.status(405).send('El método PUT no está permitido en esta ruta');
 });
 
 // Método DELETE para la ruta base
-app.delete(rutaRaiz, (req, res) => {
+appJLB.delete(rutaRaiz, (req, res) => {
   employment_stats = [];
   res.status(200).send('Los datos se han borrado correctamente');
 });
 
 // Ruta específica que no permite el método POST
 const rutaEsp = '/api/v1/employment-stats/loadInitialData';
-app.post(rutaEsp, (req, res) => {
+appJLB.post(rutaEsp, (req, res) => {
   res.status(405).send('El método POST no está permitido en esta ruta');
 });
 
 // Ruta Específica Método GET
-app.get(rutaEsp, (req, res) => {
+appJLB.get(rutaEsp, (req, res) => {
   res.json(datos_10);
   res.status(200);
 });
 
 // Ruta Específica Método PUT
-app.put(rutaEsp, (req, res) => {
+appJLB.put(rutaEsp, (req, res) => {
   // Verificar que el cuerpo de la solicitud contenga datos
   if (Object.keys(req.body).length === 0) {
     // Enviar una respuesta con un código de estado 400 Bad Request si no se proporcionaron datos
@@ -159,14 +159,14 @@ app.put(rutaEsp, (req, res) => {
 });
 
 //Método DELETE de la ruta específica.
-app.delete(rutaEsp, (req, res) => {
+appJLB.delete(rutaEsp, (req, res) => {
   datos_10 = [];
   res.status(200).send('Los datos se han borrado correctamente');
 });
 
 
 //CODIGO PARA PODER HACER GET A UNA CIUDAD ESPECÍFICA Y A UNA CIUDAD Y PERIODO CONCRETO.
-app.get('/api/v1/employment-stats/:city', (req, res) => {
+appJLB.get('/api/v1/employment-stats/:city', (req, res) => {
   const city = req.params.city.toLowerCase();
   const from = req.query.from;
   const to = req.query.to;
@@ -195,7 +195,7 @@ app.get('/api/v1/employment-stats/:city', (req, res) => {
 });
 
 //CODIGO PARA PODER HACER UN GET A UNA CIUDAD Y FECHA ESPECÍFICA.
-app.get('/api/v1/employment-stats/:territory/:year', (req, res) => {
+appJLB.get('/api/v1/employment-stats/:territory/:year', (req, res) => {
   const { territory, year } = req.params;
   
   // Buscamos las estadísticas para el territorio y el año indicados
@@ -217,7 +217,7 @@ app.get('/api/v1/employment-stats/:territory/:year', (req, res) => {
 //ESCRITO EN EL GET DE LA RUTA BASE.
 
 //CODIGO PARA ACTUALIZAR MEDIANTE PUT UNA RUTA CONCRETA.
-app.put('/api/v1/employment-stats/:city/:year', (req, res) => {
+appJLB.put('/api/v1/employment-stats/:city/:year', (req, res) => {
   const city = req.params.city;
   const year = parseInt(req.params.year);
   const citybody = req.body.region;
@@ -241,7 +241,7 @@ app.put('/api/v1/employment-stats/:city/:year', (req, res) => {
  
 
 //ruta de /samples/index-JLB.js
-app.get("/samples/JLB", (request,response) => {
+appJLB.get("/samples/JLB", (request,response) => {
     var datos = [
         {year:2017 , period:"T1" , date:"2017-T1" , region:"Almeria" , employed_person:347.3 , inactive_person:220.8 , unemployed_person:74.2 },
         {year:2017 , period:"T2" , date:"2017-T2" , region:"Almeria" , employed_person:345.2 , inactive_person:223.6 , unemployed_person:79.5},
@@ -275,6 +275,19 @@ app.get("/samples/JLB", (request,response) => {
     response.send(`Media es: ${media}`);
     console.log("New request"); //console.log en el servidor    
 });
+
+//EXPORTACION
+module.exports = {
+  express,
+  cool,
+  bodyParser,
+  appJLB,
+  portJLB,
+  employment_stats,
+  BASE_API_URL,
+  datos_10,
+  rutaRaiz
+};
 
 
 

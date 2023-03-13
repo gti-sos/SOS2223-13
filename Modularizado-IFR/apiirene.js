@@ -1,15 +1,15 @@
 var express = require("express");
 var bodyParser = require("body-parser");
-var app = express();
-var port = process.env.PORT || 8080;
-app.use(bodyParser.json());
+var appIFR = express();
+var portIFR = process.env.PORT || 8081;
+appIFR.use(bodyParser.json());
 const BASE_API_URL = "/api/v1";
 
 
 
 
 // ruta de /samples/index-IFR.js
-app.get("/samples/IFR", (request,response) => {
+appIFR.get("/samples/IFR", (request,response) => {
   var datos = [
       {province:"Almeria" , landline:950351228 , first_name:"ANTONIO MANUEL" , second_name:"ORTIZ" , president_appointment_date:2015 , surface_extension: 45.24, population:1342.00, expense: 2224600.00, income: 2224600.00},
       {province:"Almeria" , landline:950350001 , first_name:"ANTONIO" , second_name:"TORRES" , president_appointment_date:2015 , surface_extension: 83.68 , population:1279.00, expense: 1602733.00 , income: 1602733.00 },
@@ -63,7 +63,7 @@ app.get("/samples/IFR", (request,response) => {
 
 //localentities me va, me sale el get
 
-  app.post(BASE_API_URL + "/localentities-stats", (request,response) => {
+appIFR.post(BASE_API_URL + "/localentities-stats", (request,response) => {
   const province = request.body.province;
   const president_appointment_date = request.body.president_appointment_date;
   
@@ -101,7 +101,7 @@ app.get("/samples/IFR", (request,response) => {
   
   var datos_randomIFR = []
   
-  app.get(BASE_API_URL + "/localentities-stats/loadInitialData", (req, res) => {
+  appIFR.get(BASE_API_URL + "/localentities-stats/loadInitialData", (req, res) => {
   if (datos_randomIFR.length === 0) {
       datos_randomIFR.push(
         {province:"Almeria" , landline:950350001 , first_name:"ANTONIO" , second_name:"TORRES" , president_appointment_date:2013 , surface_extension: 83.68 , population:1279.00, expense: 1602733.00 , income: 1602733.00 },
@@ -128,7 +128,7 @@ app.get("/samples/IFR", (request,response) => {
   
 //Motrar las ciudades en un año concreto
   
-  app.get('/api/v1/localentities-stats', (req, res) => {
+appIFR.get('/api/v1/localentities-stats', (req, res) => {
   const from = req.query.from;
   const to = req.query.to;
 //buscar todas las ciudades en el año especificado  
@@ -165,7 +165,7 @@ app.get("/samples/IFR", (request,response) => {
   const rutaIrene = '/api/v1/localentities-stats';
       
   // Método POST para la ruta base
-  app.post(rutaIrene + "/localentities-stats", (request, response) => {
+  appIFR.post(rutaIrene + "/localentities-stats", (request, response) => {
     const province = request.body.province;
     const president_appointment_date = request.body.president_appointment_date;
     console.log("New POST to /localentities-stats"); //console.log en el servidor  
@@ -200,25 +200,25 @@ app.get("/samples/IFR", (request,response) => {
   
 
   // Método PUT para la ruta base
-  app.put(rutaIrene, (req, res) => {
+  appIFR.put(rutaIrene, (req, res) => {
       res.status(405).json('El método PUT no está permitido en esta ruta');
   });
   
   
   // Ruta específica que no permite el método POST
   const rutaEspecif = '/api/v1/localentities-stats/loadInitialData';
-  app.post(rutaEspecif, (req, res) => {
+  appIFR.post(rutaEspecif, (req, res) => {
       res.status(405).json('El método POST no está permitido en esta ruta');
   });
   
   // Ruta Específica Método GET
-  app.get(rutaEspecif, (req, res) => {
+  appIFR.get(rutaEspecif, (req, res) => {
       res.json(datos_randomIFR);
       res.status(200);
   });
 
   // Ruta Específica Método PUT
-  app.put(rutaEspecif, (req, res) => {
+  appIFR.put(rutaEspecif, (req, res) => {
       // Verificar que el cuerpo de la solicitud contenga datos
       if (!req.body) {
       // Enviar una respuesta con un código de estado 400 Bad Request si no se proporcionaron datos
@@ -232,7 +232,7 @@ app.get("/samples/IFR", (request,response) => {
   });
   
   //Método DELETE de la ruta específica.
-  app.delete(rutaEspecif, (req, res) => {
+  appIFR.delete(rutaEspecif, (req, res) => {
       datos_randomIFR = [];
       res.status(200).json('Los datos se han borrado correctamente');
   });
@@ -242,7 +242,7 @@ app.get("/samples/IFR", (request,response) => {
 
 
 //CODIGO PARA PODER HACER GET A UNA CIUDAD ESPECÍFICA Y A UNA CIUDAD Y PERIODO CONCRETO.
-  app.get('/api/v1/localentities-stats/:city', (req, res) => {
+appIFR.get('/api/v1/localentities-stats/:city', (req, res) => {
   const city = req.params.city.toLowerCase();
   const from = req.query.from;
   const to = req.query.to;
@@ -273,7 +273,7 @@ app.get("/samples/IFR", (request,response) => {
 
 
 //CODIGO PARA PODER HACER UN GET A UNA CIUDAD Y FECHA ESPECÍFICA.
-  app.get('/api/v1/localentities-stats/:province/:year', (req, res) => {
+appIFR.get('/api/v1/localentities-stats/:province/:year', (req, res) => {
   const { province, year } = req.params;
 
 // Buscamos las estadísticas para el territorio y el año indicados
@@ -297,7 +297,7 @@ app.get("/samples/IFR", (request,response) => {
 
 
 //CODIGO PARA ACTUALIZAR MEDIANTE PUT UNA RUTA CONCRETA.
-app.put('/api/v1/localentities-stats/:city/:year', (req, res) => {
+appIFR.put('/api/v1/localentities-stats/:city/:year', (req, res) => {
   const city = req.params.city;
   const year = parseInt(req.params.year);
   const city_body = req.body.province;
@@ -326,7 +326,7 @@ app.put('/api/v1/localentities-stats/:city/:year', (req, res) => {
 
 
 //CODIGO PARA ACTUALIZAR MEDIANTE PUT UNA CIUDAD
-app.put('/api/v1/localentities-stats/:city', (req, res) => {
+appIFR.put('/api/v1/localentities-stats/:city', (req, res) => {
   const city = req.params.city;
   const citybody = req.body.province;
 
@@ -410,8 +410,8 @@ app.delete('/api/v1/localentities-stats/:province', (req, res) => {
 module.exports = {
   express,
   bodyParser,
-  app,
-  port,
+  appIFR,
+  portIFR,
   localentities_stats,
   BASE_API_URL,
   datos_randomIFR,
