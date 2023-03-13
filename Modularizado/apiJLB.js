@@ -29,7 +29,7 @@ var employment_stats = [
 
 
 //app.get(BASE_API_URL + "/employment-stats",(request,response) => {
-//  response.json(employment_stats);
+//  response.json(datos_10);
 //  console.log("New GET to /employment-stats");
 //});
 
@@ -47,6 +47,7 @@ var datos_10 = [];
 
 app.get(BASE_API_URL + "/employment-stats/loadInitialData", (req, res) => {
   if (datos_10.length === 0) {
+    /*
     datos_10.push(
      {year:2017 , period:"T1" , date:"2017-T1" , region:"Almeria" , employed_person:347.3 , inactive_person:220.8 , unemployed_person:74.2 },
      {year:2017 , period:"T2" , date:"2017-T2" , region:"Almeria" , employed_person:345.2 , inactive_person:223.6 , unemployed_person:79.5},
@@ -59,7 +60,8 @@ app.get(BASE_API_URL + "/employment-stats/loadInitialData", (req, res) => {
      {year:2017 , period:"T1" , date:"2017-T1" , region:"Cadiz" , employed_person:577.1 , inactive_person:443.2 , unemployed_person:195.5 },
      {year:2017 , period:"T2" , date:"2017-T2" , region:"Cadiz" , employed_person:567.2 , inactive_person:453.1 , unemployed_person:168 }
       
-    );
+    );*/
+    datos_10 = employment_stats;
     res.json(datos_10)
     console.log("Se han creado 10 datos")
   } else {
@@ -75,7 +77,7 @@ app.get('/api/v1/employment-stats', (req, res) => {
 
   // Lógica para buscar todas las ciudades en el período especificado
   if (from && to) {
-  const ciudadesEnPeriodo = employment_stats.filter(ciudad => {
+  const ciudadesEnPeriodo = datos_10.filter(ciudad => {
     return ciudad.year >= from && ciudad.year <= to;
   });
 
@@ -91,13 +93,13 @@ app.get('/api/v1/employment-stats', (req, res) => {
     const { year } = req.query;
 
   if (year) {
-    const filteredStats = employment_stats.filter(stat => stat.year === parseInt(year));
+    const filteredStats = datos_10.filter(stat => stat.year === parseInt(year));
     console.log(`New GET to /employment-stats?year=${year}`); //console.log en el servidor
     res.json(filteredStats);  
     res.sendStatus(200);
   } else {
     console.log("New GET to /employment-stats"); //console.log en el servidor 
-    res.json(employment_stats);
+    res.json(datos_10);
     res.status(200);
   }
 
@@ -113,13 +115,13 @@ app.post(rutaRaiz, (req,res) => {
   if(keys.length<7){
     res.status(400).send("No se han introducido datos suficientes");
   } else{
-    const exists = employment_stats.some(ob => ob.region === req.body.region && ob.year === req.body.year)
+    const exists = datos_10.some(ob => ob.region === req.body.region && ob.year === req.body.year)
     if (exists) {
       // Enviar una respuesta con un código de estado 409 Conflict si el objeto ya existe
       res.status(409).send('Conflicto: Este objeto ya existe');
     } else {
       // Agregar los nuevos datos a la variable
-      employment_stats.push(req.body);
+      datos_10.push(req.body);
       // Enviar una respuesta con un código de estado 201 Created
       res.status(201).send('Los datos se han creado correctamente');
     }
@@ -134,7 +136,7 @@ app.put(rutaRaiz, (req, res) => {
 
 // Método DELETE para la ruta base
 app.delete(rutaRaiz, (req, res) => {
-  employment_stats = [];
+  datos_10 = [];
   res.status(200).send('Los datos se han borrado correctamente');
 });
 
@@ -179,7 +181,7 @@ app.get('/api/v1/employment-stats/:city', (req, res) => {
 
   if (from && to) {
     // Lógica para devolver los datos de la ciudad para el periodo especificado
-    const filteredStats = employment_stats.filter(
+    const filteredStats = datos_10.filter(
       stat => stat.region.toLowerCase() === city &&
       stat.year >= from && stat.year <= to
     );
@@ -188,7 +190,7 @@ app.get('/api/v1/employment-stats/:city', (req, res) => {
     res.status(200);
   } else {
     // Lógica para devolver los datos de la ciudad
-    const filteredStats = employment_stats.filter(stat => stat.region.toLowerCase() === city);
+    const filteredStats = datos_10.filter(stat => stat.region.toLowerCase() === city);
     console.log(filteredStats);
     if(filteredStats.length === 0){
       res.status(404).send('La ruta solicitada no existe');
@@ -205,7 +207,7 @@ app.get('/api/v1/employment-stats/:territory/:year', (req, res) => {
   const { territory, year } = req.params;
   
   // Buscamos las estadísticas para el territorio y el año indicados
-  const stats = employment_stats.find(
+  const stats = datos_10.find(
     s => s.region.toLowerCase() === territory.toLowerCase() && s.year === parseInt(year)
   );
   
@@ -229,7 +231,7 @@ app.put('/api/v1/employment-stats/:city/:year', (req, res) => {
   const citybody = req.body.region;
   const yearbody = req.body.year;
   
-  const stat = employment_stats.find(s => s.region === city && s.year === year);
+  const stat = datos_10.find(s => s.region === city && s.year === year);
   
   if (!stat || city!==citybody || year!==yearbody) {
     return res.status(400).json('Estadística errónea');
@@ -295,7 +297,7 @@ module.exports = {
   bodyParser,
   appJLB,
   portJLB,
-  employment_stats,
+  datos_10,
   BASE_API_URL,
   datos_10,
   rutaRaiz
