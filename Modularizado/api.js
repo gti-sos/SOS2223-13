@@ -1,3 +1,4 @@
+/*
 // Tener una ruta dinámica “/cool” que muestre una cara ascii tal como se vió en el L05.
 var express = require("express");
 var cool = require("cool-ascii-faces");
@@ -5,6 +6,13 @@ var bodyParser = require("body-parser");
 var app = express();
 var port = process.env.PORT || 8080;
 app.use(bodyParser.json());
+
+*/
+
+
+module.exports =(app)=>{
+
+
 // CODIGO LUIS MIGUEL PARA ENTREGA F05.
 var evolution_stats = [
   {period:1980 , territory:"Almería" , total_population:407049 , man:200870 , woman:206179 , under_sixteen_years:126573 , from_sixteen_to_sixty_four_years:237986, sixty_five_and_over:42490},
@@ -557,6 +565,10 @@ app.use((err, req, res, next) => {
     res.status(404).json('La ruta solicitada no existe');
   });
 
+
+}
+
+/*
 //EXPORTACION
 // api.js
 module.exports = {
@@ -570,3 +582,4 @@ module.exports = {
     datos_random,
     rutaBase
 };
+*/

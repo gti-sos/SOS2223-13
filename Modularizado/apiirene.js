@@ -1,15 +1,16 @@
+/*
 var express = require("express");
 var bodyParser = require("body-parser");
 var appIFR = express();
 var portIFR = process.env.PORT || 8081;
 appIFR.use(bodyParser.json());
 const BASE_API_URL = "/api/v1";
+*/
 
 
-
-
+module.exports =(app)=>{
 // ruta de /samples/index-IFR.js
-appIFR.get("/samples/IFR", (request,response) => {
+app.get("/samples/IFR", (request,response) => {
   var datos = [
       {province:"Almeria" , landline:950351228 , first_name:"ANTONIO MANUEL" , second_name:"ORTIZ" , president_appointment_date:2015 , surface_extension: 45.24, population:1342.00, expense: 2224600.00, income: 2224600.00},
       {province:"Almeria" , landline:950350001 , first_name:"ANTONIO" , second_name:"TORRES" , president_appointment_date:2015 , surface_extension: 83.68 , population:1279.00, expense: 1602733.00 , income: 1602733.00 },
@@ -61,9 +62,9 @@ appIFR.get("/samples/IFR", (request,response) => {
   
   
 
-//localentities me va, me sale el get
+BASE_API_URL = "/api/v1";
 
-appIFR.post(BASE_API_URL + "/localentities-stats", (request,response) => {
+app.post(BASE_API_URL + "/localentities-stats", (request,response) => {
   const province = request.body.province;
   const president_appointment_date = request.body.president_appointment_date;
   
@@ -101,7 +102,7 @@ appIFR.post(BASE_API_URL + "/localentities-stats", (request,response) => {
   
   var datos_randomIFR = []
   
-  appIFR.get(BASE_API_URL + "/localentities-stats/loadInitialData", (req, res) => {
+  app.get(BASE_API_URL + "/localentities-stats/loadInitialData", (req, res) => {
   if (datos_randomIFR.length === 0) {
       datos_randomIFR.push(
         {province:"Almeria" , landline:950350001 , first_name:"ANTONIO" , second_name:"TORRES" , president_appointment_date:2013 , surface_extension: 83.68 , population:1279.00, expense: 1602733.00 , income: 1602733.00 },
@@ -128,7 +129,7 @@ appIFR.post(BASE_API_URL + "/localentities-stats", (request,response) => {
   
 //Motrar las ciudades en un año concreto
   
-appIFR.get('/api/v1/localentities-stats', (req, res) => {
+app.get('/api/v1/localentities-stats', (req, res) => {
   const from = req.query.from;
   const to = req.query.to;
 //buscar todas las ciudades en el año especificado  
@@ -165,7 +166,7 @@ appIFR.get('/api/v1/localentities-stats', (req, res) => {
   const rutaIrene = '/api/v1/localentities-stats';
       
   // Método POST para la ruta base
-  appIFR.post(rutaIrene + "/localentities-stats", (request, response) => {
+  app.post(rutaIrene + "/localentities-stats", (request, response) => {
     const province = request.body.province;
     const president_appointment_date = request.body.president_appointment_date;
     console.log("New POST to /localentities-stats"); //console.log en el servidor  
@@ -200,25 +201,25 @@ appIFR.get('/api/v1/localentities-stats', (req, res) => {
   
 
   // Método PUT para la ruta base
-  appIFR.put(rutaIrene, (req, res) => {
+  app.put(rutaIrene, (req, res) => {
       res.status(405).json('El método PUT no está permitido en esta ruta');
   });
   
   
   // Ruta específica que no permite el método POST
   const rutaEspecif = '/api/v1/localentities-stats/loadInitialData';
-  appIFR.post(rutaEspecif, (req, res) => {
+  app.post(rutaEspecif, (req, res) => {
       res.status(405).json('El método POST no está permitido en esta ruta');
   });
   
   // Ruta Específica Método GET
-  appIFR.get(rutaEspecif, (req, res) => {
+  app.get(rutaEspecif, (req, res) => {
       res.json(datos_randomIFR);
       res.status(200);
   });
 
   // Ruta Específica Método PUT
-  appIFR.put(rutaEspecif, (req, res) => {
+  app.put(rutaEspecif, (req, res) => {
       // Verificar que el cuerpo de la solicitud contenga datos
       if (!req.body) {
       // Enviar una respuesta con un código de estado 400 Bad Request si no se proporcionaron datos
@@ -232,7 +233,7 @@ appIFR.get('/api/v1/localentities-stats', (req, res) => {
   });
   
   //Método DELETE de la ruta específica.
-  appIFR.delete(rutaEspecif, (req, res) => {
+  app.delete(rutaEspecif, (req, res) => {
       datos_randomIFR = [];
       res.status(200).json('Los datos se han borrado correctamente');
   });
@@ -242,7 +243,7 @@ appIFR.get('/api/v1/localentities-stats', (req, res) => {
 
 
 //CODIGO PARA PODER HACER GET A UNA CIUDAD ESPECÍFICA Y A UNA CIUDAD Y PERIODO CONCRETO.
-appIFR.get('/api/v1/localentities-stats/:city', (req, res) => {
+app.get('/api/v1/localentities-stats/:city', (req, res) => {
   const city = req.params.city.toLowerCase();
   const from = req.query.from;
   const to = req.query.to;
@@ -273,7 +274,7 @@ appIFR.get('/api/v1/localentities-stats/:city', (req, res) => {
 
 
 //CODIGO PARA PODER HACER UN GET A UNA CIUDAD Y FECHA ESPECÍFICA.
-appIFR.get('/api/v1/localentities-stats/:province/:year', (req, res) => {
+app.get('/api/v1/localentities-stats/:province/:year', (req, res) => {
   const { province, year } = req.params;
 
 // Buscamos las estadísticas para el territorio y el año indicados
@@ -297,7 +298,7 @@ appIFR.get('/api/v1/localentities-stats/:province/:year', (req, res) => {
 
 
 //CODIGO PARA ACTUALIZAR MEDIANTE PUT UNA RUTA CONCRETA.
-appIFR.put('/api/v1/localentities-stats/:city/:year', (req, res) => {
+app.put('/api/v1/localentities-stats/:city/:year', (req, res) => {
   const city = req.params.city;
   const year = parseInt(req.params.year);
   const city_body = req.body.province;
@@ -326,7 +327,7 @@ appIFR.put('/api/v1/localentities-stats/:city/:year', (req, res) => {
 
 
 //CODIGO PARA ACTUALIZAR MEDIANTE PUT UNA CIUDAD
-appIFR.put('/api/v1/localentities-stats/:city', (req, res) => {
+app.put('/api/v1/localentities-stats/:city', (req, res) => {
   const city = req.params.city;
   const citybody = req.body.province;
 
@@ -354,7 +355,7 @@ appIFR.put('/api/v1/localentities-stats/:city', (req, res) => {
 
 
 
-/*
+
 
 //METODO DELETE PARA LA RUTA BASE PARA BORRAR DATO ESPECÍFICO.
 app.delete(BASE_API_URL + "/localentities-stats", (req, res) => {
@@ -362,10 +363,10 @@ app.delete(BASE_API_URL + "/localentities-stats", (req, res) => {
     localentities_stats = [];
     res.status(200).json('Los datos se han borrado correctamente');
   }else{
-  const { province, president_appointment_date } = req.body;
+  const { president_appointment_date, province } = req.body;
 
   // Buscar el objeto en la matriz localentities
-  const objectIndex = localentities_stats.findIndex(obj => obj.province === province && obj.president_appointment_date === president_appointment_date);
+  const objectIndex = localentities_stats.findIndex(obj => obj.president_appointment_date === president_appointment_date && obj.province === province);
 
   if (objectIndex === -1) {
     // Si el objeto no se encuentra, devolver un código de respuesta 404 Not Found
@@ -392,6 +393,7 @@ app.delete('/api/v1/localentities-stats/:province', (req, res) => {
 
     if (deleted) {
       res.status(204).json(`Se ha borrado ${province}`);
+      console.log("Datos borrados");
     } else {
       res.status(404).json(`No se encontraron datos que coincidan con los criterios de eliminación para ${province}`);
     }
@@ -399,11 +401,10 @@ app.delete('/api/v1/localentities-stats/:province', (req, res) => {
 });
 
 
-*/
+}
 
 
-
-
+/*
 module.exports = {
   express,
   bodyParser,
@@ -414,3 +415,4 @@ module.exports = {
   datos_randomIFR,
   rutaIrene
 };
+*/
