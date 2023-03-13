@@ -359,7 +359,7 @@ app.delete('/api/v1/evolution-stats/:territory', (req, res) => {
 });
 
 //HASTA AQUÍ LLEGA MI CÓDIGO.
-
+var cool = require("cool-ascii-faces");
 app.get("/cool", (request,response) => {
     response.send(cool());
     console.log("New request"); //console.log en el servidor    

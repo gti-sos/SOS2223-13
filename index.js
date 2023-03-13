@@ -36,7 +36,7 @@ const { rutaIrene } = require('./Modularizado/apiirene');
 
 
 var express = require("express");
-var cool = require("cool-ascii-faces");
+//var cool = require("cool-ascii-faces");
 var bodyParser = require("body-parser");
 var modulo_luis = require('./Modularizado/api');
 var modulo_irene = require('./Modularizado/apiirene');
