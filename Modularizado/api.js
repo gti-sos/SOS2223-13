@@ -8,6 +8,8 @@ var port = process.env.PORT || 8080;
 app.use(bodyParser.json());
 
 */
+var Datastore = require('nedb');
+var db = new Datastore();
 
 
 module.exports =(app)=>{
@@ -39,18 +41,21 @@ var evolution_stats = [
   {period:1982 , territory:"Jaén" , total_population:640864 , man:315913 , woman:324951 , under_sixteen_years:181619 , from_sixteen_to_sixty_four_years:383614, sixty_five_and_over:75631},
   {period:1982 , territory:"Málaga" , total_population:1038489 , man:511716 , woman:526773 , under_sixteen_years:314007 , from_sixteen_to_sixty_four_years:623660, sixty_five_and_over:100822},
   {period:1982 , territory:"Sevilla" , total_population:1494347 , man:732722 , woman:761624 , under_sixteen_years:468201 , from_sixteen_to_sixty_four_years:884345, sixty_five_and_over:141800}
-];               
+];      
+
+db.insert(evolution_stats);
+console.log("Insertados datos al comenzar");
  
 const BASE_API_URL = "/api/v1";
 
 app.post(BASE_API_URL + "/evolution-stats", (request, response) => {
+  //var NewEvolution = request.body;
   const territory = request.body.territory;
   const period = request.body.period;
   console.log("New POST to /evolution-stats"); //console.log en el servidor
   // Verificar que la solicitud se hizo en la ruta correcta
   if (request.originalUrl !== '/api/v1/evolution-stats') {
     res.status(405).json('Método no permitido');
-    return;
   }else{  
 
   // Validar que se envíen todos los campos necesarios
@@ -58,18 +63,18 @@ app.post(BASE_API_URL + "/evolution-stats", (request, response) => {
   for (const field of requiredFields) {
     if (!request.body.hasOwnProperty(field)) {
       response.status(400).json(`Missing required field: ${field}`);
-      return;
     }
   }
 
   // Verificar si el recurso ya existe
   const existingObject = evolution_stats.find(obj => obj.territory === territory && obj.period === period);
-
+  //const existingObject = db.find({territory : NewEvolution.territory, period : NewEvolution.period});
   if (existingObject) {
     // Si el recurso ya existe, devolver un código de respuesta 409
     response.status(409).json(`El recurso ya existe.`);
   } else {
     // Si el recurso no existe, agregarlo a la lista y devolver un código de respuesta 201
+    //db.insert(request.body);
     evolution_stats.push(request.body);
     response.sendStatus(201);
   }
@@ -145,8 +150,19 @@ app.get('/api/v1/evolution-stats', (req, res) => {
     console.log("New GET to /evolution-stats with period"); //console.log en el servidor  
     res.status(200).json(filteredStats);
   } else {
-    console.log("New GET to /evolution-stats"); //console.log en el servidor 
-    res.status(200).json(evolution_stats);
+    console.log("New GET to /evolution-stats"); //console.log en el servidor
+    db.find({}, (err, evolution_stats)=>{
+      if(err){
+        console.log(`Error geting /evolution_stats: ${err}`);
+        response.sendStatus(500);
+      }else{
+        console.log(`Evolution_stats returned ${evolution_stats.length}`);
+        res.status(200).json(evolution_stats.map((e)=>{
+          delete e._id;
+          return e;
+        }));
+      }
+    });
   }
 
   }

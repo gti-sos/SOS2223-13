@@ -34,7 +34,6 @@ const { rutaIrene } = require('./Modularizado/apiirene');
 
 */
 
-
 var express = require("express");
 //var cool = require("cool-ascii-faces");
 var bodyParser = require("body-parser");
@@ -48,6 +47,7 @@ var app = express();
 var port = process.env.PORT || 8080;
 app.use(bodyParser.json());
 const BASE_API_URL = "/api/v1";
+app.use("/",express.static("./public"));
 
 
 modulo_irene(app);
