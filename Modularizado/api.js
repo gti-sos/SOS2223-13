@@ -179,13 +179,12 @@ app.post(rutaBase, (request, response) => {
   const territory = request.body.territory;
   const period = request.body.period;
   console.log("New POST to /evolution-stats"); //console.log en el servidor  
+  db.find({},function(err, filteredList){
 
-  // Verificar que la solicitud se hizo en la ruta correcta
-  if (request.originalUrl !== '/api/v1/evolution-stats') {
-    res.status(405).json('Método no permitido');
-    return;
-  }else{
-  // Validar que se envíen todos los campos necesarios
+    if(err){
+        res.sendStatus(500, "Client Error");   
+    }
+    // Validar que se envíen todos los campos necesarios
   const requiredFields = ['period', 'territory', 'total_population', 'man', 'woman', 'under_sixteen_years', 'from_sixteen_to_sixty_four_years', 'sixty_five_and_over'];
   for (const field of requiredFields) {
     if (!request.body.hasOwnProperty(field)) {
@@ -193,19 +192,30 @@ app.post(rutaBase, (request, response) => {
       return;
     }
   }
+  // Verificar que la solicitud se hizo en la ruta correcta
+  if (request.originalUrl !== '/api/v1/evolution-stats') {
+    res.status(405).json('Método no permitido');
+    return;
+  }else{
 
   // Verificar si el recurso ya existe
-  const existingObject = evolution_stats.find(obj => obj.territory === territory && obj.period === period);
-
-  if (existingObject) {
+  //const existingObject = evolution_stats.find(obj => obj.territory === territory && obj.period === period);
+  filteredList = filteredList.filter((obj)=>
+                {
+                    return(territory == obj.territory && period == obj.period)
+                });
+  //const existingObject = db.find({territory : NewEvolution.territory, period : NewEvolution.period});
+  if (filteredList.length !=0) {
     // Si el recurso ya existe, devolver un código de respuesta 409
     response.status(409).json(`El recurso ya existe.`);
   } else {
     // Si el recurso no existe, agregarlo a la lista y devolver un código de respuesta 201
-    evolution_stats.push(request.body);
+    db.insert(request.body);
+    //evolution_stats.push(request.body);
     response.sendStatus(201);
   }
 }
+});
 });
 
 // Método PUT para la ruta base
@@ -221,13 +231,13 @@ app.post(rutaEspecifica, (req, res) => {
 });
 
 // Ruta Específica Método GET
-app.get(rutaEspecifica, (req, res) => {
+/*app.get(rutaEspecifica, (req, res) => {
   res.json(datos_random);
   res.status(200);
-});
+});*/
 
 // Ruta Específica Método PUT
-app.put(rutaEspecifica, (req, res) => {
+/*app.put(rutaEspecifica, (req, res) => {
   // Verificar que el cuerpo de la solicitud contenga datos
   if (!req.body) {
     // Enviar una respuesta con un código de estado 400 Bad Request si no se proporcionaron datos
@@ -238,13 +248,13 @@ app.put(rutaEspecifica, (req, res) => {
     // Enviar una respuesta con un código de estado 200 OK
     res.status(200).json('Los datos se han actualizado correctamente');
   }
-});
+});*/
 
 //Método DELETE de la ruta específica.
-app.delete(rutaEspecifica, (req, res) => {
+/*app.delete(rutaEspecifica, (req, res) => {
   datos_random = [];
   res.status(200).json('Los datos se han borrado correctamente');
-});
+});*/
 
 
 //CODIGO PARA PODER HACER GET A UNA CIUDAD ESPECÍFICA Y A UNA CIUDAD Y PERIODO CONCRETO.
@@ -252,70 +262,101 @@ app.get('/api/v1/evolution-stats/:city', (req, res) => {
   const city = req.params.city.toLowerCase();
   const from = req.query.from;
   const to = req.query.to;
+  db.find({},function(err, filteredList){
 
+    if(err){
+        res.sendStatus(500, "Client Error");   
+    }
   if (from && to) {
     // Lógica para devolver los datos de la ciudad para el periodo especificado
-    const filteredStats = evolution_stats.filter(
-      stat => stat.territory.toLowerCase() === city &&
-      stat.period >= from && stat.period <= to
-    );
-    res.json(filteredStats);
+    filteredList = filteredList.filter((obj)=>
+                {
+                    return(obj.territory.toLowerCase() == city && obj.period >= from && obj.period<= to);
+                });
     console.log(`/GET to /evolution-stats/${city}?from=${from}&to=${to}`); //console.log en el servidor
     res.status(200);
+    filteredList.forEach((e)=>{
+      delete e._id;
+    });
+    res.send(JSON.stringify(filteredList,null,2));
   } else {
     // Lógica para devolver los datos de la ciudad
-    const filteredStats = evolution_stats.filter(stat => stat.territory.toLowerCase() === city);
-    console.log(filteredStats);
-    if(filteredStats.length === 0){
+    filteredList = filteredList.filter((obj)=>
+                {
+                    return(obj.territory.toLowerCase() == city);
+                });
+    if(filteredList.length === 0){
       res.status(404).json('La ruta solicitada no existe');
     }else{
-    res.json(filteredStats);
+      res.send(JSON.stringify(filteredList,null,2));
     console.log("/GET a una ciudad concreta");
     res.status(200);
     }
   }
+});
 });
 
 
 //CODIGO PARA PODER HACER UN GET A UNA CIUDAD Y FECHA ESPECÍFICA.
 app.get('/api/v1/evolution-stats/:territory/:year', (req, res) => {
   const { territory, year } = req.params;
-  
+  db.find({},function(err, filteredList){
+
+    if(err){
+        res.sendStatus(500, "Client Error");   
+    }
   // Buscamos las estadísticas para el territorio y el año indicados
-  const stats = evolution_stats.find(
-    s => s.territory.toLowerCase() === territory.toLowerCase() && s.period === parseInt(year)
-  );
+  filteredList = filteredList.filter((obj)=>
+                {
+                    return(obj.territory.toLowerCase() == territory.toLowerCase() && obj.period === parseInt(year));
+                });
   
-  if (stats) {
-    res.status(200).json(stats);
+  if (filteredList) {
+    filteredList.forEach((e)=>{
+      delete e._id;
+    });
+    res.send(JSON.stringify(filteredList,null,2));
   } else {
     res.status(404).json('La ruta solicitada no existe');
   }
   console.log("Solicitud /GET")
 });
-
+});
 //CODIGO PARA ACTUALIZAR MEDIANTE PUT UNA RUTA CONCRETA.
 app.put('/api/v1/evolution-stats/:city/:year', (req, res) => {
   const city = req.params.city;
   const year = parseInt(req.params.year);
   const citybody = req.body.territory;
   const yearbody = req.body.period;
-  
-  const stat = evolution_stats.find(s => s.territory === city && s.period === year);
-  
-  if (!stat || city!==citybody || year!==yearbody) {
+  const body = req.body;
+  db.find({},function(err, filteredList){
+
+    if(err){
+        res.sendStatus(500, "Client Error");   
+    }
+  filteredList = filteredList.filter((obj)=>
+                {
+                    return(obj.territory === city && obj.period === year);
+                });
+  if (!filteredList || city!==citybody || year!==yearbody) {
     return res.status(400).json('Estadística errónea');
   }else{
-    stat.total_population = req.body.total_population || stat.total_population;
-  stat.man = req.body.man || stat.man;
-  stat.woman = req.body.woman || stat.woman;
-  stat.under_sixteen_years = req.body.under_sixteen_years || stat.under_sixteen_years;
-  stat.from_sixteen_to_sixty_four_years = req.body.from_sixteen_to_sixty_four_years || stat.from_sixteen_to_sixty_four_years;
-  stat.sixty_five_and_over = req.body.sixty_five_and_over || stat.sixty_five_and_over;
+    filteredList.total_population = req.body.total_population || filteredList.total_population;
+    filteredList.man = req.body.man || filteredList.man;
+    filteredList.woman = req.body.woman || filteredList.woman;
+    filteredList.under_sixteen_years = req.body.under_sixteen_years || filteredList.under_sixteen_years;
+    filteredList.from_sixteen_to_sixty_four_years = req.body.from_sixteen_to_sixty_four_years || filteredList.from_sixteen_to_sixty_four_years;
+    filteredList.sixty_five_and_over = req.body.sixty_five_and_over || filteredList.sixty_five_and_over;
 
-  res.json('Estadística actualizada correctamente');
-  console.log("Estadística encontrada");
+    db.update({ $and: [{ territory: String(city) }, { period: parseInt(year) }] }, { $set: body }, {}, function (err, numUpdated) {
+      if (err) {
+          res.sendStatus(500, "INTERNAL SERVER ERROR");
+      } else {
+          res.sendStatus(200, "UPDATED");
+      }
+  });
   }
+});
 });
 
 //CODIGO PARA ACTUALIZAR MEDIANTE PUT UNA CIUDAD
