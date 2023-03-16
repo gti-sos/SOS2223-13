@@ -363,14 +363,21 @@ app.put('/api/v1/evolution-stats/:city/:year', (req, res) => {
 app.put('/api/v1/evolution-stats/:city', (req, res) => {
   const city = req.params.city;
   const citybody = req.body.territory;
+  const body = req.body;
+  db.find({},function(err, filteredList){
 
-  const statsToUpdate = evolution_stats.filter(s => s.territory === city);
-  
-  if (statsToUpdate.length === 0 || city !== citybody) {
+    if(err){
+        res.sendStatus(500, "Client Error");   
+    }
+  filteredList = filteredList.filter((obj)=>
+                {
+                    return(obj.territory === city);
+                });
+  if (filteredList.length === 0 || city !== citybody) {
     return res.status(400).json('Estadística errónea');
   } else {
-    for (let i = 0; i < statsToUpdate.length; i++) {
-      const stat = statsToUpdate[i];
+    /*for (let i = 0; i < filteredList.length; i++) {
+      const stat = filteredList[i];
       stat.period = req.body.period || stat.period;
       stat.total_population = req.body.total_population || stat.total_population;
       stat.man = req.body.man || stat.man;
@@ -378,56 +385,103 @@ app.put('/api/v1/evolution-stats/:city', (req, res) => {
       stat.under_sixteen_years = req.body.under_sixteen_years || stat.under_sixteen_years;
       stat.from_sixteen_to_sixty_four_years = req.body.from_sixteen_to_sixty_four_years || stat.from_sixteen_to_sixty_four_years;
       stat.sixty_five_and_over = req.body.sixty_five_and_over || stat.sixty_five_and_over;
-    }
-
-    res.json('Estadísticas actualizadas correctamente');
-    console.log("Estadísticas encontradas");
+    }*/
+    db.update({ territory: String(city) }, { $set: body }, { multi: true }, function (err, numUpdated) {
+      if (err) {
+          res.sendStatus(500, "INTERNAL SERVER ERROR");
+      } else {
+          res.sendStatus(200, "UPDATED");
+      }
+  });
   }
+});
 });
 
 //METODO DELETE PARA LA RUTA BASE PARA BORRAR DATO ESPECÍFICO.
 app.delete(BASE_API_URL + "/evolution-stats", (req, res) => {
+  db.remove({}, {multi : true}, function(err, numRemoved){
+
+    if(err){
+        res.sendStatus(500, "Client Error");   
+    }
   if (!req.body || Object.keys(req.body).length === 0) {
-    evolution_stats = [];
-    res.status(200).json('Los datos se han borrado correctamente');
+    db.remove({}, {multi : true}, (err, numRemoved)=>{
+      if (err){
+          res.sendStatus(500,"ERROR EN CLIENTE");
+          return;
+      } else {
+      res.sendStatus(200,"DELETED");
+      return;
+    }
+      
+  });
   }else{
   const { period, territory } = req.body;
+  db.find({},function(err, filteredList){
 
+    if(err){
+        res.sendStatus(500, "Client Error");   
+    }
   // Buscar el objeto en la matriz evolution_stats
-  const objectIndex = evolution_stats.findIndex(obj => obj.period === period && obj.territory === territory);
-
-  if (objectIndex === -1) {
+  filteredList = filteredList.filter((obj)=>
+                {
+                    return(obj.territory === territory && obj.period === period);
+                });
+  db.remove({territory: territory, period: period}, {}, (err, numRemoved)=>{
+    if (err){
+        res.sendStatus(500,"ERROR EN CLIENTE");
+        return;
+    }
+  if (filteredList === []) {
     // Si el objeto no se encuentra, devolver un código de respuesta 404 Not Found
     res.status(404).json('El objeto no existe');
   } else {
-    // Si se encuentra el objeto, eliminarlo de la matriz y devolver un código de respuesta 200 OK
-    evolution_stats.splice(objectIndex, 1);
-    res.sendStatus(200);
+    res.sendStatus(200,"DELETED");
+    return;
   }
-}
+  });   
 });
+}
 
+
+});
+});
 //DELETE PARA UNA RUTA ESPECÍFICA DE UNA CIUDAD.
 app.delete('/api/v1/evolution-stats/:territory', (req, res) => {
   const territory = req.params.territory;
-  const filteredStats = evolution_stats.filter(stats => stats.territory === territory);
-  
-  if (filteredStats.length === 0) {
+  db.find({},function(err, filteredList){
+
+    if(err){
+        res.sendStatus(500, "Client Error");   
+    }
+  //const filteredStats = evolution_stats.filter(stats => stats.territory === territory);
+  filteredList = filteredList.filter((obj)=>
+                {
+                    return(obj.territory === territory);
+                });
+  if (filteredList.length === 0) {
     res.status(404).json(`No se encontraron datos para ${territory}`);
   } else {
-    const newData = evolution_stats.filter(stats => stats.territory !== territory);
-    const deleted = newData.length !== evolution_stats.length;
-    evolution_stats = newData;
+    filteredList = filteredList.filter((obj)=>{return(obj.territory === territory);});
 
-    if (deleted) {
-      res.status(204).json(`Se ha borrado ${territory}`);
-      console.log("Datos borrados");
+    if (filteredList) {
+      db.remove({territory: territory}, {multi : true}, (err, numRemoved)=>{
+        if (err){
+            res.sendStatus(500,"ERROR EN CLIENTE");
+            return;
+        }
+      else {
+        res.sendStatus(200,"DELETED");
+        return;
+      }
+        
+    });
     } else {
       res.status(404).json(`No se encontraron datos que coincidan con los criterios de eliminación para ${territory}`);
     }
   }
 });
-
+});
 //HASTA AQUÍ LLEGA MI CÓDIGO.
 var cool = require("cool-ascii-faces");
 app.get("/cool", (request,response) => {
