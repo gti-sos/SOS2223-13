@@ -44,7 +44,7 @@ var evolution_stats = [
 ];      
 
 db.insert(evolution_stats);
-console.log("Insertados datos al comenzar");
+//console.log("Insertados datos al comenzar");
  
 const BASE_API_URL = "/api/v1";
 
@@ -103,7 +103,8 @@ app.get(BASE_API_URL + "/evolution-stats/loadInitialData", (req, res) => {
         res.sendStatus(500, "CLIENT ERROR");
     
     }
-  if (filteredList === 0) {
+    console.log(filteredList);
+  if (filteredList.length === 0) {
     for(var i = 0; i<evolution_stats.length;i++){
       db.insert(evolution_stats[i]);
   }
@@ -116,6 +117,7 @@ app.get(BASE_API_URL + "/evolution-stats/loadInitialData", (req, res) => {
   }
 });
 });
+
 
 //CODIGO PARA MOSTRAR LAS ESTADÍSTICAS DE TODAS LAS CIUDADES EN UN PERIODO CONCRETO.
 app.get('/api/v1/evolution-stats', (req, res) => {
@@ -146,11 +148,15 @@ app.get('/api/v1/evolution-stats', (req, res) => {
     filteredList = filteredList.filter((stat) => {
        return (stat.period === parseInt(period));
     });
-    console.log("New GET to /evolution-stats with period"); //console.log en el servidor  
+    console.log("New GET to /evolution-stats with period"); //console.log en el servidor 
     res.status(200).json(filteredList.map((e)=>{
       delete e._id;
       return e;
     }));
+    if(req.query.limit != undefined || req.query.offset != undefined){
+      filteredList = pagination(req,filteredList);
+  }
+  res.send(JSON.stringify(filteredList,null,2));
   } else {
     console.log("New GET to /evolution-stats"); //console.log en el servidor
     //db.find({}, (err, filteredList)=>{
@@ -158,11 +164,15 @@ app.get('/api/v1/evolution-stats', (req, res) => {
         //console.log(`Error geting /evolution_stats: ${err}`);
         //response.sendStatus(500);
       //}else{
-        console.log(`Evolution_stats returned ${filteredList.length}`);
-        res.status(200).json(filteredList.map((e)=>{
+        //console.log(`Evolution_stats returned ${filteredList.length}`);
+        filteredList.map((e)=>{
           delete e._id;
           return e;
-        }));
+        });
+        if(req.query.limit != undefined || req.query.offset != undefined){
+          filteredList = pagination(req,filteredList);
+      }
+      res.send(JSON.stringify(filteredList,null,2));
       //}
     //});
   }
@@ -262,6 +272,15 @@ app.get('/api/v1/evolution-stats/:city', (req, res) => {
   const city = req.params.city.toLowerCase();
   const from = req.query.from;
   const to = req.query.to;
+  //const territory = req.query.territory;
+  const period = req.query.period;
+  const total_population = req.query.total_population;
+  const man = req.query.man;
+  const woman = req.query.woman;
+  const under_sixteen_years = req.query.under_sixteen_years;
+  const from_sixteen_to_sixty_four_years = req.query.from_sixteen_to_sixty_four_years;
+  const sixty_five_and_over = req.query.sixty_five_and_over;
+
   db.find({},function(err, filteredList){
 
     if(err){
@@ -279,7 +298,85 @@ app.get('/api/v1/evolution-stats/:city', (req, res) => {
       delete e._id;
     });
     res.send(JSON.stringify(filteredList,null,2));
-  } else {
+  }else if(period){
+    filteredList = filteredList.filter((obj)=>
+                {
+                    return(obj.period == period);
+                });
+                console.log(`/GET to /evolution-stats/${city}?${period}`); //console.log en el servidor
+                res.status(200);
+                filteredList.forEach((e)=>{
+                  delete e._id;
+                });
+                res.send(JSON.stringify(filteredList,null,2));
+  }else if(total_population){
+    filteredList = filteredList.filter((obj)=>
+                {
+                    return(obj.total_population == total_population);
+                });
+                console.log(`/GET to /evolution-stats/${city}?${total_population}`); //console.log en el servidor
+                res.status(200);
+                filteredList.forEach((e)=>{
+                  delete e._id;
+                });
+                res.send(JSON.stringify(filteredList,null,2));
+  }else if(man){
+    filteredList = filteredList.filter((obj)=>
+                {
+                    return(obj.man == man);
+                });
+                console.log(`/GET to /evolution-stats/${city}?${man}`); //console.log en el servidor
+                res.status(200);
+                filteredList.forEach((e)=>{
+                  delete e._id;
+                });
+                res.send(JSON.stringify(filteredList,null,2));
+  }else if(woman){
+    filteredList = filteredList.filter((obj)=>
+                {
+                    return(obj.woman == woman);
+                });
+                console.log(`/GET to /evolution-stats/${city}?${woman}`); //console.log en el servidor
+                res.status(200);
+                filteredList.forEach((e)=>{
+                  delete e._id;
+                });
+                res.send(JSON.stringify(filteredList,null,2));
+  }else if(under_sixteen_years){
+    filteredList = filteredList.filter((obj)=>
+                {
+                    return(obj.under_sixteen_years == under_sixteen_years);
+                });
+                console.log(`/GET to /evolution-stats/${city}?${under_sixteen_years}`); //console.log en el servidor
+                res.status(200);
+                filteredList.forEach((e)=>{
+                  delete e._id;
+                });
+                res.send(JSON.stringify(filteredList,null,2));
+  }else if(from_sixteen_to_sixty_four_years){
+    filteredList = filteredList.filter((obj)=>
+                {
+                    return(obj.from_sixteen_to_sixty_four_years == from_sixteen_to_sixty_four_years);
+                });
+                console.log(`/GET to /evolution-stats/${city}?${from_sixteen_to_sixty_four_years}`); //console.log en el servidor
+                res.status(200);
+                filteredList.forEach((e)=>{
+                  delete e._id;
+                });
+                res.send(JSON.stringify(filteredList,null,2));
+  }else if(sixty_five_and_over){
+    filteredList = filteredList.filter((obj)=>
+                {
+                    return(obj.sixty_five_and_over == sixty_five_and_over);
+                });
+                console.log(`/GET to /evolution-stats/${city}?${sixty_five_and_over}`); //console.log en el servidor
+                res.status(200);
+                filteredList.forEach((e)=>{
+                  delete e._id;
+                });
+                res.send(JSON.stringify(filteredList,null,2));
+  }
+  else {
     // Lógica para devolver los datos de la ciudad
     filteredList = filteredList.filter((obj)=>
                 {
@@ -288,14 +385,18 @@ app.get('/api/v1/evolution-stats/:city', (req, res) => {
     if(filteredList.length === 0){
       res.status(404).json('La ruta solicitada no existe');
     }else{
-      res.send(JSON.stringify(filteredList,null,2));
-    console.log("/GET a una ciudad concreta");
-    res.status(200);
+      console.log("/GET a una ciudad concreta");
+    filteredList.forEach((e)=>{
+      delete e._id;
+    });                                                                               
+    if(req.query.limit != undefined || req.query.offset != undefined){
+      filteredList = pagination(req,filteredList);
+  }
+    res.send(JSON.stringify(filteredList,null,2));
     }
   }
 });
 });
-
 
 //CODIGO PARA PODER HACER UN GET A UNA CIUDAD Y FECHA ESPECÍFICA.
 app.get('/api/v1/evolution-stats/:territory/:year', (req, res) => {
@@ -315,6 +416,9 @@ app.get('/api/v1/evolution-stats/:territory/:year', (req, res) => {
     filteredList.forEach((e)=>{
       delete e._id;
     });
+    if(req.query.limit != undefined || req.query.offset != undefined){
+      filteredList = pagination(req,filteredList);
+  }
     res.send(JSON.stringify(filteredList,null,2));
   } else {
     res.status(404).json('La ruta solicitada no existe');
@@ -396,10 +500,21 @@ app.put('/api/v1/evolution-stats/:city', (req, res) => {
   }
 });
 });
+// DELETE de una lista de recursos
+/*
+app.delete(BASE_API_URL+ "/evolution-stats",(req, res)=>{
+  db.remove({}, { multi: true }, (err, numRemoved)=>{
+      if (err){
+          res.sendStatus(500,"CLIENT ERROR");
+          
+      }
+      res.sendStatus(200,"DELETED");
+  });
+});*/
 
 //METODO DELETE PARA LA RUTA BASE PARA BORRAR DATO ESPECÍFICO.
 app.delete(BASE_API_URL + "/evolution-stats", (req, res) => {
-  db.remove({}, {multi : true}, function(err, numRemoved){
+  db.remove({}, {multi : true}, (err, numRemoved) =>{
 
     if(err){
         res.sendStatus(500, "Client Error");   
@@ -411,7 +526,6 @@ app.delete(BASE_API_URL + "/evolution-stats", (req, res) => {
           return;
       } else {
       res.sendStatus(200,"DELETED");
-      return;
     }
       
   });
@@ -446,6 +560,7 @@ app.delete(BASE_API_URL + "/evolution-stats", (req, res) => {
 
 });
 });
+
 //DELETE PARA UNA RUTA ESPECÍFICA DE UNA CIUDAD.
 app.delete('/api/v1/evolution-stats/:territory', (req, res) => {
   const territory = req.params.territory;
@@ -482,6 +597,21 @@ app.delete('/api/v1/evolution-stats/:territory', (req, res) => {
   }
 });
 });
+
+function pagination(req, lista){
+
+  var res = [];
+  const limit = req.query.limit;
+  const offset = req.query.offset;
+  
+  if(limit < 1 || offset < 0 || offset > lista.length){
+      res.push("ERROR EN PARAMETROS LIMIT Y/O OFFSET");
+      return res;
+  }
+  res = lista.slice(offset,parseInt(limit)+parseInt(offset));
+  return res;
+
+};
 //HASTA AQUÍ LLEGA MI CÓDIGO.
 var cool = require("cool-ascii-faces");
 app.get("/cool", (request,response) => {
