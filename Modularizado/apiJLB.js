@@ -9,6 +9,9 @@ const BASE_API_URL = "/api/v1";
 
 */
 
+var Datastore = require('nedb');
+var db = new Datastore();
+
 module.exports =(app)=>{
 
 
@@ -26,84 +29,79 @@ var employment_stats = [
   {year:2017 , period:"T2" , date:"2017-T2" , region:"Cadiz" , employed_person:567.2 , inactive_person:453.1 , unemployed_person:168 }
  ];
 
+ db.insert(employment_stats);
+ console.log("Datos insertados al inicio");
 
 
-//app.get(BASE_API_URL + "/employment-stats",(request,response) => {
-//  response.json(datos_10);
-//  console.log("New GET to /employment-stats");
-//});
 
-//app.post(BASE_API_URL + "/employment-stats",(request,response) => {
-//  var newEmployment = request.body; 
-//
-//  console.log(`newEmployment = <${newEmployment}>`);
-//  console.log("New POST to /employment-stats");
-//
-//}); 
 
 //Tarea crear 10 datos 
 
-var datos_10 = [];
-
 app.get(BASE_API_URL + "/employment-stats/loadInitialData", (req, res) => {
-  if (datos_10.length === 0) {
-    /*
-    datos_10.push(
-     {year:2017 , period:"T1" , date:"2017-T1" , region:"Almeria" , employed_person:347.3 , inactive_person:220.8 , unemployed_person:74.2 },
-     {year:2017 , period:"T2" , date:"2017-T2" , region:"Almeria" , employed_person:345.2 , inactive_person:223.6 , unemployed_person:79.5},
-     {year:2017 , period:"T3" , date:"2017-T3" , region:"Almeria" , employed_person:348.5 , inactive_person:220.7 , unemployed_person:96.4 },
-     {year:2017 , period:"T4" , date:"2017-T4" , region:"Almeria" , employed_person:356 , inactive_person:213.2 , unemployed_person:90.5 },
-     {year:2018 , period:"T1" , date:"2018-T1" , region:"Almeria" , employed_person:349.1 , inactive_person:219.8 , unemployed_person:82 },
-     {year:2018 , period:"T2" , date:"2018-T2" , region:"Almeria" , employed_person:332 , inactive_person:236.7 , unemployed_person:74.8 },
-     {year:2018 , period:"T3" , date:"2018-T3" , region:"Almeria" , employed_person:336.2 , inactive_person:233.2 , unemployed_person:85.8 },
-     {year:2018 , period:"T4" , date:"2018-T4" , region:"Almeria" , employed_person:339.4 , inactive_person:232.6 , unemployed_person:63.7 },
-     {year:2017 , period:"T1" , date:"2017-T1" , region:"Cadiz" , employed_person:577.1 , inactive_person:443.2 , unemployed_person:195.5 },
-     {year:2017 , period:"T2" , date:"2017-T2" , region:"Cadiz" , employed_person:567.2 , inactive_person:453.1 , unemployed_person:168 }
-      
-    );*/
-    datos_10 = employment_stats;
-    res.json(datos_10)
-    console.log("Se han creado 10 datos")
-  } else {
-    res.send('Ya hay datos contenido');
-    console.log('Ya hay datos contenido')
-  }
+  db.find({}, function(err,filteredList){
+
+    if(err){
+        res.sendStatus(500, "Error cliente");
+    
+    }
+    if (filteredList === 0){
+      for(var i = 0; i<employment_stats.length;i++){
+        db.insert(employment_stats[i]);
+    }
+      res.sendStatus(200);
+      console.log("Se han insertado datos")
+    } else {
+      res.json('Ya contiene datos');
+      console.log('Ya contiene datos')
+    }
+}); 
 });
 
 //CODIGO PARA MOSTRAR LAS ESTADÍSTICAS DE TODAS LAS CIUDADES EN UN PERIODO CONCRETO.
 app.get('/api/v1/employment-stats', (req, res) => {
   const from = req.query.from;
   const to = req.query.to;
+  db.find({},function(err, filteredList){
+
+    if(err){
+        res.sendStatus(500, "Error cliente");   
+    }
 
   // Lógica para buscar todas las ciudades en el período especificado
   if (from && to) {
-  const ciudadesEnPeriodo = datos_10.filter(ciudad => {
-    return ciudad.year >= from && ciudad.year <= to;
-  });
 
   if (from > to) {
     res.status(400).send("El rango de años especificado es inválido");
   }else{
 
   res.status(200);
-  res.json(ciudadesEnPeriodo);
   console.log(`/GET to /employment-stats?from=${from}&to=${to}`); //console.log en el servidor
+  filteredList = filteredList.filter((ciudad) => {
+    return (ciudad.year >= from && ciudad.year <= to);
+ });
   }
   }else{
     const { year } = req.query;
 
   if (year) {
-    const filteredStats = datos_10.filter(stat => stat.year === parseInt(year));
-    console.log(`New GET to /employment-stats?year=${year}`); //console.log en el servidor
-    res.json(filteredStats);  
-    res.sendStatus(200);
+    filteredList = filteredList.filter((stat) => {
+      return (stat.year === parseInt(year));
+   });
+   console.log("New GET to /employment-stats");
+   res.status(200).json(filteredList.map((e)=>{
+    delete e._id;
+    return e;
+  }));
   } else {
     console.log("New GET to /employment-stats"); //console.log en el servidor 
-    res.json(datos_10);
-    res.status(200);
+    res.status(200).json(filteredList.map((e)=>{
+      delete e._id;
+      return e;
+    }));
   }
 
   }
+});
 });
 
 //Implementacion de buenas practicas en la API
@@ -178,28 +176,39 @@ app.get('/api/v1/employment-stats/:city', (req, res) => {
   const city = req.params.city.toLowerCase();
   const from = req.query.from;
   const to = req.query.to;
+  db.find({},function(err, filteredList){
+
+    if(err){
+        res.sendStatus(500, "Error cliente");   
+    }
 
   if (from && to) {
     // Lógica para devolver los datos de la ciudad para el periodo especificado
-    const filteredStats = datos_10.filter(
-      stat => stat.region.toLowerCase() === city &&
-      stat.year >= from && stat.year <= to
-    );
-    res.json(filteredStats);
+    filteredList = filteredList.filter((obj)=>
+                {
+                    return(obj.region.toLowerCase() == city && obj.year >= from && obj.year<= to);
+    });
     console.log(`/GET to /employment-stats/${city}?from=${from}&to=${to}`); //console.log en el servidor
     res.status(200);
+    filteredList.forEach((e)=>{
+      delete e._id;
+    });
+    res.send(JSON.stringify(filteredList,null,2));
   } else {
     // Lógica para devolver los datos de la ciudad
-    const filteredStats = datos_10.filter(stat => stat.region.toLowerCase() === city);
-    console.log(filteredStats);
-    if(filteredStats.length === 0){
+    filteredList = filteredList.filter((obj)=>
+                {
+                    return(obj.region.toLowerCase() == city);
+                });
+    if(filteredList.length === 0){
       res.status(404).send('La ruta solicitada no existe');
     }else{
-    res.json(filteredStats);
+    res.send(JSON.stringify(filteredList,null,2));
     console.log("/GET a una ciudad concreta");
     res.status(200);
     }
   }
+  });
 });
 
 //CODIGO PARA PODER HACER UN GET A UNA CIUDAD Y FECHA ESPECÍFICA.
@@ -248,41 +257,6 @@ app.put('/api/v1/employment-stats/:city/:year', (req, res) => {
 });
  
 
-//ruta de /samples/index-JLB.js
-app.get("/samples/JLB", (request,response) => {
-    var datos = [
-        {year:2017 , period:"T1" , date:"2017-T1" , region:"Almeria" , employed_person:347.3 , inactive_person:220.8 , unemployed_person:74.2 },
-        {year:2017 , period:"T2" , date:"2017-T2" , region:"Almeria" , employed_person:345.2 , inactive_person:223.6 , unemployed_person:79.5},
-        {year:2017 , period:"T3" , date:"2017-T3" , region:"Almeria" , employed_person:348.5 , inactive_person:220.7 , unemployed_person:96.4 },
-        {year:2017 , period:"T4" , date:"2017-T4" , region:"Almeria" , employed_person:356 , inactive_person:213.2 , unemployed_person:90.5 },
-        {year:2018 , period:"T1" , date:"2018-T1" , region:"Almeria" , employed_person:349.1 , inactive_person:219.8 , unemployed_person:82 },
-        {year:2018 , period:"T2" , date:"2018-T2" , region:"Almeria" , employed_person:332 , inactive_person:236.7 , unemployed_person:74.8 },
-        {year:2018 , period:"T3" , date:"2018-T3" , region:"Almeria" , employed_person:336.2 , inactive_person:233.2 , unemployed_person:85.8 },
-        {year:2018 , period:"T4" , date:"2018-T4" , region:"Almeria" , employed_person:339.4 , inactive_person:232.6 , unemployed_person:63.7 },
-        {year:2017 , period:"T1" , date:"2017-T1" , region:"Cadiz" , employed_person:577.1 , inactive_person:443.2 , unemployed_person:195.5 },
-        {year:2017 , period:"T2" , date:"2017-T2" , region:"Cadiz" , employed_person:567.2 , inactive_person:453.1 , unemployed_person:168 }
-      
-      ];
-      
-      //console.log(datos);
-      
-      //Calculo de la cantidad de personas de Almeria con un empleo 
-      var datos_ciudad = datos.filter( n => n.region == "Almeria");
-      
-      cantidad = 0
-      
-      for (let i = 0; i<datos_ciudad.length; i++){
-      
-          cantidad += datos_ciudad[i].employed_person
-          
-      
-      
-      };
-      
-      var media = cantidad / datos_ciudad.length
-    response.send(`Media es: ${media}`);
-    console.log("New request"); //console.log en el servidor    
-});
 
 
 
