@@ -110,20 +110,41 @@ const rutaRaiz = '/api/v1/employment-stats';
 // Método POST para la ruta base
 app.post(rutaRaiz, (req,res) => {
   const keys = Object.keys(req.body);
+  const region = request.body.region;
+  const year = request.body.year;
+  console.log("New POST to /evolution-stats"); //console.log en el servidor  
+  db.find({},function(err, filteredList){
+
+    if(err){
+        res.sendStatus(500, "Client Error");   
+    }
   if(keys.length<7){
     res.status(400).send("No se han introducido datos suficientes");
-  } else{
-    const exists = datos_10.some(ob => ob.region === req.body.region && ob.year === req.body.year)
-    if (exists) {
-      // Enviar una respuesta con un código de estado 409 Conflict si el objeto ya existe
-      res.status(409).send('Conflicto: Este objeto ya existe');
-    } else {
-      // Agregar los nuevos datos a la variable
-      datos_10.push(req.body);
-      // Enviar una respuesta con un código de estado 201 Created
-      res.status(201).send('Los datos se han creado correctamente');
-    }
   }
+   // Verificar que la solicitud se hizo en la ruta correcta
+   if (request.originalUrl !== '/api/v1/employment-stats') {
+    res.status(405).json('Método no permitido');
+    return;
+  }else{
+
+  // Verificar si el recurso ya existe
+  //const existingObject = evolution_stats.find(obj => obj.territory === territory && obj.period === period);
+  filteredList = filteredList.filter((obj)=>
+                {
+                    return(region == obj.region && year == obj.year)
+                });
+  //const existingObject = db.find({territory : NewEvolution.territory, period : NewEvolution.period});
+  if (filteredList.length !=0) {
+    // Si el recurso ya existe, devolver un código de respuesta 409
+    response.status(409).json(`El recurso ya existe.`);
+  } else {
+    // Si el recurso no existe, agregarlo a la lista y devolver un código de respuesta 201
+    db.insert(request.body);
+    //evolution_stats.push(request.body);
+    response.sendStatus(201);
+  }
+  }
+  });
   });
 
 
@@ -240,9 +261,16 @@ app.put('/api/v1/employment-stats/:city/:year', (req, res) => {
   const citybody = req.body.region;
   const yearbody = req.body.year;
   
-  const stat = datos_10.find(s => s.region === city && s.year === year);
-  
-  if (!stat || city!==citybody || year!==yearbody) {
+  db.find({},function(err, filteredList){
+
+    if(err){
+        res.sendStatus(500, "Error cliente");   
+    }
+  filteredList = filteredList.filter((obj)=>
+                {
+                    return(obj.region === city && obj.year === year);
+                });
+  if (!filteredList || city!==citybody || year!==yearbody) {
     return res.status(400).json('Estadística errónea');
   }else{
     stat.period = req.body.period || stat.period;
@@ -251,11 +279,118 @@ app.put('/api/v1/employment-stats/:city/:year', (req, res) => {
   stat.inactive_person = req.body.inactive_person|| stat.inactive_person;
   stat.unemployed_person = req.body.unemployed_person || stat.unemployed_person;
 
-  res.json('Estadística actualizada correctamente');
-  console.log("Estadística encontrada");
+  db.update({ $and: [{ region: String(city) }, { year: parseInt(year) }] }, { $set: body }, {}, function (err, numUpdated) {
+    if (err) {
+        res.sendStatus(500, "Internal server error");
+    } else {
+        res.sendStatus(200, "Updated");
+    }
+});
   }
 });
- 
+});
+
+//METODO DELETE PARA LA RUTA BASE PARA BORRAR DATO ESPECÍFICO.
+app.delete(BASE_API_URL + "/employment-stats", (req, res) => {
+  db.remove({}, {multi : true}, (err, numRemoved) =>{
+
+    if(err){
+        res.sendStatus(500, "Error cliente");   
+    }
+  if (!req.body || Object.keys(req.body).length === 0) {
+    db.remove({}, {multi : true}, (err, numRemoved)=>{
+      if (err){
+          res.sendStatus(500,"Error cliente");
+          return;
+      } else {
+      res.sendStatus(200,"Deleted");
+    }
+      
+  });
+  }else{
+  const { year, region } = req.body;
+  db.find({},function(err, filteredList){
+
+    if(err){
+        res.sendStatus(500, "Error cliente");   
+    }
+  // Buscar el objeto en la matriz evolution_stats
+  filteredList = filteredList.filter((obj)=>
+                {
+                    return(obj.region === region && obj.year === year);
+                });
+  db.remove({region: region, year: year}, {}, (err, numRemoved)=>{
+    if (err){
+        res.sendStatus(500,"Error cliente");
+        return;
+    }
+  if (filteredList === []) {
+    // Si el objeto no se encuentra, devolver un código de respuesta 404 Not Found
+    res.status(404).json('El objeto no existe');
+  } else {
+    res.sendStatus(200,"Deleted");
+    return;
+  }
+  });   
+});
+}
+
+
+});
+});
+
+//DELETE EN RUTA EMPLOYMENT-STATS DE UNA CIUDAD.
+app.delete('/api/v1/employment-stats/:territory', (req, res) => {
+  const region = req.params.region;
+  db.find({},function(err, filteredList){
+
+    if(err){
+        res.sendStatus(500, "Error cliente");   
+    }
+  filteredList = filteredList.filter((obj)=>
+                {
+                    return(obj.region === region);
+                });
+  if (filteredList.length === 0) {
+    res.status(404).json(`No se encontraron datos para ${region}`);
+  } else {
+    filteredList = filteredList.filter((obj)=>{return(obj.region === region);});
+
+    if (filteredList) {
+      db.remove({region: region}, {multi : true}, (err, numRemoved)=>{
+        if (err){
+            res.sendStatus(500,"Error cliente");
+            return;
+        }
+      else {
+        res.sendStatus(200,"Deleted");
+        return;
+      }
+        
+    });
+    } else {
+      res.status(404).json(`No se encontraron datos que coincidan con los criterios de eliminación para ${region}`);
+    }
+  }
+});
+});
+
+
+
+function pagination(req, lista){
+
+  var res = [];
+  const limit = req.query.limit;
+  const offset = req.query.offset;
+  
+  if(limit < 1 || offset < 0 || offset > lista.length){
+      res.push("ERROR EN PARAMETROS LIMIT Y/O OFFSET");
+      return res;
+  }
+  res = lista.slice(offset,parseInt(limit)+parseInt(offset));
+  return res;
+
+};
 
 
 
