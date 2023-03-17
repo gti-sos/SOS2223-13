@@ -123,6 +123,15 @@ app.get(BASE_API_URL + "/evolution-stats/loadInitialData", (req, res) => {
 app.get('/api/v1/evolution-stats', (req, res) => {
   const from = req.query.from;
   const to = req.query.to;
+  //const city = req.params.city.toLowerCase();
+  const territory = req.query.territory;
+  const period = req.query.period;
+  const total_population = req.query.total_population;
+  const man = req.query.man;
+  const woman = req.query.woman;
+  const under_sixteen_years = req.query.under_sixteen_years;
+  const from_sixteen_to_sixty_four_years = req.query.from_sixteen_to_sixty_four_years;
+  const sixty_five_and_over = req.query.sixty_five_and_over;
   db.find({},function(err, filteredList){
 
     if(err){
@@ -140,7 +149,28 @@ app.get('/api/v1/evolution-stats', (req, res) => {
      });
     }
 
-  }else{
+  }else if(territory && total_population){
+    filteredList = filteredList.filter((stat) => {
+      return (stat.territory === territory && stat.total_population >= total_population);
+   });
+   console.log("New GET to /evolution-stats with territory and total_population"); //console.log en el servidor 
+   res.status(200).json(filteredList.map((e)=>{
+     delete e._id;
+     return e;
+   }));
+   //res.send(JSON.stringify(filteredList,null,2));
+  }else if(territory && man){
+    filteredList = filteredList.filter((stat) => {
+      return (stat.territory === territory && stat.man >= man);
+   });
+   console.log("New GET to /evolution-stats with territory and man"); //console.log en el servidor 
+   res.status(200).json(filteredList.map((e)=>{
+     delete e._id;
+     return e;
+   }));
+   //res.send(JSON.stringify(filteredList,null,2));
+  }
+  else{
 
     const { period } = req.query;
 
