@@ -10,7 +10,7 @@ app.use(bodyParser.json());
 */
 var Datastore = require('nedb');
 var db = new Datastore();
-
+const API_DOC_PORTAL = "https://documenter.getpostman.com/view/25977296/2s93JzKfV4";
 
 module.exports =(app)=>{
 
@@ -47,6 +47,11 @@ db.insert(evolution_stats);
 //console.log("Insertados datos al comenzar");
  
 const BASE_API_URL = "/api/v1";
+
+//Redirect /docs
+app.get(BASE_API_URL+"/evolution-stats/docs",(req,res)=>{
+  res.redirect(API_DOC_PORTAL);
+});
 
 app.post(BASE_API_URL + "/evolution-stats", (request, response) => {
   //var NewEvolution = request.body;
@@ -142,11 +147,14 @@ app.get('/api/v1/evolution-stats', (req, res) => {
     if (from >= to) {
       res.status(400).json("El rango de años especificado es inválido");
     }else{
-      res.status(200);
       console.log(`/GET to /evolution-stats?from=${from}&to=${to}`); //console.log en el servidor
       filteredList = filteredList.filter((ciudad) => {
         return (ciudad.period >= from && ciudad.period <= to);
      });
+     res.status(200).json(filteredList.map((e)=>{
+      delete e._id;
+      return e;
+    }));
     }
 
   }else if(territory && total_population){
@@ -154,16 +162,125 @@ app.get('/api/v1/evolution-stats', (req, res) => {
       return (stat.territory === territory && stat.total_population >= total_population);
    });
    console.log("New GET to /evolution-stats with territory and total_population"); //console.log en el servidor 
-   res.status(200).json(filteredList.map((e)=>{
+   filteredList.map((e)=>{
      delete e._id;
      return e;
-   }));
-   //res.send(JSON.stringify(filteredList,null,2));
+   });
+   res.send(JSON.stringify(filteredList,null,2));
   }else if(territory && man){
     filteredList = filteredList.filter((stat) => {
       return (stat.territory === territory && stat.man >= man);
    });
    console.log("New GET to /evolution-stats with territory and man"); //console.log en el servidor 
+   res.status(200).json(filteredList.map((e)=>{
+     delete e._id;
+     return e;
+   }));
+   res.send(JSON.stringify(filteredList,null,2));
+  }
+  else if(territory && woman){
+    filteredList = filteredList.filter((stat) => {
+      return (stat.territory === territory && stat.woman >= woman);
+   });
+   console.log("New GET to /evolution-stats with territory and woman"); //console.log en el servidor 
+   filteredList.map((e)=>{
+     delete e._id;
+     return e;
+   });
+   res.send(JSON.stringify(filteredList,null,2));
+  }
+  else if(territory && under_sixteen_years){
+    filteredList = filteredList.filter((stat) => {
+      return (stat.territory === territory && stat.under_sixteen_years >= under_sixteen_years);
+   });
+   console.log("New GET to /evolution-stats with territory and under_sixteen_years"); //console.log en el servidor 
+   res.status(200).json(filteredList.map((e)=>{
+     delete e._id;
+     return e;
+   }));
+   //res.send(JSON.stringify(filteredList,null,2));
+  }
+  else if(territory && from_sixteen_to_sixty_four_years){
+    filteredList = filteredList.filter((stat) => {
+      return (stat.territory === territory && stat.from_sixteen_to_sixty_four_years >= from_sixteen_to_sixty_four_years);
+   });
+   console.log("New GET to /evolution-stats with territory and from_sixteen_to_sixty_four_years"); //console.log en el servidor 
+   res.status(200).json(filteredList.map((e)=>{
+     delete e._id;
+     return e;
+   }));
+   //res.send(JSON.stringify(filteredList,null,2));
+  }
+  else if(territory && sixty_five_and_over){
+    filteredList = filteredList.filter((stat) => {
+      return (stat.territory === territory && stat.sixty_five_and_over >= sixty_five_and_over);
+   });
+   console.log("New GET to /evolution-stats with territory and sixty_five_and_over"); //console.log en el servidor 
+   res.status(200).json(filteredList.map((e)=>{
+     delete e._id;
+     return e;
+   }));
+   //res.send(JSON.stringify(filteredList,null,2));
+  }
+  else if(period && total_population){
+    filteredList = filteredList.filter((stat) => {
+      return (stat.period === parseInt(period) && stat.total_population >= total_population);
+   });
+   console.log("New GET to /evolution-stats with period and total_population"); //console.log en el servidor 
+   res.status(200).json(filteredList.map((e)=>{
+     delete e._id;
+     return e;
+   }));
+   //res.send(JSON.stringify(filteredList,null,2));
+  }else if(period && man){
+    filteredList = filteredList.filter((stat) => {
+      return (stat.period === parseInt(period) && stat.man >= man);
+   });
+   console.log("New GET to /evolution-stats with period and man"); //console.log en el servidor 
+   res.status(200).json(filteredList.map((e)=>{
+     delete e._id;
+     return e;
+   }));
+   //res.send(JSON.stringify(filteredList,null,2));
+  }
+  else if(period && woman){
+    filteredList = filteredList.filter((stat) => {
+      return (stat.period === parseInt(period) && stat.woman >= woman);
+   });
+   console.log("New GET to /evolution-stats with period and woman"); //console.log en el servidor 
+   res.status(200).json(filteredList.map((e)=>{
+     delete e._id;
+     return e;
+   }));
+   //res.send(JSON.stringify(filteredList,null,2));
+  }
+  else if(period && under_sixteen_years){
+    filteredList = filteredList.filter((stat) => {
+      return (stat.period === parseInt(period) && stat.under_sixteen_years >= under_sixteen_years);
+   });
+   console.log("New GET to /evolution-stats with period and period"); //console.log en el servidor 
+   res.status(200).json(filteredList.map((e)=>{
+     delete e._id;
+     return e;
+   }));
+   //res.send(JSON.stringify(filteredList,null,2));
+  }
+  else if(period && from_sixteen_to_sixty_four_years){
+    filteredList = filteredList.filter((stat) => {
+      return (stat.period === parseInt(period) && stat.from_sixteen_to_sixty_four_years >= from_sixteen_to_sixty_four_years);
+   });
+   console.log("New GET to /evolution-stats with period and from_sixteen_to_sixty_four_years"); //console.log en el servidor 
+   res.status(200).json(filteredList.map((e)=>{
+     delete e._id;
+     return e;
+   }));
+   //res.send(JSON.stringify(filteredList,null,2));
+  }
+  else if(period && sixty_five_and_over){
+    filteredList = filteredList.filter((stat) => {
+      return (stat.period === parseInt(period) && stat.sixty_five_and_over >= sixty_five_and_over);
+   });
+   console.log("New GET to /evolution-stats with period and sixty_five_and_over"); //console.log en el servidor 
    res.status(200).json(filteredList.map((e)=>{
      delete e._id;
      return e;
@@ -186,15 +303,9 @@ app.get('/api/v1/evolution-stats', (req, res) => {
     if(req.query.limit != undefined || req.query.offset != undefined){
       filteredList = pagination(req,filteredList);
   }
-  res.send(JSON.stringify(filteredList,null,2));
+  //res.send(JSON.stringify(filteredList,null,2));
   } else {
     console.log("New GET to /evolution-stats"); //console.log en el servidor
-    //db.find({}, (err, filteredList)=>{
-      //if(err){
-        //console.log(`Error geting /evolution_stats: ${err}`);
-        //response.sendStatus(500);
-      //}else{
-        //console.log(`Evolution_stats returned ${filteredList.length}`);
         filteredList.map((e)=>{
           delete e._id;
           return e;
@@ -203,6 +314,7 @@ app.get('/api/v1/evolution-stats', (req, res) => {
           filteredList = pagination(req,filteredList);
       }
       res.send(JSON.stringify(filteredList,null,2));
+      //res.json(filteredList);
       //}
     //});
   }
@@ -323,11 +435,10 @@ app.get('/api/v1/evolution-stats/:city', (req, res) => {
                     return(obj.territory.toLowerCase() == city && obj.period >= from && obj.period<= to);
                 });
     console.log(`/GET to /evolution-stats/${city}?from=${from}&to=${to}`); //console.log en el servidor
-    res.status(200);
-    filteredList.forEach((e)=>{
+    res.status(200).jsonfilteredList.forEach((e)=>{
       delete e._id;
     });
-    res.send(JSON.stringify(filteredList,null,2));
+    //res.send(JSON.stringify(filteredList,null,2));
   }else if(period){
     filteredList = filteredList.filter((obj)=>
                 {
@@ -642,6 +753,9 @@ function pagination(req, lista){
   return res;
 
 };
+
+
+
 //HASTA AQUÍ LLEGA MI CÓDIGO.
 var cool = require("cool-ascii-faces");
 app.get("/cool", (request,response) => {
