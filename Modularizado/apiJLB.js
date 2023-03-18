@@ -33,7 +33,7 @@ var employment_stats = [
  console.log("Datos insertados al inicio");
 
 
-
+ const BASE_API_URL = "/api/v1";
 
 //Tarea crear 10 datos 
 
@@ -445,6 +445,11 @@ function pagination(req, lista){
   return res;
 
 };
+
+//Redirect /docs
+app.get(BASE_API_URL+"/evolution-stats/docs",(req,res)=>{
+  res.redirect("https://documenter.getpostman.com/view/26023285/2s93JzLgAB");
+});
 
 
 
