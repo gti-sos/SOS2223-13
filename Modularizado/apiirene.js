@@ -373,7 +373,7 @@ app.get('/api/v1/localentities-stats', (req, res) => {
         return e;
       }));
       if(req.query.limit != undefined || req.query.offset != undefined){
-        filteredList = pagination(req,filteredList);
+        filteredList = paginar(req,filteredList);
     }
     //res.send(JSON.stringify(filteredList,null,2));
     } else {
@@ -383,7 +383,7 @@ app.get('/api/v1/localentities-stats', (req, res) => {
             return e;
           });
           if(req.query.limit != undefined || req.query.offset != undefined){
-            filteredList = pagination(req,filteredList);
+            filteredList = paginar(req,filteredList);
         }
         res.send(JSON.stringify(filteredList,null,2));
         //res.json(filteredList);
@@ -639,7 +639,7 @@ app.get('/api/v1/localentities-stats/:city', (req, res) => {
       delete e._id;
     });                                                                               
     if(req.query.limit != undefined || req.query.offset != undefined){
-      filteredList = pagination(req,filteredList);
+      filteredList = paginar(req,filteredList);
   }
     res.send(JSON.stringify(filteredList,null,2));
     }
@@ -669,7 +669,7 @@ app.get('/api/v1/localentities-stats/:province/:year', (req, res) => {
       delete e._id;
     });
     if(req.query.limit != undefined || req.query.offset != undefined){
-      filteredList = pagination(req,filteredList);
+      filteredList = paginar(req,filteredList);
   }
     res.send(JSON.stringify(filteredList,null,2));
   } else {
@@ -726,13 +726,21 @@ app.put('/api/v1/localentities-stats/:city/:year', (req, res) => {
 app.put('/api/v1/localentities-stats/:city', (req, res) => {
   const city = req.params.city;
   const citybody = req.body.province;
+  const body = req.body;
 
-  const statsToUpdate = localentities_stats.filter(s => s.province === city);
-  
-  if (statsToUpdate.length === 0 || city !== citybody) {
+  db.find({},function(error, filteredList){
+
+  if(error){
+    res.sendStatus(500, "ERROR CLIENTE");   
+  }
+  filteredList = filteredList.filter((obj)=>
+                {
+                    return(obj.territory === city);
+                });
+  if (filteredList.length === 0 || city !== citybody) {
     return res.status(400).json('Estadística errónea');
   } else {
-    for (let i = 0; i < statsToUpdate.length; i++) {
+    /*for (let i = 0; i < statsToUpdate.length; i++) {
       const stat = statsToUpdate[i];
       stat.landline = req.body.landline || stat.landline;
       stat.first_name = req.body.first_name || stat.first_name;
@@ -741,11 +749,16 @@ app.put('/api/v1/localentities-stats/:city', (req, res) => {
       stat.population = req.body.population || stat.population;
       stat.expense = req.body.expense || stat.expense;
       stat.income = req.body.income || stat.income;
-}
-
-    res.json('Estadísticas actualizadas correctamente');
-    console.log("Estadísticas encontradas");
+}*/
+  db.update({ province: String(city) }, { $set: body }, { multi: true }, function (error, numUpdated) {
+    if (error) {
+        res.sendStatus(500, "INTERNAL SERVER ERROR");
+    } else {
+        res.sendStatus(200, "UPDATED");
+    }
+  });
   }
+});
 });
 
 
@@ -755,46 +768,117 @@ app.put('/api/v1/localentities-stats/:city', (req, res) => {
 
 //METODO DELETE PARA LA RUTA BASE PARA BORRAR DATO ESPECÍFICO.
 app.delete(BASE_API_URL + "/localentities-stats", (req, res) => {
+  db.remove({}, {multi : true}, (error, numRemoved) =>{
+
+    if(error){
+        res.sendStatus(500, "ERROR CLIENTE");   
+    }
   if (!req.body || Object.keys(req.body).length === 0) {
-    localentities_stats = [];
-    res.status(200).json('Los datos se han borrado correctamente');
+    db.remove({}, {multi : true}, (error, numRemoved)=>{
+      if (error){
+          res.sendStatus(500,"ERROR CLIENTE");
+          return;
+      } else {
+      res.sendStatus(200,"DELETED");
+    }
+      
+  });
   }else{
   const { president_appointment_date, province } = req.body;
+  db.find({},function(error, filteredList){
 
-  // Buscar el objeto en la matriz localentities
-  const objectIndex = localentities_stats.findIndex(obj => obj.president_appointment_date === president_appointment_date && obj.province === province);
-
-  if (objectIndex === -1) {
+    if(error){
+        res.sendStatus(500, "ERROR CLIENTE");   
+    }
+  // Buscar el objeto en la matriz evolution_stats
+  filteredList = filteredList.filter((obj)=>
+                {
+                    return(obj.province === province && obj.president_appointment_date === president_appointment_date);
+                });
+  db.remove({province: province, president_appointment_date: president_appointment_date}, {}, (error, numRemoved)=>{
+    if (error){
+        res.sendStatus(500,"ERROR CLIENTE");
+        return;
+    }
+  if (filteredList === []) {
     // Si el objeto no se encuentra, devolver un código de respuesta 404 Not Found
     res.status(404).json('El objeto no existe');
   } else {
-    // Si se encuentra el objeto, eliminarlo de la matriz y devolver un código de respuesta 200 OK
-    localentities_stats.splice(objectIndex, 1);
-    res.sendStatus(200);
+    res.sendStatus(200,"DELETED");
+    return;
   }
-}
+  });   
 });
+}
+
+
+});
+});
+
 
 //DELETE PARA UNA RUTA ESPECÍFICA DE UNA CIUDAD.
 app.delete('/api/v1/localentities-stats/:province', (req, res) => {
   const province = req.params.province;
-  const filteredStats = localentities_stats.filter(stats => stats.province === province);
-  
-  if (filteredStats.length === 0) {
+  db.find({},function(error, filteredList){
+
+    if(error){
+        res.sendStatus(500, "ERROR CLIENTE");   
+    }
+
+  filteredList = filteredList.filter((obj)=>
+                {
+                    return(obj.province === province);
+                });
+  if (filteredList.length === 0) {
     res.status(404).json(`No se encontraron datos para ${province}`);
   } else {
-    const newData = localentities_stats.filter(stats => stats.province !== province);
-    const deleted = newData.length !== localentities_stats.length;
-    localentities_stats = newData;
+    filteredList = filteredList.filter((obj)=>{return(obj.province === province);});
 
-    if (deleted) {
-      res.status(204).json(`Se ha borrado ${province}`);
-      console.log("Datos borrados");
+    if (filteredList) {
+      db.remove({province: province}, {multi : true}, (error, numRemoved)=>{
+        if (error){
+            res.sendStatus(500,"ERROR CLIENTE");
+            return;
+        }
+      else {
+        res.sendStatus(200,"DELETED");
+        return;
+      }
+        
+    });
     } else {
-      res.status(404).json(`No se encontraron datos que coincidan con los criterios de eliminación para ${province}`);
+      res.status(404).json(`No se encontraron datos que coincidan con los criterios de eliminación para ${territory}`);
     }
   }
 });
+});
+
+
+
+function paginar(req, lista){
+
+  var res = [];
+  const limit = req.query.limit;
+  const offset = req.query.offset;
+  
+  if(limit < 1 || offset < 0 || offset > lista.length){
+      res.push("ERROR EN PARAMETROS LIMIT Y/O OFFSET");
+      return res;
+  }
+  res = lista.slice(offset,parseInt(limit)+parseInt(offset));
+  return res;
+
+};
+
+
+
+
+
+
+
+
+
+
 
 
 }
