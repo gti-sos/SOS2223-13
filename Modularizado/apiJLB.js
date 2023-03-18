@@ -108,21 +108,25 @@ app.get('/api/v1/employment-stats', (req, res) => {
 const rutaRaiz = '/api/v1/employment-stats';
 
 // Método POST para la ruta base
-app.post(rutaRaiz, (req,res) => {
-  const keys = Object.keys(req.body);
+app.post(rutaRaiz, (request, response) => {
   const region = request.body.region;
   const year = request.body.year;
-  console.log("New POST to /evolution-stats"); //console.log en el servidor  
+  console.log("New POST to /employment-stats"); //console.log en el servidor  
   db.find({},function(err, filteredList){
 
     if(err){
-        res.sendStatus(500, "Client Error");   
+        res.sendStatus(500, "Error cliente");   
     }
-  if(keys.length<7){
-    res.status(400).send("No se han introducido datos suficientes");
+    // Validar que se envíen todos los campos necesarios
+  const requiredFields = ['year', 'period', 'date', 'region', 'employed_person', 'inactive_person', 'unemployed_person'];
+  for (const field of requiredFields) {
+    if (!request.body.hasOwnProperty(field)) {
+      response.status(400).json(`Falta el campo: ${field}`);
+      return;
+    }
   }
-   // Verificar que la solicitud se hizo en la ruta correcta
-   if (request.originalUrl !== '/api/v1/employment-stats') {
+  // Verificar que la solicitud se hizo en la ruta correcta
+  if (request.originalUrl !== '/api/v1/employment-stats') {
     res.status(405).json('Método no permitido');
     return;
   }else{
@@ -143,9 +147,9 @@ app.post(rutaRaiz, (req,res) => {
     //evolution_stats.push(request.body);
     response.sendStatus(201);
   }
-  }
-  });
-  });
+}
+});
+});
 
 
 // Método PUT para la ruta base
@@ -154,10 +158,10 @@ app.put(rutaRaiz, (req, res) => {
 });
 
 // Método DELETE para la ruta base
-app.delete(rutaRaiz, (req, res) => {
-  datos_10 = [];
-  res.status(200).send('Los datos se han borrado correctamente');
-});
+//app.delete(rutaRaiz, (req, res) => {
+//  datos_10 = [];
+//  res.status(200).send('Los datos se han borrado correctamente');
+//});
 
 // Ruta específica que no permite el método POST
 const rutaEsp = '/api/v1/employment-stats/loadInitialData';
@@ -166,30 +170,30 @@ app.post(rutaEsp, (req, res) => {
 });
 
 // Ruta Específica Método GET
-app.get(rutaEsp, (req, res) => {
-  res.json(datos_10);
-  res.status(200);
-});
+//app.get(rutaEsp, (req, res) => {
+//  res.json(datos_10);
+//  res.status(200);
+//});
 
 // Ruta Específica Método PUT
-app.put(rutaEsp, (req, res) => {
+//app.put(rutaEsp, (req, res) => {
   // Verificar que el cuerpo de la solicitud contenga datos
-  if (Object.keys(req.body).length === 0) {
+//  if (Object.keys(req.body).length === 0) {
     // Enviar una respuesta con un código de estado 400 Bad Request si no se proporcionaron datos
-    res.status(400).send('No se proporcionaron datos');
-  } else {
+//    res.status(400).send('No se proporcionaron datos');
+//  } else {
     // Reemplazar los datos existentes con los nuevos datos
-    datos_10 = req.body;
+//    datos_10 = req.body;
     // Enviar una respuesta con un código de estado 200 OK
-    res.status(200).send('Los datos se han actualizado correctamente');
-  }
-});
+//    res.status(200).send('Los datos se han actualizado correctamente');
+//  }
+//});
 
 //Método DELETE de la ruta específica.
-app.delete(rutaEsp, (req, res) => {
-  datos_10 = [];
-  res.status(200).send('Los datos se han borrado correctamente');
-});
+//app.delete(rutaEsp, (req, res) => {
+//  datos_10 = [];
+//  res.status(200).send('Los datos se han borrado correctamente');
+//});
 
 
 //CODIGO PARA PODER HACER GET A UNA CIUDAD ESPECÍFICA Y A UNA CIUDAD Y PERIODO CONCRETO.
@@ -233,20 +237,32 @@ app.get('/api/v1/employment-stats/:city', (req, res) => {
 });
 
 //CODIGO PARA PODER HACER UN GET A UNA CIUDAD Y FECHA ESPECÍFICA.
-app.get('/api/v1/employment-stats/:territory/:year', (req, res) => {
-  const { territory, year } = req.params;
-  
+app.get('/api/v1/employment-stats/:region/:year', (req, res) => {
+  const { region, year } = req.params;
+  db.find({},function(err, filteredList){
+
+    if(err){
+        res.sendStatus(500, "Error cliente");   
+    }
   // Buscamos las estadísticas para el territorio y el año indicados
-  const stats = datos_10.find(
-    s => s.region.toLowerCase() === territory.toLowerCase() && s.year === parseInt(year)
-  );
+  filteredList = filteredList.filter((obj)=>
+                {
+                    return(obj.region.toLowerCase() == region.toLowerCase() && obj.year === parseInt(year));
+                });
   
-  if (stats) {
-    res.status(200).json(stats);
+  if (filteredList) {
+    filteredList.forEach((e)=>{
+      delete e._id;
+    });
+    if(req.query.limit != undefined || req.query.offset != undefined){
+      filteredList = pagination(req,filteredList);
+  }
+    res.send(JSON.stringify(filteredList,null,2));
   } else {
-    res.status(404).send('La ruta solicitada no existe');;
+    res.status(404).json('La ruta solicitada no existe');
   }
   console.log("Solicitud /GET")
+});
 });
 
 
@@ -260,7 +276,7 @@ app.put('/api/v1/employment-stats/:city/:year', (req, res) => {
   const year = parseInt(req.params.year);
   const citybody = req.body.region;
   const yearbody = req.body.year;
-  
+  const body = req.body;
   db.find({},function(err, filteredList){
 
     if(err){
@@ -273,11 +289,11 @@ app.put('/api/v1/employment-stats/:city/:year', (req, res) => {
   if (!filteredList || city!==citybody || year!==yearbody) {
     return res.status(400).json('Estadística errónea');
   }else{
-    stat.period = req.body.period || stat.period;
-  stat.date = req.body.date || stat.date;
-  stat.employed_person = req.body.employed_person || stat.employed_person;
-  stat.inactive_person = req.body.inactive_person|| stat.inactive_person;
-  stat.unemployed_person = req.body.unemployed_person || stat.unemployed_person;
+    filteredList.period = req.body.period || filteredList.period;
+    filteredList.date = req.body.date || filteredList.date;
+    filteredList.employed_person = req.body.employed_person || filteredList.employed_person;
+    filteredList.inactive_person = req.body.inactive_person|| filteredList.inactive_person;
+    filteredList.unemployed_person = req.body.unemployed_person || filteredList.unemployed_person;
 
   db.update({ $and: [{ region: String(city) }, { year: parseInt(year) }] }, { $set: body }, {}, function (err, numUpdated) {
     if (err) {
@@ -286,6 +302,44 @@ app.put('/api/v1/employment-stats/:city/:year', (req, res) => {
         res.sendStatus(200, "Updated");
     }
 });
+  }
+});
+});
+
+//CODIGO PARA ACTUALIZAR MEDIANTE PUT UNA CIUDAD
+app.put('/api/v1/employment-stats/:city', (req, res) => {
+  const city = req.params.city;
+  const citybody = req.body.region;
+  const body = req.body;
+  db.find({},function(err, filteredList){
+
+    if(err){
+        res.sendStatus(500, "Error cliente");   
+    }
+  filteredList = filteredList.filter((obj)=>
+                {
+                    return(obj.region === city);
+                });
+  if (filteredList.length === 0 || city !== citybody) {
+    return res.status(400).json('Estadística errónea');
+  } else {
+    /*for (let i = 0; i < filteredList.length; i++) {
+      const stat = filteredList[i];
+      stat.period = req.body.period || stat.period;
+      stat.total_population = req.body.total_population || stat.total_population;
+      stat.man = req.body.man || stat.man;
+      stat.woman = req.body.woman || stat.woman;
+      stat.under_sixteen_years = req.body.under_sixteen_years || stat.under_sixteen_years;
+      stat.from_sixteen_to_sixty_four_years = req.body.from_sixteen_to_sixty_four_years || stat.from_sixteen_to_sixty_four_years;
+      stat.sixty_five_and_over = req.body.sixty_five_and_over || stat.sixty_five_and_over;
+    }*/
+    db.update({ territory: String(city) }, { $set: body }, { multi: true }, function (err, numUpdated) {
+      if (err) {
+          res.sendStatus(500, "INTERNAL SERVER ERROR");
+      } else {
+          res.sendStatus(200, "Updated");
+      }
+  });
   }
 });
 });
@@ -340,7 +394,7 @@ app.delete(BASE_API_URL + "/employment-stats", (req, res) => {
 });
 
 //DELETE EN RUTA EMPLOYMENT-STATS DE UNA CIUDAD.
-app.delete('/api/v1/employment-stats/:territory', (req, res) => {
+app.delete('/api/v1/employment-stats/:region', (req, res) => {
   const region = req.params.region;
   db.find({},function(err, filteredList){
 
