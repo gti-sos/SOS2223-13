@@ -435,10 +435,11 @@ app.get('/api/v1/evolution-stats/:city', (req, res) => {
                     return(obj.territory.toLowerCase() == city && obj.period >= from && obj.period<= to);
                 });
     console.log(`/GET to /evolution-stats/${city}?from=${from}&to=${to}`); //console.log en el servidor
-    res.status(200).jsonfilteredList.forEach((e)=>{
-      delete e._id;
-    });
-    //res.send(JSON.stringify(filteredList,null,2));
+    res.status(200);
+                filteredList.forEach((e)=>{
+                  delete e._id;
+                });
+                res.send(JSON.stringify(filteredList,null,2));
   }else if(period){
     filteredList = filteredList.filter((obj)=>
                 {
@@ -739,6 +740,46 @@ app.delete('/api/v1/evolution-stats/:territory', (req, res) => {
 });
 });
 
+//DELETE PARA UNA RUTA ESPECÍFICA DE UNA CIUDAD Y PERIOD.
+app.delete('/api/v1/evolution-stats/:territory/:period', (req, res) => {
+  const territory = req.params.territory;
+  const period = req.params.period;
+  db.find({},function(err, filteredList){
+
+    if(err){
+        res.sendStatus(500, "Client Error");   
+    }
+  //const filteredStats = evolution_stats.filter(stats => stats.territory === territory);
+  filteredList = filteredList.filter((obj)=>
+                {
+                    return(obj.territory === territory && obj.period === parseInt(period));
+                });
+  if (filteredList.length === 0) {
+    res.status(404).json(`No se encontraron datos para ${territory} y ${period}`);
+  } else {
+    filteredList = filteredList.filter((obj)=>{return(obj.territory === territory && obj.period === parseInt(period));});
+    if (filteredList) {
+      db.remove({ $and: [{ territory: territory }, { period: parseInt(period) }] }, {multi : true}, (err, numRemoved)=>{
+        if (err){
+            res.sendStatus(500,"ERROR EN CLIENTE");
+            return;
+        }else if (numRemoved === 0) {
+          res.sendStatus(404, "ERROR EN CLIENTE: Documentos no encontrados");
+          return;
+        }
+      else {
+        res.sendStatus(200,"DELETED");
+        return;
+      }
+        
+    });
+    } else {
+      res.status(404).json(`No se encontraron datos que coincidan con los criterios de eliminación para ${territory}`);
+    }
+  }
+});
+});
+
 function pagination(req, lista){
 
   var res = [];
@@ -757,7 +798,7 @@ function pagination(req, lista){
 
 
 //HASTA AQUÍ LLEGA MI CÓDIGO.
-var cool = require("cool-ascii-faces");
+/*var cool = require("cool-ascii-faces");
 app.get("/cool", (request,response) => {
     response.send(cool());
     console.log("New request"); //console.log en el servidor    
@@ -930,7 +971,7 @@ var data = [
     response.send(`La media de la población total en Huelva es: ${populationMean.toString()}`);
     console.log("New request"); //console.log en el servidor    
 });
-
+*/
 // Manejador de errores
 app.use((err, req, res, next) => {
     if (err instanceof SyntaxError) {
