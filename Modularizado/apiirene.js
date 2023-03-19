@@ -12,7 +12,7 @@ const res = require('express/lib/response');
 var Datastore = require('nedb');
 var db = new Datastore();
 
-const API_DOC_PORTAL = "https://documenter.getpostman.com/view/26054707/2s93JzMgT8";
+const api_portal = "https://documenter.getpostman.com/view/26054707/2s93JzMgT8";
 
 
 
@@ -77,7 +77,7 @@ BASE_API_URL = "/api/v1";
 
 //redirect /doc
 app.get(BASE_API_URL + "/localentities-stats/docs", (req,res)=>{
-  res.redirect(API_DOC_PORTAL);
+  res.redirect(api_portal);
 });
 
 
