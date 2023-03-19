@@ -65,7 +65,7 @@ app.get('/api/v1/employment-stats', (req, res) => {
   const year = req.query.year;
   const employed_person = req.query.employed_person;
   const inactive_person = req.query.inactive_person;
-  const unemployed_person = req.query.woman;
+  const unemployed_person = req.query.unemployed_person;
 
   db.find({},function(err, filteredList){
 
@@ -195,7 +195,7 @@ app.get('/api/v1/employment-stats/:city', (req, res) => {
   const year = req.query.year;
   const employed_person = req.query.employed_person;
   const inactive_person = req.query.inactive_person;
-  const unemployed_person = req.query.woman;
+  const unemployed_person = req.query.unemployed_person;
 
   db.find({},function(err, filteredList){
 
