@@ -61,46 +61,252 @@ app.get(BASE_API_URL + "/employment-stats/loadInitialData", (req, res) => {
 app.get('/api/v1/employment-stats', (req, res) => {
   const from = req.query.from;
   const to = req.query.to;
+  const region = req.query.region;
+  const year = req.query.year;
+  const employed_person = req.query.employed_person;
+  const inactive_person = req.query.inactive_person;
+  const unemployed_person = req.query.woman;
+
   db.find({},function(err, filteredList){
 
     if(err){
         res.sendStatus(500, "Error cliente");   
     }
-
   // Lógica para buscar todas las ciudades en el período especificado
   if (from && to) {
+    if (from > to) {
+      res.status(400).json("El rango de años especificado es inválido");
+    }else{
+      console.log(`/GET to /employment-stats?from=${from}&to=${to}`); //console.log en el servidor
+      filteredList = filteredList.filter((ciudad) => {
+        return (ciudad.year >= from && ciudad.year <= to);
+     });
+     res.status(200).json(filteredList.map((e)=>{
+      delete e._id;
+      return e;
+    }));
+    }
 
-  if (from > to) {
-    res.status(400).send("El rango de años especificado es inválido");
-  }else{
-
-  res.status(200);
-  console.log(`/GET to /employment-stats?from=${from}&to=${to}`); //console.log en el servidor
-  filteredList = filteredList.filter((ciudad) => {
-    return (ciudad.year >= from && ciudad.year <= to);
- });
+  }else if(region && employed_person){
+    filteredList = filteredList.filter((stat) => {
+      return (stat.region === region && stat.employed_person >= employed_person);
+   });
+   console.log("New GET to /evolution-stats with region and employed person"); //console.log en el servidor 
+   filteredList.map((e)=>{
+     delete e._id;
+     return e;
+   });
+   res.send(JSON.stringify(filteredList,null,2));
+  }else if(region && inactive_person){
+    filteredList = filteredList.filter((stat) => {
+      return (stat.region === region && stat.inactive_person >= inactive_person);
+   });
+   console.log("New GET to /employment-stats with region and inactive person"); //console.log en el servidor 
+   res.status(200).json(filteredList.map((e)=>{
+     delete e._id;
+     return e;
+   }));
+   res.send(JSON.stringify(filteredList,null,2));
   }
-  }else{
+  else if(region && unemployed_person){
+    filteredList = filteredList.filter((stat) => {
+      return (stat.region === region && stat.unemployed_person >= unemployed_person);
+   });
+   console.log("New GET to /employment-stats with region and unemployed person"); //console.log en el servidor 
+   filteredList.map((e)=>{
+     delete e._id;
+     return e;
+   });
+   res.send(JSON.stringify(filteredList,null,2));
+  }
+  else if(year && employed_person){
+    filteredList = filteredList.filter((stat) => {
+      return (stat.year === parseInt(year) && stat.employed_person >= employed_person);
+   });
+   console.log("New GET to /employment-stats with year and employed_person"); //console.log en el servidor 
+   res.status(200).json(filteredList.map((e)=>{
+     delete e._id;
+     return e;
+   }));
+   //res.send(JSON.stringify(filteredList,null,2));
+  }else if(year && inactive_person){
+    filteredList = filteredList.filter((stat) => {
+      return (stat.year === parseInt(year) && stat.inactive_person >= inactive_person);
+   });
+   console.log("New GET to /employment-stats with year and inactive person"); //console.log en el servidor 
+   res.status(200).json(filteredList.map((e)=>{
+     delete e._id;
+     return e;
+   }));
+   //res.send(JSON.stringify(filteredList,null,2));
+  }
+  else if(year && unemployed_person){
+    filteredList = filteredList.filter((stat) => {
+      return (stat.year === parseInt(year) && stat.unemployed_person >= unemployed_person);
+   });
+   console.log("New GET to /employment-stats with year and unemployed_person"); //console.log en el servidor 
+   res.status(200).json(filteredList.map((e)=>{
+     delete e._id;
+     return e;
+   }));
+   //res.send(JSON.stringify(filteredList,null,2));
+  } 
+  else{
+
     const { year } = req.query;
 
   if (year) {
     filteredList = filteredList.filter((stat) => {
-      return (stat.year === parseInt(year));
-   });
-   console.log("New GET to /employment-stats");
-   res.status(200).json(filteredList.map((e)=>{
-    delete e._id;
-    return e;
-  }));
-  } else {
-    console.log("New GET to /employment-stats"); //console.log en el servidor 
+       return (stat.year === parseInt(year));
+    });
+    console.log("New GET to /employment-stats with year"); //console.log en el servidor 
     res.status(200).json(filteredList.map((e)=>{
       delete e._id;
       return e;
     }));
+    if(req.query.limit != undefined || req.query.offset != undefined){
+      filteredList = pagination(req,filteredList);
+  }
+  //res.send(JSON.stringify(filteredList,null,2));
+  } else {
+    console.log("New GET to /employment-stats"); //console.log en el servidor
+        filteredList.map((e)=>{
+          delete e._id;
+          return e;
+        });
+        if(req.query.limit != undefined || req.query.offset != undefined){
+          filteredList = pagination(req,filteredList);
+      }
+      res.send(JSON.stringify(filteredList,null,2));
+      //res.json(filteredList);
+      //}
+    //});
   }
 
   }
+  });
+});
+
+//CODIGO PARA PODER HACER GET A UNA CIUDAD ESPECÍFICA Y A UNA CIUDAD Y PERIODO CONCRETO.
+app.get('/api/v1/employment-stats/:city', (req, res) => {
+  const city = req.params.city.toLowerCase();
+  const from = req.query.from;
+  const to = req.query.to;
+  const year = req.query.year;
+  const employed_person = req.query.employed_person;
+  const inactive_person = req.query.inactive_person;
+  const unemployed_person = req.query.woman;
+
+  db.find({},function(err, filteredList){
+
+    if(err){
+        res.sendStatus(500, "Error cliente");   
+    }
+  if (from && to) {
+    // Lógica para devolver los datos de la ciudad para el periodo especificado
+    filteredList = filteredList.filter((obj)=>
+                {
+                    return(obj.region.toLowerCase() == city && obj.year >= from && obj.year<= to);
+                });
+    console.log(`/GET to /employment-stats/${city}?from=${from}&to=${to}`); //console.log en el servidor
+    res.status(200);
+                filteredList.forEach((e)=>{
+                  delete e._id;
+                });
+                res.send(JSON.stringify(filteredList,null,2));
+  }else if(year){
+    filteredList = filteredList.filter((obj)=>
+                {
+                    return(obj.year == year && obj.region.toLowerCase() == city);
+                });
+                console.log(`/GET to /employment-stats/${city}?${year}`); //console.log en el servidor
+                res.status(200);
+                filteredList.forEach((e)=>{
+                  delete e._id;
+                });
+                res.send(JSON.stringify(filteredList,null,2));
+  }else if(employed_person){
+    filteredList = filteredList.filter((obj)=>
+                {
+                    return(obj.employed_person >= employed_person && obj.region.toLowerCase() == city);
+                });
+                console.log(`/GET to /employment-stats/${city}?${employed_person}`); //console.log en el servidor
+                res.status(200);
+                filteredList.forEach((e)=>{
+                  delete e._id;
+                });
+                res.send(JSON.stringify(filteredList,null,2));
+  }else if(inactive_person){
+    filteredList = filteredList.filter((obj)=>
+                {
+                    return(obj.inactive_person >= inactive_person && obj.region.toLowerCase() == city);
+                });
+                console.log(`/GET to /employment-stats/${city}?${inactive_person}`); //console.log en el servidor
+                res.status(200);
+                filteredList.forEach((e)=>{
+                  delete e._id;
+                });
+                res.send(JSON.stringify(filteredList,null,2));
+  }else if(unemployed_person){
+    filteredList = filteredList.filter((obj)=>
+                {
+                    return(obj.unemployed_person >= unemployed_person && obj.region.toLowerCase() == city);
+                });
+                console.log(`/GET to /employment-stats/${city}?${unemployed_person}`); //console.log en el servidor
+                res.status(200);
+                filteredList.forEach((e)=>{
+                  delete e._id;
+                });
+                res.send(JSON.stringify(filteredList,null,2));
+  }
+  else {
+    // Lógica para devolver los datos de la ciudad
+    filteredList = filteredList.filter((obj)=>
+                {
+                    return(obj.region.toLowerCase() == city);
+                });
+    if(filteredList.length === 0){
+      res.status(404).json('La ruta solicitada no existe');
+    }else{
+      console.log("/GET a una ciudad concreta");
+    filteredList.forEach((e)=>{
+      delete e._id;
+    });                                                                               
+    if(req.query.limit != undefined || req.query.offset != undefined){
+      filteredList = pagination(req,filteredList);
+  }
+    res.send(JSON.stringify(filteredList,null,2));
+    }
+  }
+});
+});
+
+//HACER UN GET A UNA CIUDAD Y FECHA ESPECÍFICA.
+app.get('/api/v1/employment-stats/:city/:year', (req, res) => {
+  const { city, year } = req.params;
+  db.find({},function(err, filteredList){
+
+    if(err){
+        res.sendStatus(500, "Error cliente");   
+    }
+  // Buscamos las estadísticas para el territorio y el año indicados
+  filteredList = filteredList.filter((obj)=>
+                {
+                    return(obj.region.toLowerCase() == city.toLowerCase() && obj.year === parseInt(year));
+                });
+  
+  if (filteredList) {
+    filteredList.forEach((e)=>{
+      delete e._id;
+    });
+    if(req.query.limit != undefined || req.query.offset != undefined){
+      filteredList = pagination(req,filteredList);
+  }
+    res.send(JSON.stringify(filteredList,null,2));
+  } else {
+    res.status(404).json('La ruta solicitada no existe');
+  }
+  console.log("Solicitud /GET")
 });
 });
 
@@ -424,6 +630,46 @@ app.delete('/api/v1/employment-stats/:region', (req, res) => {
     });
     } else {
       res.status(404).json(`No se encontraron datos que coincidan con los criterios de eliminación para ${region}`);
+    }
+  }
+});
+});
+
+//DELETE PARA UNA CIUDAD Y PERIOD.
+app.delete('/api/v1/employment-stats/:city/:period', (req, res) => {
+  const city = req.params.city;
+  const period = req.params.period;
+  db.find({},function(err, filteredList){
+
+    if(err){
+        res.sendStatus(500, "Client Error");   
+    }
+  //const filteredStats = evolution_stats.filter(stats => stats.territory === territory);
+  filteredList = filteredList.filter((obj)=>
+                {
+                    return(obj.region === city && obj.year === parseInt(period));
+                });
+  if (filteredList.length === 0) {
+    res.status(404).json(`No se encontraron datos para ${city} y ${period}`);
+  } else {
+    filteredList = filteredList.filter((obj)=>{return(obj.region === city && obj.year === parseInt(period));});
+    if (filteredList) {
+      db.remove({ $and: [{ region: city }, { year: parseInt(period) }] }, {multi : true}, (err, numRemoved)=>{
+        if (err){
+            res.sendStatus(500,"Error cliente");
+            return;
+        }else if (numRemoved === 0) {
+          res.sendStatus(404, "Error cliente: Documentos no encontrados");
+          return;
+        }
+      else {
+        res.sendStatus(200,"Deleted");
+        return;
+      }
+        
+    });
+    } else {
+      res.status(404).json(`No se encontraron datos que coincidan con los criterios de eliminación para ${city}`);
     }
   }
 });
