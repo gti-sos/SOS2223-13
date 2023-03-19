@@ -790,7 +790,7 @@ app.delete(BASE_API_URL + "/localentities-stats", (req, res) => {
     if(error){
         res.sendStatus(500, "ERROR CLIENTE");   
     }
-  // Buscar el objeto en la matriz evolution_stats
+  // Buscar el objeto en la matriz localentities_stats
   filteredList = filteredList.filter((obj)=>
                 {
                     return(obj.province === province && obj.president_appointment_date === president_appointment_date);
