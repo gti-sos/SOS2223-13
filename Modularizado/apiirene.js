@@ -142,7 +142,7 @@ app.post(BASE_API_URL + "/localentities-stats", (request,response) => {
   });
   
 
-
+/*
   
 //Motrar las ciudades en un año concreto
   
@@ -400,6 +400,93 @@ app.get('/api/v1/localentities-stats', (req, res) => {
   });
 
   
+*/
+
+
+//CODIGO PARA MOSTRAR LAS ESTADÍSTICAS A PARTIR DE LA QUERY.
+//GET a localentities-stats
+app.get('/api/v1/localentities-stats', (req, res) => {
+
+  console.log("/GET localentities-stats");
+
+  // Empezamos viendo los registros de la db y eliminamos el _id.
+  db.find({}, {_id: 0}, (error, filteredList) => {
+
+              // Comprobamos los errores que han podido surgir
+              if(error){
+
+                  console.log(`Error getting localentities-stats`);
+
+                  // El estado es el 500 de Internal Server Error
+                  res.sendStatus(500);
+
+              // Comprobamos si existen datos:
+              }else if(filteredList.length == 0){
+
+                  console.log(`Ruta evolution-stats Not Found`);
+
+                  // Si no existen datos usamos el estado es 404 de Not Found
+                  res.sendStatus(404);
+
+              }else{
+
+                  // Tenemos que inicializar los valores necesarios para filtrar: tenemos que ver el limit y offset
+                  let i = -1;
+                  if(!req.query.offset){ 
+                    var offset = -1;
+                  }else{ 
+                    var offset = parseInt(req.query.offset);
+                  }
+
+                  // Tenemos que filtrar los datos, para ver cada posible campo y devolver true si no se pasa en la query, 
+                  // y si es un parámetro en la query se comprueba la condicion
+                  let datos = filteredList.filter((x) => {
+                      return (((req.query.president_appointment_date == undefined)||(parseInt(req.query.president_appointment_date) === x.president_appointment_date))&&
+                      ((req.query.from == undefined)||(parseInt(req.query.from) <= x.president_appointment_date))&&
+                      ((req.query.to == undefined)||(parseInt(req.query.to) >= x.president_appointment_date))&&
+                      ((req.query.province == undefined)||(req.query.province === x.province))&&
+                      ((req.query.landline == undefined)||(req.query.landline === x.landline))&&
+                      ((req.query.first_name == undefined)||(req.query.first_name === x.first_name))&&
+                      ((req.query.second_name == undefined)||(req.query.second_name === x.second_name))&&
+                      ((req.query.surface_extension_under == undefined)||(parseInt(req.query.surface_extension_under) <= x.surface_extension))&&
+                      ((req.query.surface_extension_over == undefined)||(parseInt(req.query.surface_extension_over) >= x.surface_extension))&&
+                      ((req.query.population_under == undefined)||(parseInt(req.query.population_under) <= x.population))&&
+                      ((req.query.population_over == undefined)||(parseInt(req.query.population_over) >= x.population))&&
+                      ((req.query.expense_under == undefined)||(parseInt(req.query.expense_under) <= x.expense))&&
+                      ((req.query.expense_over == undefined)||(parseInt(req.query.expense_over) >= x.expense))&&
+                      ((req.query.income_under == undefined)||(parseInt(req.query.income_under) <= x.income))&&
+                      ((req.query.income_over == undefined)||(parseInt(req.query.income_over) >= x.income)));
+                  }).filter((x) => {
+                      // La paginación
+                      i = i+1;
+                      if(req.query.limit==undefined){ 
+                        var cond = true;
+                      }else{ 
+                        var cond = (offset + parseInt(req.query.limit)) >= i;
+                      }
+                      return (i>offset)&&cond;
+                  });
+
+                  // Comprobamos si tras el filtrado sigue habiendo datos, si no hay:
+                  if(datos.length == 0){
+
+                      console.log(`localentities-stats not found`);
+                      // Estado 404: Not Found
+                      res.sendStatus(404);
+
+                  // Si por el contrario encontramos datos
+                  }else{
+
+                      console.log(`Datos de localentities-stats devueltos: ${datos.length}`);
+                      // Devolvemos dichos datos, estado 200: OK
+                      res.json(datos);
+
+                  }
+              }
+      })
+});
+
+
   //TABLITA AZUL
   const rutaIrene = '/api/v1/localentities-stats';
       
@@ -739,7 +826,7 @@ app.put('/api/v1/localentities-stats/:city', (req, res) => {
   }
   filteredList = filteredList.filter((obj)=>
                 {
-                    return(obj.territory === city);
+                    return(obj.province === city);
                 });
   if (filteredList.length === 0 || city !== citybody) {
     return res.status(400).json('Estadística errónea');
@@ -851,7 +938,7 @@ app.delete('/api/v1/localentities-stats/:province', (req, res) => {
         
     });
     } else {
-      res.status(404).json(`No se encontraron datos que coincidan con los criterios de eliminación para ${territory}`);
+      res.status(404).json(`No se encontraron datos que coincidan con los criterios de eliminación para ${province}`);
     }
   }
 });
