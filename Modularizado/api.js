@@ -124,203 +124,88 @@ app.get(BASE_API_URL + "/evolution-stats/loadInitialData", (req, res) => {
 });
 
 
-//CODIGO PARA MOSTRAR LAS ESTADÍSTICAS DE TODAS LAS CIUDADES EN UN PERIODO CONCRETO.
+//CODIGO PARA MOSTRAR LAS ESTADÍSTICAS A PARTIR DE LA QUERY.
+//GET a evolution-stats
 app.get('/api/v1/evolution-stats', (req, res) => {
-  const from = req.query.from;
-  const to = req.query.to;
-  //const city = req.params.city.toLowerCase();
-  const territory = req.query.territory;
-  const period = req.query.period;
-  const total_population = req.query.total_population;
-  const man = req.query.man;
-  const woman = req.query.woman;
-  const under_sixteen_years = req.query.under_sixteen_years;
-  const from_sixteen_to_sixty_four_years = req.query.from_sixteen_to_sixty_four_years;
-  const sixty_five_and_over = req.query.sixty_five_and_over;
-  db.find({},function(err, filteredList){
 
-    if(err){
-        res.sendStatus(500, "Client Error");   
-    }
-  // Lógica para buscar todas las ciudades en el período especificado
-  if (from && to) {
-    if (from >= to) {
-      res.status(400).json("El rango de años especificado es inválido");
-    }else{
-      console.log(`/GET to /evolution-stats?from=${from}&to=${to}`); //console.log en el servidor
-      filteredList = filteredList.filter((ciudad) => {
-        return (ciudad.period >= from && ciudad.period <= to);
-     });
-     res.status(200).json(filteredList.map((e)=>{
-      delete e._id;
-      return e;
-    }));
-    }
+  console.log("/GET evolution-stats");
 
-  }else if(territory && total_population){
-    filteredList = filteredList.filter((stat) => {
-      return (stat.territory === territory && stat.total_population >= total_population);
-   });
-   console.log("New GET to /evolution-stats with territory and total_population"); //console.log en el servidor 
-   filteredList.map((e)=>{
-     delete e._id;
-     return e;
-   });
-   res.send(JSON.stringify(filteredList,null,2));
-  }else if(territory && man){
-    filteredList = filteredList.filter((stat) => {
-      return (stat.territory === territory && stat.man >= man);
-   });
-   console.log("New GET to /evolution-stats with territory and man"); //console.log en el servidor 
-   res.status(200).json(filteredList.map((e)=>{
-     delete e._id;
-     return e;
-   }));
-   res.send(JSON.stringify(filteredList,null,2));
-  }
-  else if(territory && woman){
-    filteredList = filteredList.filter((stat) => {
-      return (stat.territory === territory && stat.woman >= woman);
-   });
-   console.log("New GET to /evolution-stats with territory and woman"); //console.log en el servidor 
-   filteredList.map((e)=>{
-     delete e._id;
-     return e;
-   });
-   res.send(JSON.stringify(filteredList,null,2));
-  }
-  else if(territory && under_sixteen_years){
-    filteredList = filteredList.filter((stat) => {
-      return (stat.territory === territory && stat.under_sixteen_years >= under_sixteen_years);
-   });
-   console.log("New GET to /evolution-stats with territory and under_sixteen_years"); //console.log en el servidor 
-   res.status(200).json(filteredList.map((e)=>{
-     delete e._id;
-     return e;
-   }));
-   //res.send(JSON.stringify(filteredList,null,2));
-  }
-  else if(territory && from_sixteen_to_sixty_four_years){
-    filteredList = filteredList.filter((stat) => {
-      return (stat.territory === territory && stat.from_sixteen_to_sixty_four_years >= from_sixteen_to_sixty_four_years);
-   });
-   console.log("New GET to /evolution-stats with territory and from_sixteen_to_sixty_four_years"); //console.log en el servidor 
-   res.status(200).json(filteredList.map((e)=>{
-     delete e._id;
-     return e;
-   }));
-   //res.send(JSON.stringify(filteredList,null,2));
-  }
-  else if(territory && sixty_five_and_over){
-    filteredList = filteredList.filter((stat) => {
-      return (stat.territory === territory && stat.sixty_five_and_over >= sixty_five_and_over);
-   });
-   console.log("New GET to /evolution-stats with territory and sixty_five_and_over"); //console.log en el servidor 
-   res.status(200).json(filteredList.map((e)=>{
-     delete e._id;
-     return e;
-   }));
-   //res.send(JSON.stringify(filteredList,null,2));
-  }
-  else if(period && total_population){
-    filteredList = filteredList.filter((stat) => {
-      return (stat.period === parseInt(period) && stat.total_population >= total_population);
-   });
-   console.log("New GET to /evolution-stats with period and total_population"); //console.log en el servidor 
-   res.status(200).json(filteredList.map((e)=>{
-     delete e._id;
-     return e;
-   }));
-   //res.send(JSON.stringify(filteredList,null,2));
-  }else if(period && man){
-    filteredList = filteredList.filter((stat) => {
-      return (stat.period === parseInt(period) && stat.man >= man);
-   });
-   console.log("New GET to /evolution-stats with period and man"); //console.log en el servidor 
-   res.status(200).json(filteredList.map((e)=>{
-     delete e._id;
-     return e;
-   }));
-   //res.send(JSON.stringify(filteredList,null,2));
-  }
-  else if(period && woman){
-    filteredList = filteredList.filter((stat) => {
-      return (stat.period === parseInt(period) && stat.woman >= woman);
-   });
-   console.log("New GET to /evolution-stats with period and woman"); //console.log en el servidor 
-   res.status(200).json(filteredList.map((e)=>{
-     delete e._id;
-     return e;
-   }));
-   //res.send(JSON.stringify(filteredList,null,2));
-  }
-  else if(period && under_sixteen_years){
-    filteredList = filteredList.filter((stat) => {
-      return (stat.period === parseInt(period) && stat.under_sixteen_years >= under_sixteen_years);
-   });
-   console.log("New GET to /evolution-stats with period and period"); //console.log en el servidor 
-   res.status(200).json(filteredList.map((e)=>{
-     delete e._id;
-     return e;
-   }));
-   //res.send(JSON.stringify(filteredList,null,2));
-  }
-  else if(period && from_sixteen_to_sixty_four_years){
-    filteredList = filteredList.filter((stat) => {
-      return (stat.period === parseInt(period) && stat.from_sixteen_to_sixty_four_years >= from_sixteen_to_sixty_four_years);
-   });
-   console.log("New GET to /evolution-stats with period and from_sixteen_to_sixty_four_years"); //console.log en el servidor 
-   res.status(200).json(filteredList.map((e)=>{
-     delete e._id;
-     return e;
-   }));
-   //res.send(JSON.stringify(filteredList,null,2));
-  }
-  else if(period && sixty_five_and_over){
-    filteredList = filteredList.filter((stat) => {
-      return (stat.period === parseInt(period) && stat.sixty_five_and_over >= sixty_five_and_over);
-   });
-   console.log("New GET to /evolution-stats with period and sixty_five_and_over"); //console.log en el servidor 
-   res.status(200).json(filteredList.map((e)=>{
-     delete e._id;
-     return e;
-   }));
-   //res.send(JSON.stringify(filteredList,null,2));
-  }
-  else{
+  // Empezamos viendo los registros de la db y eliminamos el _id.
+  db.find({}, {_id: 0}, (err, filteredList) => {
 
-    const { period } = req.query;
+              // Comprobamos los errores que han podido surgir
+              if(err){
 
-  if (period) {
-    filteredList = filteredList.filter((stat) => {
-       return (stat.period === parseInt(period));
-    });
-    console.log("New GET to /evolution-stats with period"); //console.log en el servidor 
-    res.status(200).json(filteredList.map((e)=>{
-      delete e._id;
-      return e;
-    }));
-    if(req.query.limit != undefined || req.query.offset != undefined){
-      filteredList = pagination(req,filteredList);
-  }
-  //res.send(JSON.stringify(filteredList,null,2));
-  } else {
-    console.log("New GET to /evolution-stats"); //console.log en el servidor
-        filteredList.map((e)=>{
-          delete e._id;
-          return e;
-        });
-        if(req.query.limit != undefined || req.query.offset != undefined){
-          filteredList = pagination(req,filteredList);
-      }
-      res.send(JSON.stringify(filteredList,null,2));
-      //res.json(filteredList);
-      //}
-    //});
-  }
+                  console.log(`Error getting evolution-stats`);
 
-  }
-  });
+                  // El estado es el 500 de Internal Server Error
+                  res.sendStatus(500);
+
+              // Comprobamos si existen datos:
+              }else if(filteredList.length == 0){
+
+                  console.log(`Ruta evolution-stats Not Found`);
+
+                  // Si no existen datos usamos el estado es 404 de Not Found
+                  res.sendStatus(404);
+
+              }else{
+
+                  // Tenemos que inicializar los valores necesarios para filtrar: tenemos que ver el limit y offset
+                  let i = -1;
+                  if(!req.query.offset){ 
+                    var offset = -1;
+                  }else{ 
+                    var offset = parseInt(req.query.offset);
+                  }
+
+                  // Tenemos que filtrar los datos, para ver cada posible campo y devolver true si no se pasa en la query, 
+                  // y si es un parámetro en la query se comprueba la condicion
+                  let datos = filteredList.filter((x) => {
+                      return (((req.query.period == undefined)||(parseInt(req.query.period) === x.period))&&
+                      ((req.query.from == undefined)||(parseInt(req.query.from) <= x.period))&&
+                      ((req.query.to == undefined)||(parseInt(req.query.to) >= x.period))&&
+                      ((req.query.territory == undefined)||(req.query.territory === x.territory))&&
+                      ((req.query.total_population_over == undefined)||(parseInt(req.query.total_population_over) <= x.total_population))&&
+                      ((req.query.total_population_under == undefined)||(parseInt(req.query.total_population_under) >= x.total_population))&&
+                      ((req.query.man_over == undefined)||(parseInt(req.query.man_over) <= x.man))&&
+                      ((req.query.man_under == undefined)||(parseInt(req.query.man_under) >= x.man))&&
+                      ((req.query.woman_over == undefined)||(parseInt(req.query.woman_over) <= x.woman))&&
+                      ((req.query.woman_under == undefined)||(parseInt(req.query.woman_under) >= x.woman))&&
+                      ((req.query.under_sixteen_years_over == undefined)||(parseInt(req.query.under_sixteen_years_over) <= x.under_sixteen_years))&&
+                      ((req.query.under_sixteen_years_under == undefined)||(parseInt(req.query.under_sixteen_years_under) >= x.under_sixteen_years))&&
+                      ((req.query.from_sixteen_to_sixty_four_years_over == undefined)||(parseInt(req.query.from_sixteen_to_sixty_four_years_over) <= x.from_sixteen_to_sixty_four_years))&&
+                      ((req.query.from_sixteen_to_sixty_four_years_under == undefined)||(parseInt(req.query.from_sixteen_to_sixty_four_years_under) >= x.from_sixteen_to_sixty_four_years))&&
+                      ((req.query.sixty_five_and_over_over == undefined)||(parseInt(req.query.sixty_five_and_over_over) <= x.sixty_five_and_over))&&
+                      ((req.query.sixty_five_and_over_under == undefined)||(parseInt(req.query.sixty_five_and_over_under) >= x.sixty_five_and_over)));
+                  }).filter((x) => {
+                      // La paginación
+                      i = i+1;
+                      if(req.query.limit==undefined){ 
+                        var cond = true;
+                      }else{ 
+                        var cond = (offset + parseInt(req.query.limit)) >= i;
+                      }
+                      return (i>offset)&&cond;
+                  });
+
+                  // Comprobamos si tras el filtrado sigue habiendo datos, si no hay:
+                  if(datos.length == 0){
+
+                      console.log(`evolution-stats not found`);
+                      // Estado 404: Not Found
+                      res.sendStatus(404);
+
+                  // Si por el contrario encontramos datos
+                  }else{
+
+                      console.log(`Datos de evolution-stats devueltos: ${datos.length}`);
+                      // Devolvemos dichos datos, estado 200: OK
+                      res.json(datos);
+
+                  }
+              }
+      })
 });
 
 //MÉTODOS TABLA AZUL.
@@ -435,88 +320,81 @@ app.get('/api/v1/evolution-stats/:city', (req, res) => {
                     return(obj.territory.toLowerCase() == city && obj.period >= from && obj.period<= to);
                 });
     console.log(`/GET to /evolution-stats/${city}?from=${from}&to=${to}`); //console.log en el servidor
-    res.status(200);
-                filteredList.forEach((e)=>{
+    filteredList.forEach((e)=>{
                   delete e._id;
                 });
-                res.send(JSON.stringify(filteredList,null,2));
+                res.status(200).json(filteredList);
   }else if(period){
     filteredList = filteredList.filter((obj)=>
                 {
-                    return(obj.period == period);
+                    return(obj.period == period && obj.territory.toLowerCase() == city);
                 });
                 console.log(`/GET to /evolution-stats/${city}?${period}`); //console.log en el servidor
-                res.status(200);
                 filteredList.forEach((e)=>{
                   delete e._id;
                 });
-                res.send(JSON.stringify(filteredList,null,2));
+                res.status(200).json(filteredList);
   }else if(total_population){
     filteredList = filteredList.filter((obj)=>
                 {
-                    return(obj.total_population == total_population);
+                    return(obj.total_population == total_population && obj.territory.toLowerCase() == city);
                 });
                 console.log(`/GET to /evolution-stats/${city}?${total_population}`); //console.log en el servidor
-                res.status(200);
                 filteredList.forEach((e)=>{
                   delete e._id;
                 });
-                res.send(JSON.stringify(filteredList,null,2));
+                res.status(200).json(filteredList);
+
   }else if(man){
     filteredList = filteredList.filter((obj)=>
                 {
-                    return(obj.man == man);
+                    return(obj.man == man && obj.territory.toLowerCase() == city);
                 });
                 console.log(`/GET to /evolution-stats/${city}?${man}`); //console.log en el servidor
-                res.status(200);
                 filteredList.forEach((e)=>{
                   delete e._id;
                 });
-                res.send(JSON.stringify(filteredList,null,2));
+                res.status(200).json(filteredList);
   }else if(woman){
     filteredList = filteredList.filter((obj)=>
                 {
-                    return(obj.woman == woman);
+                    return(obj.woman == woman && obj.territory.toLowerCase() == city);
                 });
                 console.log(`/GET to /evolution-stats/${city}?${woman}`); //console.log en el servidor
-                res.status(200);
                 filteredList.forEach((e)=>{
                   delete e._id;
                 });
-                res.send(JSON.stringify(filteredList,null,2));
+                res.status(200).json(filteredList);
   }else if(under_sixteen_years){
     filteredList = filteredList.filter((obj)=>
                 {
-                    return(obj.under_sixteen_years == under_sixteen_years);
+                    return(obj.under_sixteen_years == under_sixteen_years && obj.territory.toLowerCase() == city);
                 });
                 console.log(`/GET to /evolution-stats/${city}?${under_sixteen_years}`); //console.log en el servidor
-                res.status(200);
                 filteredList.forEach((e)=>{
                   delete e._id;
                 });
-                res.send(JSON.stringify(filteredList,null,2));
+                res.status(200).json(filteredList);
   }else if(from_sixteen_to_sixty_four_years){
     filteredList = filteredList.filter((obj)=>
                 {
-                    return(obj.from_sixteen_to_sixty_four_years == from_sixteen_to_sixty_four_years);
+                    return(obj.from_sixteen_to_sixty_four_years == from_sixteen_to_sixty_four_years && obj.territory.toLowerCase() == city);
                 });
                 console.log(`/GET to /evolution-stats/${city}?${from_sixteen_to_sixty_four_years}`); //console.log en el servidor
-                res.status(200);
                 filteredList.forEach((e)=>{
                   delete e._id;
                 });
-                res.send(JSON.stringify(filteredList,null,2));
+                res.status(200).json(filteredList);
   }else if(sixty_five_and_over){
     filteredList = filteredList.filter((obj)=>
                 {
-                    return(obj.sixty_five_and_over == sixty_five_and_over);
+                    return(obj.sixty_five_and_over == sixty_five_and_over && obj.territory.toLowerCase() == city);
                 });
                 console.log(`/GET to /evolution-stats/${city}?${sixty_five_and_over}`); //console.log en el servidor
-                res.status(200);
                 filteredList.forEach((e)=>{
                   delete e._id;
                 });
-                res.send(JSON.stringify(filteredList,null,2));
+                res.status(200).json(filteredList);
   }
   else {
     // Lógica para devolver los datos de la ciudad
@@ -534,7 +412,7 @@ app.get('/api/v1/evolution-stats/:city', (req, res) => {
     if(req.query.limit != undefined || req.query.offset != undefined){
       filteredList = pagination(req,filteredList);
   }
-    res.send(JSON.stringify(filteredList,null,2));
+    res.status(200).json(filteredList);
     }
   }
 });
@@ -561,7 +439,7 @@ app.get('/api/v1/evolution-stats/:territory/:year', (req, res) => {
     if(req.query.limit != undefined || req.query.offset != undefined){
       filteredList = pagination(req,filteredList);
   }
-    res.send(JSON.stringify(filteredList,null,2));
+    res.status(200).json(filteredList);
   } else {
     res.status(404).json('La ruta solicitada no existe');
   }
