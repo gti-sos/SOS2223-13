@@ -1,0 +1,345 @@
+{
+	"info": {
+		"_postman_id": "bcfed70b-0883-4d89-b674-8132773c97e9",
+		"name": "lab13",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26054707"
+	},
+	"item": [
+		{
+			"name": "/localentities",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URL_BASE}}/api/v1/localentities-stats",
+					"host": [
+						"{{URL_BASE}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"localentities-stats"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/loadInitialData",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URL_BASE}}/api/v1/localentities-stats/loadInitialData",
+					"host": [
+						"{{URL_BASE}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"localentities-stats",
+						"loadInitialData"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/Almeria",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URL_BASE}}/api/v1/localentities-stats/Almeria",
+					"host": [
+						"{{URL_BASE}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"localentities-stats",
+						"Almeria"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/Almeria/2015",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URL_BASE}}/api/v1/localentities-stats/Almeria/2015",
+					"host": [
+						"{{URL_BASE}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"localentities-stats",
+						"Almeria",
+						"2015"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/Sevilla?from=2014&to=2016",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URL_BASE}}/api/v1/localentities-stats/Sevilla?from=2014&to=2016",
+					"host": [
+						"{{URL_BASE}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"localentities-stats",
+						"Sevilla"
+					],
+					"query": [
+						{
+							"key": "from",
+							"value": "2014"
+						},
+						{
+							"key": "to",
+							"value": "2016"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "?year=2014",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URL_BASE}}/api/v1/localentities-stats?president_appointment_date=2014",
+					"host": [
+						"{{URL_BASE}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"localentities-stats"
+					],
+					"query": [
+						{
+							"key": "president_appointment_date",
+							"value": "2014"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "?from=2014&to=2016",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URL_BASE}}/v1/localentities-stats?from=2014&to=2016",
+					"host": [
+						"{{URL_BASE}}"
+					],
+					"path": [
+						"v1",
+						"localentities-stats"
+					],
+					"query": [
+						{
+							"key": "from",
+							"value": "2014"
+						},
+						{
+							"key": "to",
+							"value": "2016"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/localentities",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"province\": \"Madrid\",\r\n        \"landline\": 950351272,\r\n        \"first_name\": \"MARIA ISABEL\",\r\n        \"second_name\": \"CARBALLO\",\r\n        \"president_appointment_date\": 2014,\r\n        \"surface_extension\": 43.047,\r\n        \"population\": 13423,\r\n        \"expense\": 2269600,\r\n        \"income\": 2220600\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL_BASE}}/api/v1/localentities-stats",
+					"host": [
+						"{{URL_BASE}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"localentities-stats"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/localentities-stats/ciudad existente",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"province\": \"Almeria\",\r\n        \"landline\": 950351228,\r\n        \"first_name\": \"ANTONIO MANUEL\",\r\n        \"second_name\": \"ORTIZ\",\r\n        \"president_appointment_date\": 2015,\r\n        \"surface_extension\": 45.24,\r\n        \"population\": 1342,\r\n        \"expense\": 2224600,\r\n        \"income\": 2224600\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL_BASE}}/api/v1/localentities-stats",
+					"host": [
+						"{{URL_BASE}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"localentities-stats"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/localentities",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL_BASE}}/api/v1/localentities-stats",
+					"host": [
+						"{{URL_BASE}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"localentities-stats"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/localentities_stats",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"province\": \"Sevilla\",\r\n        \"landline\": 954816021,\r\n        \"first_name\": \"MARINA\",\r\n        \"second_name\": \"MONTA?O\",\r\n        \"president_appointment_date\": 2014,\r\n        \"surface_extension\": 13.69,\r\n        \"population\": 2114,\r\n        \"expense\": 2137220.7,\r\n        \"income\": 2137220.7\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL_BASE}}/api/v1/localentities-stats/Sevilla",
+					"host": [
+						"{{URL_BASE}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"localentities-stats",
+						"Sevilla"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/localentities-stats/ciudad inexistente",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URL_BASE}}/api/v1/localentities-stats/Zaragoza",
+					"host": [
+						"{{URL_BASE}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"localentities-stats",
+						"Zaragoza"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/localentities-stats no permitido",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "{{URL_BASE}}/api/v1/localentities-stats",
+					"host": [
+						"{{URL_BASE}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"localentities-stats"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/localentities-stats/Sevilla no permitido",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{URL_BASE}}/api/v1/localentities-stats/Sevilla",
+					"host": [
+						"{{URL_BASE}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"localentities-stats",
+						"Sevilla"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
