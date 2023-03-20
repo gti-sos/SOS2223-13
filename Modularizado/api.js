@@ -710,19 +710,3 @@ app.use((err, req, res, next) => {
 
 
 }
-
-/*
-//EXPORTACION
-// api.js
-module.exports = {
-    express,
-    cool,
-    bodyParser,
-    app,
-    port,
-    evolution_stats,
-    BASE_API_URL,
-    datos_random,
-    rutaBase
-};
-*/
