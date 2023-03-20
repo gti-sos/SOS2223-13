@@ -11,7 +11,7 @@ const BASE_API_URL = "/api/v1";
 
 var Datastore = require('nedb');
 var db = new Datastore();
-const API_POSTMAN = "https://documenter.getpostman.com/view/26023285/2s93JzLgAB";
+
 
 module.exports =(app)=>{
 
@@ -637,9 +637,8 @@ app.delete('/api/v1/employment-stats/:region', (req, res) => {
 });
 
 //Redirect /docs
-app.get(BASE_API_URL+"/employment-stats/docs",(req,res)=>{
-  res.sendStatus(200);
-  console.log("Executed /employment-stats/docs(1) ");
+app.get("api/v1/employment-stats/docs",(req,res)=>{
+  res.redirect("https://documenter.getpostman.com/view/26023285/2s93JzLgAB");
 });
 
 //DELETE PARA UNA CIUDAD Y PERIOD.
