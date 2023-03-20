@@ -49,15 +49,20 @@ app.use(bodyParser.json());
 const BASE_API_URL = "/api/v1";
 app.use("/",express.static("./public"));
 
-
+app.get(BASE_API_URL+"/employment-stats/docs2",(req,res)=>{
+  //res.redirect(API_POSTMAN);
+  res.sendStatus(200);
+  console.log("Executed /employment-stats/docs(2) ");
+});
+/*
 modulo_irene(app);
 modulo_jose(app);
 modulo_luis(app);
 
-
+*/
 //ARRANCAR EL SERVIDOR.
 app.listen(port,()=>{
-  console.log(`Server ready in port ${port}`);
+  console.log(`Server f06 ready in port ${port}`);
 });
 
 
