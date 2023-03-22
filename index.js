@@ -49,9 +49,7 @@ app.use(bodyParser.json());
 const BASE_API_URL = "/api/v1";
 app.use("/",express.static("./public"));
 
-app.get("/api/v1/employment-stats/docs",(req,res)=>{
-  res.redirect("https://documenter.getpostman.com/view/26023285/2s93JzLgAB");
-});
+
 
 modulo_irene(app);
 modulo_jose(app);
@@ -59,7 +57,7 @@ modulo_luis(app);
 
 //ARRANCAR EL SERVIDOR.
 app.listen(port,()=>{
-  console.log(`Server f06 ready in port ${port}`);
+  console.log(`Server ready in port ${port}`);
 });
 
 

@@ -13,7 +13,13 @@ var Datastore = require('nedb');
 var db = new Datastore();
 
 
+
 module.exports =(app)=>{
+
+//Redirect /docs
+app.get("/api/v1/employment-stats/docs",(req,res)=>{
+  res.redirect("https://documenter.getpostman.com/view/26023285/2s93JzLgAB");
+});
 
 
 //Código Jose López tarea F05
@@ -38,154 +44,98 @@ var employment_stats = [
 
 //Tarea crear 10 datos 
 
-app.get(BASE_API_URL + "/employment-stats/loadInitialData", (req, res) => {
+app.get("/api/v1/employment-stats/loadInitialData", (req, res) => {
   db.find({}, function(err,filteredList){
 
     if(err){
         res.sendStatus(500, "Error cliente");
     
     }
-    if (filteredList === 0){
-      for(var i = 0; i<employment_stats.length;i++){
-        db.insert(employment_stats[i]);
-    }
+    if (filteredList.length === 0){
+      db.insert(employment_stats);
       res.sendStatus(200);
       console.log("Se han insertado datos")
     } else {
-      res.json('Ya contiene datos');
-      console.log('Ya contiene datos')
+      res.json(`Ya contiene ${filteredList.length} datos`);
+      console.log(`Ya contiene ${filteredList.length} datos`)
     }
 }); 
 });
 
-//CODIGO PARA MOSTRAR LAS ESTADÍSTICAS DE TODAS LAS CIUDADES EN UN PERIODO CONCRETO.
+//CODIGO PARA MOSTRAR TODAS LAS ESTADÍSTICAS 
 app.get('/api/v1/employment-stats', (req, res) => {
-  const from = req.query.from;
-  const to = req.query.to;
-  const region = req.query.region;
-  const year = req.query.year;
-  const employed_person = req.query.employed_person;
-  const inactive_person = req.query.inactive_person;
-  const unemployed_person = req.query.unemployed_person;
 
-  db.find({},function(err, filteredList){
+  console.log("/GET employment-stats");
 
-    if(err){
-        res.sendStatus(500, "Error cliente");   
-    }
-  // Lógica para buscar todas las ciudades en el período especificado
-  if (from && to) {
-    if (from > to) {
-      res.status(400).json("El rango de años especificado es inválido");
-    }else{
-      console.log(`/GET to /employment-stats?from=${from}&to=${to}`); //console.log en el servidor
-      filteredList = filteredList.filter((ciudad) => {
-        return (ciudad.year >= from && ciudad.year <= to);
-     });
-     res.status(200).json(filteredList.map((e)=>{
-      delete e._id;
-      return e;
-    }));
-    }
+  // Empezamos viendo los registros de la db y eliminamos el _id.
+  db.find({}, {_id: 0}, (err, filteredList) => {
 
-  }else if(region && employed_person){
-    filteredList = filteredList.filter((stat) => {
-      return (stat.region === region && stat.employed_person >= employed_person);
-   });
-   console.log("New GET to /evolution-stats with region and employed person"); //console.log en el servidor 
-   filteredList.map((e)=>{
-     delete e._id;
-     return e;
-   });
-   res.send(JSON.stringify(filteredList,null,2));
-  }else if(region && inactive_person){
-    filteredList = filteredList.filter((stat) => {
-      return (stat.region === region && stat.inactive_person >= inactive_person);
-   });
-   console.log("New GET to /employment-stats with region and inactive person"); //console.log en el servidor 
-   res.status(200).json(filteredList.map((e)=>{
-     delete e._id;
-     return e;
-   }));
-   res.send(JSON.stringify(filteredList,null,2));
-  }
-  else if(region && unemployed_person){
-    filteredList = filteredList.filter((stat) => {
-      return (stat.region === region && stat.unemployed_person >= unemployed_person);
-   });
-   console.log("New GET to /employment-stats with region and unemployed person"); //console.log en el servidor 
-   filteredList.map((e)=>{
-     delete e._id;
-     return e;
-   });
-   res.send(JSON.stringify(filteredList,null,2));
-  }
-  else if(year && employed_person){
-    filteredList = filteredList.filter((stat) => {
-      return (stat.year === parseInt(year) && stat.employed_person >= employed_person);
-   });
-   console.log("New GET to /employment-stats with year and employed_person"); //console.log en el servidor 
-   res.status(200).json(filteredList.map((e)=>{
-     delete e._id;
-     return e;
-   }));
-   //res.send(JSON.stringify(filteredList,null,2));
-  }else if(year && inactive_person){
-    filteredList = filteredList.filter((stat) => {
-      return (stat.year === parseInt(year) && stat.inactive_person >= inactive_person);
-   });
-   console.log("New GET to /employment-stats with year and inactive person"); //console.log en el servidor 
-   res.status(200).json(filteredList.map((e)=>{
-     delete e._id;
-     return e;
-   }));
-   //res.send(JSON.stringify(filteredList,null,2));
-  }
-  else if(year && unemployed_person){
-    filteredList = filteredList.filter((stat) => {
-      return (stat.year === parseInt(year) && stat.unemployed_person >= unemployed_person);
-   });
-   console.log("New GET to /employment-stats with year and unemployed_person"); //console.log en el servidor 
-   res.status(200).json(filteredList.map((e)=>{
-     delete e._id;
-     return e;
-   }));
-   //res.send(JSON.stringify(filteredList,null,2));
-  } 
-  else{
+              // Comprobamos los errores que han podido surgir
+              if(err){
 
-    const { year } = req.query;
+                  console.log(`Error para obtener employment-stats`);
 
-  if (year) {
-    filteredList = filteredList.filter((stat) => {
-       return (stat.year === parseInt(year));
-    });
-    console.log("New GET to /employment-stats with year"); //console.log en el servidor 
-    res.status(200).json(filteredList.map((e)=>{
-      delete e._id;
-      return e;
-    }));
-    if(req.query.limit != undefined || req.query.offset != undefined){
-      filteredList = pagination(req,filteredList);
-  }
-  //res.send(JSON.stringify(filteredList,null,2));
-  } else {
-    console.log("New GET to /employment-stats"); //console.log en el servidor
-        filteredList.map((e)=>{
-          delete e._id;
-          return e;
-        });
-        if(req.query.limit != undefined || req.query.offset != undefined){
-          filteredList = pagination(req,filteredList);
-      }
-      res.send(JSON.stringify(filteredList,null,2));
-      //res.json(filteredList);
-      //}
-    //});
-  }
+                  // El estado es el 500 de Internal Server Error
+                  res.sendStatus(500);
 
-  }
-  });
+              // Comprobamos si existen datos:
+              }else if(filteredList.length == 0){
+
+                  console.log(`Ruta employment-stats no encontrada`);
+
+                  // Si no existen datos usamos el estado es 404 de Not Found
+                  res.sendStatus(404);
+
+              }else{
+
+                  // Tenemos que inicializar los valores necesarios para filtrar: tenemos que ver el limit y offset
+                  let i = -1;
+                  if(!req.query.offset){ 
+                    var offset = -1;
+                  }else{ 
+                    var offset = parseInt(req.query.offset);
+                  }
+
+                  // Tenemos que filtrar los datos, para ver cada posible campo y devolver true si no se pasa en la query, 
+                  // y si es un parámetro en la query se comprueba la condicion
+                  let datos = filteredList.filter((x) => {
+                      return (((req.query.year == undefined)||(parseInt(req.query.year) === x.year))&&
+                      ((req.query.from == undefined)||(parseInt(req.query.from) <= x.period))&&
+                      ((req.query.to == undefined)||(parseInt(req.query.to) >= x.period))&&
+                      ((req.query.period == undefined)||(req.query.period === x.period))&&
+                      ((req.query.date == undefined)||(req.query.date === x.date))&&
+                      ((req.query.region == undefined)||(req.query.region === x.region))&&
+                      ((req.query.employed_person == undefined)||(parseInt(req.query.employed_person) <= x.employed_person))&&
+                      ((req.query.inactive_person == undefined)||(parseInt(req.query.inactive_person) >= x.inactive_person))&&
+                      ((req.query.unemployed_person == undefined)||(parseInt(req.query.unemployed_person) <= x.unemployed_person)));
+                  }).filter((x) => {
+                      // La paginación
+                      i = i+1;
+                      if(req.query.limit==undefined){ 
+                        var cond = true;
+                      }else{ 
+                        var cond = (offset + parseInt(req.query.limit)) >= i;
+                      }
+                      return (i>offset)&&cond;
+                  });
+
+                  // Comprobamos si tras el filtrado sigue habiendo datos, si no hay:
+                  if(datos.length == 0){
+
+                      console.log(`employment-stats no encontrado`);
+                      // Estado 404: Not Found
+                      res.sendStatus(404);
+
+                  // Si por el contrario encontramos datos
+                  }else{
+
+                      console.log(`Datos de employment-stats devueltos: ${datos.length}`);
+                      // Devolvemos dichos datos, estado 200: OK
+                      res.json(datos);
+
+                  }
+              }
+      })
 });
 
 //CODIGO PARA PODER HACER GET A UNA CIUDAD ESPECÍFICA Y A UNA CIUDAD Y PERIODO CONCRETO.
@@ -364,43 +314,12 @@ app.put(rutaRaiz, (req, res) => {
   res.status(405).send('El método PUT no está permitido en esta ruta');
 });
 
-// Método DELETE para la ruta base
-//app.delete(rutaRaiz, (req, res) => {
-//  datos_10 = [];
-//  res.status(200).send('Los datos se han borrado correctamente');
-//});
 
 // Ruta específica que no permite el método POST
 const rutaEsp = '/api/v1/employment-stats/loadInitialData';
 app.post(rutaEsp, (req, res) => {
   res.status(405).send('El método POST no está permitido en esta ruta');
 });
-
-// Ruta Específica Método GET
-//app.get(rutaEsp, (req, res) => {
-//  res.json(datos_10);
-//  res.status(200);
-//});
-
-// Ruta Específica Método PUT
-//app.put(rutaEsp, (req, res) => {
-  // Verificar que el cuerpo de la solicitud contenga datos
-//  if (Object.keys(req.body).length === 0) {
-    // Enviar una respuesta con un código de estado 400 Bad Request si no se proporcionaron datos
-//    res.status(400).send('No se proporcionaron datos');
-//  } else {
-    // Reemplazar los datos existentes con los nuevos datos
-//    datos_10 = req.body;
-    // Enviar una respuesta con un código de estado 200 OK
-//    res.status(200).send('Los datos se han actualizado correctamente');
-//  }
-//});
-
-//Método DELETE de la ruta específica.
-//app.delete(rutaEsp, (req, res) => {
-//  datos_10 = [];
-//  res.status(200).send('Los datos se han borrado correctamente');
-//});
 
 
 //CODIGO PARA PODER HACER GET A UNA CIUDAD ESPECÍFICA Y A UNA CIUDAD Y PERIODO CONCRETO.
@@ -636,10 +555,7 @@ app.delete('/api/v1/employment-stats/:region', (req, res) => {
 });
 });
 
-//Redirect /docs
-app.get("api/v1/employment-stats/docs",(req,res)=>{
-  res.redirect("https://documenter.getpostman.com/view/26023285/2s93JzLgAB");
-});
+
 
 //DELETE PARA UNA CIUDAD Y PERIOD.
 app.delete('/api/v1/employment-stats/:city/:period', (req, res) => {
