@@ -56,8 +56,8 @@ app.get("/api/v1/employment-stats/loadInitialData", (req, res) => {
       res.sendStatus(200);
       console.log("Se han insertado datos")
     } else {
-      res.json(`Ya contiene ${filteredList.length} datos`);
-      console.log(`Ya contiene ${filteredList.length} datos`)
+      res.sendStatus(200);
+      console.log(`Ya contiene datos`)
     }
 }); 
 });
@@ -144,6 +144,8 @@ app.get('/api/v1/employment-stats/:city', (req, res) => {
   const from = req.query.from;
   const to = req.query.to;
   const year = req.query.year;
+  const period = req.query.period;
+  const date = req.query.date;
   const employed_person = req.query.employed_person;
   const inactive_person = req.query.inactive_person;
   const unemployed_person = req.query.unemployed_person;
@@ -204,6 +206,28 @@ app.get('/api/v1/employment-stats/:city', (req, res) => {
                     return(obj.unemployed_person >= unemployed_person && obj.region.toLowerCase() == city);
                 });
                 console.log(`/GET to /employment-stats/${city}?${unemployed_person}`); //console.log en el servidor
+                res.status(200);
+                filteredList.forEach((e)=>{
+                  delete e._id;
+                });
+                res.send(JSON.stringify(filteredList,null,2));
+  }else if(period){
+    filteredList = filteredList.filter((obj)=>
+                {
+                    return(obj.period >= period && obj.region.toLowerCase() == city);
+                });
+                console.log(`/GET to /employment-stats/${city}?period=${period}`); //console.log en el servidor
+                res.status(200);
+                filteredList.forEach((e)=>{
+                  delete e._id;
+                });
+                res.send(JSON.stringify(filteredList,null,2));
+  }else if(date){
+    filteredList = filteredList.filter((obj)=>
+                {
+                    return(obj.date >= date && obj.region.toLowerCase() == city);
+                });
+                console.log(`/GET to /employment-stats/${city}?date=${date}`); //console.log en el servidor
                 res.status(200);
                 filteredList.forEach((e)=>{
                   delete e._id;
@@ -323,44 +347,8 @@ app.post(rutaEsp, (req, res) => {
 
 
 //CODIGO PARA PODER HACER GET A UNA CIUDAD ESPECÍFICA Y A UNA CIUDAD Y PERIODO CONCRETO.
-app.get('/api/v1/employment-stats/:city', (req, res) => {
-  const city = req.params.city.toLowerCase();
-  const from = req.query.from;
-  const to = req.query.to;
-  db.find({},function(err, filteredList){
 
-    if(err){
-        res.sendStatus(500, "Error cliente");   
-    }
 
-  if (from && to) {
-    // Lógica para devolver los datos de la ciudad para el periodo especificado
-    filteredList = filteredList.filter((obj)=>
-                {
-                    return(obj.region.toLowerCase() == city && obj.year >= from && obj.year<= to);
-    });
-    console.log(`/GET to /employment-stats/${city}?from=${from}&to=${to}`); //console.log en el servidor
-    res.status(200);
-    filteredList.forEach((e)=>{
-      delete e._id;
-    });
-    res.send(JSON.stringify(filteredList,null,2));
-  } else {
-    // Lógica para devolver los datos de la ciudad
-    filteredList = filteredList.filter((obj)=>
-                {
-                    return(obj.region.toLowerCase() == city);
-                });
-    if(filteredList.length === 0){
-      res.status(404).send('La ruta solicitada no existe');
-    }else{
-    res.send(JSON.stringify(filteredList,null,2));
-    console.log("/GET a una ciudad concreta");
-    res.status(200);
-    }
-  }
-  });
-});
 
 //CODIGO PARA PODER HACER UN GET A UNA CIUDAD Y FECHA ESPECÍFICA.
 app.get('/api/v1/employment-stats/:region/:year', (req, res) => {
