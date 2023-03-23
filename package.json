@@ -5,8 +5,9 @@
   "main": "index.js",
   "scripts": {
     "start": "node index",
-    "test": "npx newman run ./tests/luimargon3.json -e ./tests/env/luimargon3_gcloud.json",
-    "test-employment-stats": "npx newman run ./tests/joslopber.json -e ./tests/env/joslopber_localhost.json" 
+    "test-evolution-stats": "npx newman run ./tests/luimargon3.json -e ./tests/env/luimargon3_localhost.json",
+    "test-employment-stats": "npx newman run ./tests/joslopber.json -e ./tests/env/joslopber_localhost.json",
+    "test":"npm run test-evolution-stats && npm run test-employment-stats" 
   },
   "repository": {
     "type": "git",
