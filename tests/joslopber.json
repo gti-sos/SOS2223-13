@@ -157,49 +157,6 @@
 			"response": []
 		},
 		{
-			"name": "GET /api/v1/employment-stats/Almeria?date=2018-T4",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200\", function () {\r",
-							"    pm.response.to.have.status(200);\r",
-							"});\r",
-							"pm.test(\"Your test contains\", function () {\r",
-							"    var jsonData = pm.response.json();\r",
-							"    pm.expect(jsonData).to.have.lengthOf.above(0);\r",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{URLBASE}}/api/v1/employment-stats/Almeria?date=2018-T4",
-					"host": [
-						"{{URLBASE}}"
-					],
-					"path": [
-						"api",
-						"v1",
-						"employment-stats",
-						"Almeria"
-					],
-					"query": [
-						{
-							"key": "date",
-							"value": "2018-T4"
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "GET /employment-stats?region=Almeria&employed_person=347.3&period=T1",
 			"event": [
 				{
@@ -270,7 +227,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "\r\n   {\r\n        \"year\": 2010,\r\n        \"period\": \"T2\",\r\n        \"date\": \"2017-T2\",\r\n        \"region\": \"Almeria\",\r\n        \"employed_person\": 345.2,\r\n        \"inactive_person\": 223.6,\r\n        \"unemployed_person\": 79.5\r\n    }\r\n",
+					"raw": "\r\n{\r\n        \"year\": 2017,\r\n        \"period\": \"T4\",\r\n        \"date\": \"2017-T4\",\r\n        \"region\": \"Caceres\",\r\n        \"employed_person\": 356,\r\n        \"inactive_person\": 213.2,\r\n        \"unemployed_person\": 90.5\r\n    }\r\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -292,7 +249,112 @@
 			"response": []
 		},
 		{
-			"name": "PUT /employment-stats",
+			"name": "GET /api/v1/employment-stats/Caceres",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Your test contains\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.have.lengthOf.above(0);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URLBASE}}/api/v1/employment-stats/Caceres",
+					"host": [
+						"{{URLBASE}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"employment-stats",
+						"Caceres"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE /employment-stats/Caceres",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{URLBASE}}/api/v1/employment-stats/Caceres",
+					"host": [
+						"{{URLBASE}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"employment-stats",
+						"Caceres"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /api/v1/employment-stats/Caceres",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URLBASE}}/api/v1/employment-stats/Caceres",
+					"host": [
+						"{{URLBASE}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"employment-stats",
+						"Caceres"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT /employment-stats/Almeria/2018",
 			"event": [
 				{
 					"listen": "test",
@@ -312,7 +374,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n        \"year\": 2018,\r\n        \"period\": \"T4\",\r\n        \"date\": \"2018-T4\",\r\n        \"region\": \"Almeria\",\r\n        \"employed_person\": 500,\r\n        \"inactive_person\": 232.6,\r\n        \"unemployed_person\": 63.7\r\n    }",
+					"raw": "{\r\n        \"year\": 2018,\r\n        \"period\": \"T1\",\r\n        \"date\": \"2018-T1\",\r\n        \"region\": \"Almeria\",\r\n        \"employed_person\": 700,\r\n        \"inactive_person\": 219.8,\r\n        \"unemployed_person\": 82\r\n    }",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -330,6 +392,53 @@
 						"employment-stats",
 						"Almeria",
 						"2018"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /api/v1/employment-stats/Almeria?employed_person=700&year=2018",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Your test contains\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.have.lengthOf.above(0);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URLBASE}}/api/v1/employment-stats/Almeria?employed_person=700&year=2018",
+					"host": [
+						"{{URLBASE}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"employment-stats",
+						"Almeria"
+					],
+					"query": [
+						{
+							"key": "employed_person",
+							"value": "700"
+						},
+						{
+							"key": "year",
+							"value": "2018"
+						}
 					]
 				}
 			},
@@ -527,7 +636,7 @@
 			"response": []
 		},
 		{
-			"name": "GET /employment-stats/almeria/2017",
+			"name": "PUT /employment-stats/Almeria/2017",
 			"event": [
 				{
 					"listen": "test",
@@ -605,108 +714,6 @@
 			"response": []
 		},
 		{
-			"name": "DELETE /employment-stats/Almeria/2018",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200\", function () {\r",
-							"    pm.response.to.have.status(200);\r",
-							"});\r",
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"url": {
-					"raw": "{{URLBASE}}/api/v1/employment-stats/Almeria/2018",
-					"host": [
-						"{{URLBASE}}"
-					],
-					"path": [
-						"api",
-						"v1",
-						"employment-stats",
-						"Almeria",
-						"2018"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "DELETE /employment-stats/Almeria",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200\", function () {\r",
-							"    pm.response.to.have.status(200);\r",
-							"});\r",
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"url": {
-					"raw": "{{URLBASE}}/api/v1/employment-stats/Almeria",
-					"host": [
-						"{{URLBASE}}"
-					],
-					"path": [
-						"api",
-						"v1",
-						"employment-stats",
-						"Almeria"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "DELETE /employment-stats",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200\", function () {\r",
-							"    pm.response.to.have.status(200);\r",
-							"});\r",
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"url": {
-					"raw": "{{URLBASE}}/api/v1/employment-stats",
-					"host": [
-						"{{URLBASE}}"
-					],
-					"path": [
-						"api",
-						"v1",
-						"employment-stats"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "DELETE /loadInitialData",
 			"event": [
 				{
@@ -741,7 +748,7 @@
 			"response": []
 		},
 		{
-			"name": "GET /loadInitialData 2",
+			"name": "GET /loadInitialData (2)",
 			"event": [
 				{
 					"listen": "test",
@@ -769,6 +776,42 @@
 						"v1",
 						"employment-stats",
 						"loadInitialData"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /employment-stats/ Final",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Your test contains\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.have.lengthOf.above(0);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URLBASE}}/api/v1/employment-stats",
+					"host": [
+						"{{URLBASE}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"employment-stats"
 					]
 				}
 			},

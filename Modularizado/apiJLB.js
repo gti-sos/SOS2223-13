@@ -437,16 +437,12 @@ app.put('/api/v1/employment-stats/:city', (req, res) => {
   if (filteredList.length === 0 || city !== citybody) {
     return res.status(400).json('Estadística errónea');
   } else {
-    /*for (let i = 0; i < filteredList.length; i++) {
-      const stat = filteredList[i];
-      stat.period = req.body.period || stat.period;
-      stat.total_population = req.body.total_population || stat.total_population;
-      stat.man = req.body.man || stat.man;
-      stat.woman = req.body.woman || stat.woman;
-      stat.under_sixteen_years = req.body.under_sixteen_years || stat.under_sixteen_years;
-      stat.from_sixteen_to_sixty_four_years = req.body.from_sixteen_to_sixty_four_years || stat.from_sixteen_to_sixty_four_years;
-      stat.sixty_five_and_over = req.body.sixty_five_and_over || stat.sixty_five_and_over;
-    }*/
+    filteredList.period = req.body.period || filteredList.period;
+    filteredList.date = req.body.date || filteredList.date;
+    filteredList.employed_person = req.body.employed_person || filteredList.employed_person;
+    filteredList.inactive_person = req.body.inactive_person|| filteredList.inactive_person;
+    filteredList.unemployed_person = req.body.unemployed_person || filteredList.unemployed_person;
+    
     db.update({ territory: String(city) }, { $set: body }, { multi: true }, function (err, numUpdated) {
       if (err) {
           res.sendStatus(500, "INTERNAL SERVER ERROR");
