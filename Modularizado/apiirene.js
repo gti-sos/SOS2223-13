@@ -109,6 +109,8 @@ app.post(BASE_API_URL + "/localentities-stats", (request,response) => {
   });
   
 
+
+  
 //CODIGO PARA MOSTRAR LAS ESTADÍSTICAS A PARTIR DE LA QUERY.
 //GET a localentities-stats
 app.get('/api/v1/localentities-stats', (req, res) => {
@@ -129,7 +131,7 @@ app.get('/api/v1/localentities-stats', (req, res) => {
               // Comprobamos si existen datos:
               }else if(filteredList.length == 0){
 
-                  console.log(`Ruta evolution-stats Not Found`);
+                  console.log(`Ruta localentities-stats Not Found`);
 
                   // Si no existen datos usamos el estado es 404 de Not Found
                   res.sendStatus(404);
@@ -306,123 +308,117 @@ app.get('/api/v1/localentities-stats/:city', (req, res) => {
                       return(obj.province.toLowerCase() == city && obj.president_appointment_date >= from && obj.president_appointment_date<= to);
                   });
       console.log(`/GET to /localentities-stats/${city}?from=${from}&to=${to}`); //console.log en el servidor
-      res.status(200).jsonfilteredList.forEach((e)=>{
+      filteredList.forEach((e)=>{
       delete e._id;
       });
-      //res.send(JSON.stringify(filteredList,null,2));
+      res.status(200).json(filteredList);
     }
     
     // TELEFONOS
     else if(landline){
       filteredList = filteredList.filter((obj)=>
                   {
-                      return(obj.landline == landline);
+                      return(obj.landline == landline && obj.province.toLowerCase() == city);
                   });
                   console.log(`/GET to /localentities-stats/${city}?${landline}`); //console.log en el servidor
-                  res.status(200);
                   filteredList.forEach((e)=>{
                     delete e._id;
                   });
-                  res.send(JSON.stringify(filteredList,null,2));
+                  res.status(200).json(filteredList);
     }
     
     // POBLACION
     else if(first_name){
       filteredList = filteredList.filter((obj)=>
                   {
-                      return(obj.first_name == first_name);
+                      return(obj.first_name == first_name && obj.province.toLowerCase() == cit);
                   });
                   console.log(`/GET to /localentities-stats/${city}?${first_name}`); //console.log en el servidor
-                  res.status(200);
                   filteredList.forEach((e)=>{
                     delete e._id;
                   });
-                  res.send(JSON.stringify(filteredList,null,2));
-    }
+                  res.status(200).json(filteredList);
+                }
     
     //SEGUNDO NOMBRE
     else if(second_name){
       filteredList = filteredList.filter((obj)=>
                   {
-                      return(obj.second_name == second_name);
+                      return(obj.second_name == second_name && obj.province.toLowerCase() == cit);
                   });
                   console.log(`/GET to /localentities-stats/${city}?${second_name}`); //console.log en el servidor
-                  res.status(200);
                   filteredList.forEach((e)=>{
                     delete e._id;
                   });
-                  res.send(JSON.stringify(filteredList,null,2));
-    }
+                  res.status(200).json(filteredList);
+                }
     
     //PRESIDENTE
     else if(president_appointment_date){
       filteredList = filteredList.filter((obj)=>
                   {
-                      return(obj.president_appointment_date == president_appointment_date);
+                      return(obj.president_appointment_date == president_appointment_date && obj.province.toLowerCase() == cit);
                   });
                   console.log(`/GET to /localentities-stats/${city}?${president_appointment_date}`); //console.log en el servidor
-                  res.status(200);
                   filteredList.forEach((e)=>{
                     delete e._id;
                   });
-                  res.send(JSON.stringify(filteredList,null,2));
-    }
+                  res.status(200).json(filteredList);
+                }
     
     //EXTENSION
     else if(surface_extension){
       filteredList = filteredList.filter((obj)=>
                   {
-                      return(obj.surface_extension == surface_extension);
+                      return(obj.surface_extension == surface_extension && obj.province.toLowerCase() == cit);
                   });
                   console.log(`/GET to /localentities-stats/${city}?${surface_extension}`); //console.log en el servidor
-                  res.status(200);
                   filteredList.forEach((e)=>{
                     delete e._id;
                   });
-                  res.send(JSON.stringify(filteredList,null,2));
-    }
+                  res.status(200).json(filteredList);
+                }
     
     //POBLACION
     else if(population){
       filteredList = filteredList.filter((obj)=>
                   {
-                      return(obj.population == population);
+                      return(obj.population == population && obj.province.toLowerCase() == cit);
                   });
                   console.log(`/GET to /localentities-stats/${city}?${population}`); //console.log en el servidor
-                  res.status(200);
                   filteredList.forEach((e)=>{
                     delete e._id;
                   });
-                  res.send(JSON.stringify(filteredList,null,2));
-    }
+                  res.status(200).json(filteredList);
+                }
     
     //GASTOS
     else if(expense){
       filteredList = filteredList.filter((obj)=>
                   {
-                      return(obj.expense == expense);
+                      return(obj.expense == expense && obj.province.toLowerCase() == cit);
                   });
                   console.log(`/GET to /localentities-stats/${city}?${expense}`); //console.log en el servidor
-                  res.status(200);
                   filteredList.forEach((e)=>{
                     delete e._id;
                   });
-                  res.send(JSON.stringify(filteredList,null,2));
-    }
+                  res.status(200).json(filteredList);
+                }
     
     //INGRESOS
     else if(income){
       filteredList = filteredList.filter((obj)=>
                   {
-                      return(obj.income == income);
+                      return(obj.income == income && obj.province.toLowerCase() == cit);
                   });
                   console.log(`/GET to /localentities-stats/${city}?${income}`); //console.log en el servidor
-                  res.status(200);
                   filteredList.forEach((e)=>{
                     delete e._id;
                   });
-                  res.send(JSON.stringify(filteredList,null,2));
-    } else {
+                  res.status(200).json(filteredList);
+    }
+    
+    else {
      // Lógica para devolver los datos de la ciudad
     filteredList = filteredList.filter((obj)=>
                 {
@@ -438,8 +434,8 @@ app.get('/api/v1/localentities-stats/:city', (req, res) => {
     if(req.query.limit != undefined || req.query.offset != undefined){
       filteredList = paginar(req,filteredList);
   }
-    res.send(JSON.stringify(filteredList,null,2));
-    }
+    res.status(200).json(filteredList);
+  }
   }
 });
 });
