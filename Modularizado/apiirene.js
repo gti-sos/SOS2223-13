@@ -109,267 +109,6 @@ app.post(BASE_API_URL + "/localentities-stats", (request,response) => {
   });
   
 
-/*
-  
-//Motrar las ciudades en un año concreto
-  
-app.get('/api/v1/localentities-stats', (req, res) => {
-  const from = req.query.from;
-  const to = req.query.to;
-
-  const province = req.query.province;
-  const landline = req.query.landline;
-  const first_name = req.query.first_name;
-  const second_name = req.query.second_name;
-  const president_appointment_date = req.query.president_appointment_date;
-  const surface_extension = req.query.surface_extension;
-  const population = req.query.population;
-  const expense = req.query.expense;
-  const income = req.query.income;
-
-
-  db.find({}, function(error, filteredList){
-
-    if(error){
-      res.sendStatus(500, "ERROR CLIENTE");
-    }
-
-    if (from && to) {
-      if (from >= to) {
-        res.status(400).json("El rango de años especificado es inválido");
-      }else{
-        console.log(`/GET to /localentities-stats?from=${from}&to=${to}`); //console.log en el servidor
-        filteredList = filteredList.filter((ciudad) => {
-          return (ciudad.president_appointment_date >= from && ciudad.president_appointment_date <= to);
-       });
-       res.status(200).json(filteredList.map((e)=>{
-        delete e._id;
-        return e;
-      }));
-      }
-
-    }
-
-    //PROVINCIA Y TELEFONO
-    else if(province && landline){
-      filteredList = filteredList.filter((stat) => {
-        return (stat.province === province && stat.landline >= landline);
-     });
-     console.log("New GET to /localentities-stats with province and landlines"); //console.log en el servidor 
-     filteredList.map((e)=>{
-       delete e._id;
-       return e;
-     });
-     res.send(JSON.stringify(filteredList,null,2));
-    }
-    
-    //PROVINCIA Y NOMBRE
-    else if(province && first_name){
-      filteredList = filteredList.filter((stat) => {
-        return (stat.province === province && stat.first_name >= first_name);
-     });
-     console.log("New GET to /localentities-stats with province and first_name"); //console.log en el servidor 
-     res.status(200).json(filteredList.map((e)=>{
-       delete e._id;
-       return e;
-     }));
-     res.send(JSON.stringify(filteredList,null,2));
-    }
-    
-    //PROVINVIA Y APELLIDOS
-    else if(province && second_name){
-      filteredList = filteredList.filter((stat) => {
-        return (stat.province === province && stat.second_name >= second_name);
-     });
-     console.log("New GET to /localentities-stats with province and second_name"); //console.log en el servidor 
-     filteredList.map((e)=>{
-       delete e._id;
-       return e;
-     });
-     res.send(JSON.stringify(filteredList,null,2));   
-    }
-    
-    //PROVINCIA Y SUPERFICIE
-    else if(province && surface_extension){
-      filteredList = filteredList.filter((stat) => {
-        return (stat.province === province && stat.surface_extension >= surface_extension);
-     });
-     console.log("New GET to /localentities-stats with province and surface_extension"); //console.log en el servidor 
-     res.status(200).json(filteredList.map((e)=>{
-       delete e._id;
-       return e;
-     }));
-     //res.send(JSON.stringify(filteredList,null,2));
-    }
-
-    //PROVINCIA Y POBLACION
-    else if(province && population){
-      filteredList = filteredList.filter((stat) => {
-        return (stat.province === province && stat.population >= population);
-     });
-     console.log("New GET to /localentities-stats with province and population"); //console.log en el servidor 
-     res.status(200).json(filteredList.map((e)=>{
-       delete e._id;
-       return e;
-     }));
-     //res.send(JSON.stringify(filteredList,null,2));
-    }
-
-    //PROVINCIA Y GASTOS
-    else if(province && expense){
-      filteredList = filteredList.filter((stat) => {
-        return (stat.province === province && stat.expense >= expense);
-     });
-     console.log("New GET to /localentities-stats with province and expense"); //console.log en el servidor 
-     res.status(200).json(filteredList.map((e)=>{
-       delete e._id;
-       return e;
-     }));
-     //res.send(JSON.stringify(filteredList,null,2));
-    }
-    //PROVINCIA E INGRESOS
-    else if(province && income){
-      filteredList = filteredList.filter((stat) => {
-        return (stat.province === province && stat.income >= income);
-    });
-    console.log("New GET to /localentities-stats with province and income"); //console.log en el servidor 
-    res.status(200).json(filteredList.map((e)=>{
-      delete e._id;
-      return e;
-    }));
-    //res.send(JSON.stringify(filteredList,null,2));
-    }
-
-    //FECHA PRESENTE Y TELÉFONO
-    else if(president_appointment_date && landline){
-      filteredList = filteredList.filter((stat) => {
-        return (stat.president_appointment_date === parseInt(president_appointment_date) && stat.landline >= landline);
-    });
-    console.log("New GET to /localentities-stats with president_appointment_date and landline"); //console.log en el servidor 
-    res.status(200).json(filteredList.map((e)=>{
-      delete e._id;
-      return e;
-    }));
-    //res.send(JSON.stringify(filteredList,null,2));
-    }
-    
-    //FECHA PRESENTE Y NOMBRE
-    else if(president_appointment_date && first_name){
-      filteredList = filteredList.filter((stat) => {
-        return (stat.president_appointment_date === parseInt(president_appointment_date) && stat.first_name >= first_name);
-    });
-    console.log("New GET to /localentities-stats with president_appointment_date and first_name"); //console.log en el servidor 
-    res.status(200).json(filteredList.map((e)=>{
-      delete e._id;
-      return e;
-    }));
-    //res.send(JSON.stringify(filteredList,null,2));
-    }
-
-    //FECHA PRESENTE Y APELLIDOS  
-    else if(president_appointment_date && second_name){
-      filteredList = filteredList.filter((stat) => {
-        return (stat.president_appointment_date === parseInt(president_appointment_date) && stat.second_name >= second_name);
-    });
-    console.log("New GET to /localentities-stats with president_appointment_date and second_name"); //console.log en el servidor 
-    res.status(200).json(filteredList.map((e)=>{
-      delete e._id;
-      return e;
-    }));
-    //res.send(JSON.stringify(filteredList,null,2));
-    }
-
-    //FECHA PRESENTE Y ENTENSIÓN
-    else if(president_appointment_date && surface_extension){
-      filteredList = filteredList.filter((stat) => {
-        return (stat.president_appointment_date === parseInt(president_appointment_date) && stat.surface_extension >= surface_extension);
-    });
-    console.log("New GET to /localentities-stats with president_appointment_date and surface_extension"); //console.log en el servidor 
-    res.status(200).json(filteredList.map((e)=>{
-      delete e._id;
-      return e;
-    }));
-    //res.send(JSON.stringify(filteredList,null,2));
-    }
-
-    //FECHA PRESENTE Y POBLACION
-    else if(president_appointment_date && population){
-      filteredList = filteredList.filter((stat) => {
-        return (stat.president_appointment_date === parseInt(president_appointment_date) && stat.population >= population);
-    });
-    console.log("New GET to /localentities-stats with president_appointment_date and population"); //console.log en el servidor 
-    res.status(200).json(filteredList.map((e)=>{
-      delete e._id;
-      return e;
-    }));
-    //res.send(JSON.stringify(filteredList,null,2));
-    }
-
-    //FECHA PRESENTE Y GASTOS
-    else if(president_appointment_date && expense){
-      filteredList = filteredList.filter((stat) => {
-        return (stat.president_appointment_date === parseInt(president_appointment_date) && stat.expense >= expense);
-    });
-    console.log("New GET to /localentities-stats with president_appointment_date and expense"); //console.log en el servidor 
-    res.status(200).json(filteredList.map((e)=>{
-      delete e._id;
-      return e;
-    }));
-    //res.send(JSON.stringify(filteredList,null,2));
-    }
-
-    //FECHA PRESENTE E INGRESOS
-    else if(president_appointment_date && income){
-      filteredList = filteredList.filter((stat) => {
-        return (stat.president_appointment_date === parseInt(president_appointment_date) && stat.income >= income);
-    });
-    console.log("New GET to /localentities-stats with president_appointment_date and income"); //console.log en el servidor 
-    res.status(200).json(filteredList.map((e)=>{
-      delete e._id;
-      return e;
-    }));
-    //res.send(JSON.stringify(filteredList,null,2));
-    }
-    else{
-
-      const { president_appointment_date } = req.query;
-
-    if (president_appointment_date) {
-      filteredList = filteredList.filter((stat) => {
-        return (stat.president_appointment_date === parseInt(president_appointment_date));
-      });
-      console.log("New GET to /localentities-stats with president_appointment_date"); //console.log en el servidor 
-      res.status(200).json(filteredList.map((e)=>{
-        delete e._id;
-        return e;
-      }));
-      if(req.query.limit != undefined || req.query.offset != undefined){
-        filteredList = paginar(req,filteredList);
-    }
-    //res.send(JSON.stringify(filteredList,null,2));
-    } else {
-      console.log("New GET to /localentities-stats"); //console.log en el servidor
-          filteredList.map((e)=>{
-            delete e._id;
-            return e;
-          });
-          if(req.query.limit != undefined || req.query.offset != undefined){
-            filteredList = paginar(req,filteredList);
-        }
-        res.send(JSON.stringify(filteredList,null,2));
-        //res.json(filteredList);
-        //}
-      //});
-    }
-
-    }
-    });
-  });
-
-  
-*/
-
-
 //CODIGO PARA MOSTRAR LAS ESTADÍSTICAS A PARTIR DE LA QUERY.
 //GET a localentities-stats
 app.get('/api/v1/localentities-stats', (req, res) => {
@@ -415,14 +154,14 @@ app.get('/api/v1/localentities-stats', (req, res) => {
                       ((req.query.landline == undefined)||(req.query.landline === x.landline))&&
                       ((req.query.first_name == undefined)||(req.query.first_name === x.first_name))&&
                       ((req.query.second_name == undefined)||(req.query.second_name === x.second_name))&&
-                      ((req.query.surface_extension_under == undefined)||(parseInt(req.query.surface_extension_under) <= x.surface_extension))&&
-                      ((req.query.surface_extension_over == undefined)||(parseInt(req.query.surface_extension_over) >= x.surface_extension))&&
-                      ((req.query.population_under == undefined)||(parseInt(req.query.population_under) <= x.population))&&
-                      ((req.query.population_over == undefined)||(parseInt(req.query.population_over) >= x.population))&&
-                      ((req.query.expense_under == undefined)||(parseInt(req.query.expense_under) <= x.expense))&&
-                      ((req.query.expense_over == undefined)||(parseInt(req.query.expense_over) >= x.expense))&&
-                      ((req.query.income_under == undefined)||(parseInt(req.query.income_under) <= x.income))&&
-                      ((req.query.income_over == undefined)||(parseInt(req.query.income_over) >= x.income)));
+                      ((req.query.surface_extension_over == undefined)||(parseInt(req.query.surface_extension_over) <= x.surface_extension))&&
+                      ((req.query.surface_extension_under == undefined)||(parseInt(req.query.surface_extension_under) >= x.surface_extension))&&
+                      ((req.query.population_over == undefined)||(parseInt(req.query.population_over) <= x.population))&&
+                      ((req.query.population_under == undefined)||(parseInt(req.query.population_under) >= x.population))&&
+                      ((req.query.expense_over == undefined)||(parseInt(req.query.expense_over) <= x.expense))&&
+                      ((req.query.expense_under == undefined)||(parseInt(req.query.expense_under) >= x.expense))&&
+                      ((req.query.income_over == undefined)||(parseInt(req.query.income_over) <= x.income))&&
+                      ((req.query.income_under == undefined)||(parseInt(req.query.income_under) >= x.income)));
                   }).filter((x) => {
                       // La paginación
                       i = i+1;
@@ -910,6 +649,48 @@ app.delete('/api/v1/localentities-stats/:province', (req, res) => {
   }
 });
 });
+
+
+//DELETE PARA UNA RUTA ESPECÍFICA DE UNA CIUDAD Y PERIOD.
+app.delete('/api/v1/localentities-stats/:province/:president_appointment_date', (req, res) => {
+  const province = req.params.province;
+  const president_appointment_date = req.params.president_appointment_date;
+  db.find({},function(error, filteredList){
+
+    if(error){
+        res.sendStatus(500, "ERROR CLIENTE");   
+    }
+
+    filteredList = filteredList.filter((obj)=>
+                {
+                    return(obj.province === province && obj.president_appointment_date === parseInt(president_appointment_date));
+                });
+  if (filteredList.length === 0) {
+    res.status(404).json(`No se encontraron datos para ${province} y ${president_appointment_date}`);
+  } else {
+    filteredList = filteredList.filter((obj)=>{return(obj.province === province && obj.president_appointment_date === parseInt(president_appointment_date));});
+    if (filteredList) {
+      db.remove({ $and: [{ province: province }, { president_appointment_date: parseInt(president_appointment_date) }] }, {multi : true}, (error, numRemoved)=>{
+        if (err){
+            res.sendStatus(500,"ERROR EN CLIENTE");
+            return;
+        }else if (numRemoved === 0) {
+          res.sendStatus(404, "ERROR EN CLIENTE: Documentos no encontrados");
+          return;
+        }
+      else {
+        res.sendStatus(200,"DELETED");
+        return;
+      }
+        
+    });
+    } else {
+      res.status(404).json(`No se encontraron datos que coincidan con los criterios de eliminación para ${province}`);
+    }
+  }
+});
+});
+
 
 
 
