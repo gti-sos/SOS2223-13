@@ -667,7 +667,7 @@ app.delete('/api/v1/localentities-stats/:province/:president_appointment_date', 
     filteredList = filteredList.filter((obj)=>{return(obj.province === province && obj.president_appointment_date === parseInt(president_appointment_date));});
     if (filteredList) {
       db.remove({ $and: [{ province: province }, { president_appointment_date: parseInt(president_appointment_date) }] }, {multi : true}, (error, numRemoved)=>{
-        if (err){
+        if (error){
             res.sendStatus(500,"ERROR EN CLIENTE");
             return;
         }else if (numRemoved === 0) {

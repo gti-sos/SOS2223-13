@@ -8,6 +8,27 @@
 	"item": [
 		{
 			"name": "/localentities",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Contact number greater than 0\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.have.lengthOf.above(0);\r",
+							"});\r",
+							"pm.test(\"Contact number is 11\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.have.a.lengthOf(11);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -26,20 +47,38 @@
 			"response": []
 		},
 		{
-			"name": "/loadInitialData",
+			"name": "?year=2014",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{URL_BASE}}/api/v1/localentities-stats/loadInitialData",
+					"raw": "{{URL_BASE}}/api/v1/localentities-stats?president_appointment_date=2014",
 					"host": [
 						"{{URL_BASE}}"
 					],
 					"path": [
 						"api",
 						"v1",
-						"localentities-stats",
-						"loadInitialData"
+						"localentities-stats"
+					],
+					"query": [
+						{
+							"key": "president_appointment_date",
+							"value": "2014"
+						}
 					]
 				}
 			},
@@ -47,6 +86,19 @@
 		},
 		{
 			"name": "/Almeria",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -67,6 +119,19 @@
 		},
 		{
 			"name": "/Almeria/2015",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -87,7 +152,181 @@
 			"response": []
 		},
 		{
+			"name": "/localentities",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"province\": \"Madrid\",\r\n        \"landline\": 950351272,\r\n        \"first_name\": \"MARIA ISABEL\",\r\n        \"second_name\": \"CARBALLO\",\r\n        \"president_appointment_date\": 2014,\r\n        \"surface_extension\": 43.047,\r\n        \"population\": 13423,\r\n        \"expense\": 2269600,\r\n        \"income\": 2220600\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL_BASE}}/api/v1/localentities-stats",
+					"host": [
+						"{{URL_BASE}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"localentities-stats"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/localentities-stats/ciudad existente",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 409\", function () {\r",
+							"    pm.response.to.have.status(409);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"province\": \"Almeria\",\r\n        \"landline\": 950351228,\r\n        \"first_name\": \"ANTONIO MANUEL\",\r\n        \"second_name\": \"ORTIZ\",\r\n        \"president_appointment_date\": 2015,\r\n        \"surface_extension\": 45.24,\r\n        \"population\": 1342,\r\n        \"expense\": 2224600,\r\n        \"income\": 2224600\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL_BASE}}/api/v1/localentities-stats",
+					"host": [
+						"{{URL_BASE}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"localentities-stats"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/localentities",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Contact number is 12\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.have.a.lengthOf(12);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URL_BASE}}/api/v1/localentities-stats",
+					"host": [
+						"{{URL_BASE}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"localentities-stats"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/localentities_stats/sevilla/2014",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"province\": \"Sevilla\",\r\n        \"landline\": 954816021,\r\n        \"first_name\": \"MARINA\",\r\n        \"second_name\": \"MONTA?O\",\r\n        \"president_appointment_date\": 2014,\r\n        \"surface_extension\": 111.69,\r\n        \"population\": 21111,\r\n        \"expense\": 2111111111.7,\r\n        \"income\": 1111111.7\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL_BASE}}/api/v1/localentities-stats/Sevilla/2014",
+					"host": [
+						"{{URL_BASE}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"localentities-stats",
+						"Sevilla",
+						"2014"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "/Sevilla?from=2014&to=2016",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -117,41 +356,30 @@
 			"response": []
 		},
 		{
-			"name": "?year=2014",
+			"name": "?from=2014&to=2016",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{URL_BASE}}/api/v1/localentities-stats?president_appointment_date=2014",
+					"raw": "{{URL_BASE}}/api/v1/localentities-stats?from=2014&to=2016",
 					"host": [
 						"{{URL_BASE}}"
 					],
 					"path": [
 						"api",
-						"v1",
-						"localentities-stats"
-					],
-					"query": [
-						{
-							"key": "president_appointment_date",
-							"value": "2014"
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "?from=2014&to=2016",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{URL_BASE}}/v1/localentities-stats?from=2014&to=2016",
-					"host": [
-						"{{URL_BASE}}"
-					],
-					"path": [
 						"v1",
 						"localentities-stats"
 					],
@@ -170,9 +398,96 @@
 			"response": []
 		},
 		{
-			"name": "/localentities",
+			"name": "/localentities-stats 400",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"landline\": 950351228,\r\n        \"first_name\": \"ANTONIO MANUEL\",\r\n        \"second_name\": \"ORTIZ\",\r\n        \"president_appointment_date\": 2015,\r\n        \"surface_extension\": 45.24,\r\n        \"population\": 1342,\r\n        \"expense\": 2224600,\r\n        \"income\": 2224600\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL_BASE}}/api/v1/localentities-stats",
+					"host": [
+						"{{URL_BASE}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"localentities-stats"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/localentities-stats/ciudad inexistente",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URL_BASE}}/api/v1/localentities-stats/Zaragoza",
+					"host": [
+						"{{URL_BASE}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"localentities-stats",
+						"Zaragoza"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/localentities-stats no permitido",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 405\", function () {\r",
+							"    pm.response.to.have.status(405);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
 				"header": [],
 				"body": {
 					"mode": "raw",
@@ -198,13 +513,26 @@
 			"response": []
 		},
 		{
-			"name": "/localentities-stats/ciudad existente",
+			"name": "/localentities-stats no permitido",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 405\", function () {\r",
+							"    pm.response.to.have.status(405);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n        \"province\": \"Almeria\",\r\n        \"landline\": 950351228,\r\n        \"first_name\": \"ANTONIO MANUEL\",\r\n        \"second_name\": \"ORTIZ\",\r\n        \"president_appointment_date\": 2015,\r\n        \"surface_extension\": 45.24,\r\n        \"population\": 1342,\r\n        \"expense\": 2224600,\r\n        \"income\": 2224600\r\n    }",
+					"raw": "{\r\n        \"province\": \"Sevilla\",\r\n        \"landline\": 954816021,\r\n        \"first_name\": \"MARINA\",\r\n        \"second_name\": \"MONTA?O\",\r\n        \"president_appointment_date\": 2014,\r\n        \"surface_extension\": 111.69,\r\n        \"population\": 21111,\r\n        \"expense\": 2111111111.7,\r\n        \"income\": 1111111.7\r\n    }",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -212,14 +540,15 @@
 					}
 				},
 				"url": {
-					"raw": "{{URL_BASE}}/api/v1/localentities-stats",
+					"raw": "{{URL_BASE}}/api/v1/localentities-stats/Sevilla",
 					"host": [
 						"{{URL_BASE}}"
 					],
 					"path": [
 						"api",
 						"v1",
-						"localentities-stats"
+						"localentities-stats",
+						"Sevilla"
 					]
 				}
 			},
@@ -227,6 +556,19 @@
 		},
 		{
 			"name": "/localentities",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "DELETE",
 				"header": [],
@@ -254,13 +596,92 @@
 			"response": []
 		},
 		{
-			"name": "/localentities_stats",
+			"name": "/localentities",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URL_BASE}}/api/v1/localentities-stats",
+					"host": [
+						"{{URL_BASE}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"localentities-stats"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/loadInitialData",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URL_BASE}}/api/v1/localentities-stats/loadInitialData",
+					"host": [
+						"{{URL_BASE}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"localentities-stats",
+						"loadInitialData"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/localentities_stats/sevilla",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "PUT",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n        \"province\": \"Sevilla\",\r\n        \"landline\": 954816021,\r\n        \"first_name\": \"MARINA\",\r\n        \"second_name\": \"MONTA?O\",\r\n        \"president_appointment_date\": 2014,\r\n        \"surface_extension\": 13.69,\r\n        \"population\": 2114,\r\n        \"expense\": 2137220.7,\r\n        \"income\": 2137220.7\r\n    }",
+					"raw": "{\r\n        \"province\": \"Sevilla\",\r\n        \"landline\": 954816021,\r\n        \"first_name\": \"EMILIA\",\r\n        \"second_name\": \"ROMERO\",\r\n        \"president_appointment_date\": 2014,\r\n        \"surface_extension\": 3333333.69,\r\n        \"population\": 21111,\r\n        \"expense\": 3333333.7,\r\n        \"income\": 3333333.7\r\n    }",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -283,29 +704,23 @@
 			"response": []
 		},
 		{
-			"name": "/localentities-stats/ciudad inexistente",
+			"name": "/localentities",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{URL_BASE}}/api/v1/localentities-stats/Zaragoza",
-					"host": [
-						"{{URL_BASE}}"
-					],
-					"path": [
-						"api",
-						"v1",
-						"localentities-stats",
-						"Zaragoza"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "/localentities-stats no permitido",
-			"request": {
-				"method": "PUT",
 				"header": [],
 				"url": {
 					"raw": "{{URL_BASE}}/api/v1/localentities-stats",
@@ -322,12 +737,66 @@
 			"response": []
 		},
 		{
-			"name": "/localentities-stats/Sevilla no permitido",
+			"name": "/localentities",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
-				"method": "POST",
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL_BASE}}/api/v1/localentities-stats",
+					"host": [
+						"{{URL_BASE}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"localentities-stats"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/loadInitialData",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{URL_BASE}}/api/v1/localentities-stats/Sevilla",
+					"raw": "{{URL_BASE}}/api/v1/localentities-stats/loadInitialData",
 					"host": [
 						"{{URL_BASE}}"
 					],
@@ -335,7 +804,7 @@
 						"api",
 						"v1",
 						"localentities-stats",
-						"Sevilla"
+						"loadInitialData"
 					]
 				}
 			},
