@@ -17,7 +17,6 @@ const api_portal = "https://documenter.getpostman.com/view/26054707/2s93JzMgT8";
 
 
 
-
 module.exports =(app)=>{
 
   //API
