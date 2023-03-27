@@ -354,6 +354,48 @@
 			"response": []
 		},
 		{
+			"name": "POST Faltando un campo /employment-stats",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\r\n{\r\n\r\n        \"period\": \"T4\",\r\n        \"date\": \"2017-T4\",\r\n        \"region\": \"Caceres\",\r\n        \"employed_person\": 356,\r\n        \"inactive_person\": 213.2,\r\n        \"unemployed_person\": 90.5\r\n    }\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URLBASE}}/api/v1/employment-stats",
+					"host": [
+						"{{URLBASE}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"employment-stats"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "PUT /employment-stats/Almeria/2018",
 			"event": [
 				{
@@ -439,6 +481,50 @@
 							"key": "year",
 							"value": "2018"
 						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT Faltando un campo /employment-stats/Almeria/2018",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.response.to.have.status(400);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \r\n        \"period\": \"T1\",\r\n        \"date\": \"2018-T1\",\r\n        \"region\": \"Almeria\",\r\n        \"employed_person\": 700,\r\n        \"inactive_person\": 219.8,\r\n        \"unemployed_person\": 82\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URLBASE}}/api/v1/employment-stats/Almeria/2018",
+					"host": [
+						"{{URLBASE}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"employment-stats",
+						"Almeria",
+						"2018"
 					]
 				}
 			},
