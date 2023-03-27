@@ -16,14 +16,8 @@
 							"pm.test(\"Status code is 200\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
 							"});\r",
-							"pm.test(\"Contact number greater than 0\", function () {\r",
-							"    var jsonData = pm.response.json();\r",
-							"    pm.expect(jsonData).to.have.lengthOf.above(0);\r",
-							"});\r",
-							"pm.test(\"Contact number is 11\", function () {\r",
-							"    var jsonData = pm.response.json();\r",
-							"    pm.expect(jsonData).to.have.a.lengthOf(11);\r",
-							"});"
+							"\r",
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -41,6 +35,39 @@
 						"api",
 						"v1",
 						"localentities-stats"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/loadInitialData",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URL_BASE}}/api/v1/localentities-stats/loadInitialData",
+					"host": [
+						"{{URL_BASE}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"localentities-stats",
+						"loadInitialData"
 					]
 				}
 			},
@@ -193,6 +220,118 @@
 			"response": []
 		},
 		{
+			"name": "/localentities",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Contact number greater than 0\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.have.lengthOf.above(0);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URL_BASE}}/api/v1/localentities-stats",
+					"host": [
+						"{{URL_BASE}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"localentities-stats"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/localentities borrar el post antetior",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL_BASE}}/api/v1/localentities-stats/Madrid",
+					"host": [
+						"{{URL_BASE}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"localentities-stats",
+						"Madrid"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/localentities",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URL_BASE}}/api/v1/localentities-stats",
+					"host": [
+						"{{URL_BASE}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"localentities-stats"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "/localentities-stats/ciudad existente",
 			"event": [
 				{
@@ -219,42 +358,6 @@
 						}
 					}
 				},
-				"url": {
-					"raw": "{{URL_BASE}}/api/v1/localentities-stats",
-					"host": [
-						"{{URL_BASE}}"
-					],
-					"path": [
-						"api",
-						"v1",
-						"localentities-stats"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "/localentities",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200\", function () {\r",
-							"    pm.response.to.have.status(200);\r",
-							"});\r",
-							"pm.test(\"Contact number is 12\", function () {\r",
-							"    var jsonData = pm.response.json();\r",
-							"    pm.expect(jsonData).to.have.a.lengthOf(12);\r",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
 				"url": {
 					"raw": "{{URL_BASE}}/api/v1/localentities-stats",
 					"host": [
@@ -307,6 +410,123 @@
 						"localentities-stats",
 						"Sevilla",
 						"2014"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/localentities",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Contact number greater than 0\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.have.lengthOf.above(0);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URL_BASE}}/api/v1/localentities-stats",
+					"host": [
+						"{{URL_BASE}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"localentities-stats"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/localentities_stats cambiar a original",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"province\": \"Sevilla\",\r\n        \"landline\": 954816021,\r\n        \"first_name\": \"ESTRELLA\",\r\n        \"second_name\": \"MONTA?O\",\r\n        \"president_appointment_date\": 2014,\r\n        \"surface_extension\": 13.69,\r\n        \"population\": 2114,\r\n        \"expense\": 2137220.7,\r\n        \"income\": 2137220.7\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL_BASE}}/api/v1/localentities-stats/Sevilla/2014",
+					"host": [
+						"{{URL_BASE}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"localentities-stats",
+						"Sevilla",
+						"2014"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/localentities",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Contact number greater than 0\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.have.lengthOf.above(0);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URL_BASE}}/api/v1/localentities-stats",
+					"host": [
+						"{{URL_BASE}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"localentities-stats"
 					]
 				}
 			},
@@ -563,47 +783,10 @@
 						"exec": [
 							"pm.test(\"Status code is 200\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{URL_BASE}}/api/v1/localentities-stats",
-					"host": [
-						"{{URL_BASE}}"
-					],
-					"path": [
-						"api",
-						"v1",
-						"localentities-stats"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "/localentities",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 404\", function () {\r",
-							"    pm.response.to.have.status(404);\r",
+							"});\r",
+							"pm.test(\"Contact number greater than 0\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.have.lengthOf.above(0);\r",
 							"});\r",
 							""
 						],
@@ -623,188 +806,6 @@
 						"api",
 						"v1",
 						"localentities-stats"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "/loadInitialData",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200\", function () {\r",
-							"    pm.response.to.have.status(200);\r",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{URL_BASE}}/api/v1/localentities-stats/loadInitialData",
-					"host": [
-						"{{URL_BASE}}"
-					],
-					"path": [
-						"api",
-						"v1",
-						"localentities-stats",
-						"loadInitialData"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "/localentities_stats/sevilla",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200\", function () {\r",
-							"    pm.response.to.have.status(200);\r",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "PUT",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n        \"province\": \"Sevilla\",\r\n        \"landline\": 954816021,\r\n        \"first_name\": \"EMILIA\",\r\n        \"second_name\": \"ROMERO\",\r\n        \"president_appointment_date\": 2014,\r\n        \"surface_extension\": 3333333.69,\r\n        \"population\": 21111,\r\n        \"expense\": 3333333.7,\r\n        \"income\": 3333333.7\r\n    }",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{URL_BASE}}/api/v1/localentities-stats/Sevilla",
-					"host": [
-						"{{URL_BASE}}"
-					],
-					"path": [
-						"api",
-						"v1",
-						"localentities-stats",
-						"Sevilla"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "/localentities",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200\", function () {\r",
-							"    pm.response.to.have.status(200);\r",
-							"});\r",
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{URL_BASE}}/api/v1/localentities-stats",
-					"host": [
-						"{{URL_BASE}}"
-					],
-					"path": [
-						"api",
-						"v1",
-						"localentities-stats"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "/localentities",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200\", function () {\r",
-							"    pm.response.to.have.status(200);\r",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "{{URL_BASE}}/api/v1/localentities-stats",
-					"host": [
-						"{{URL_BASE}}"
-					],
-					"path": [
-						"api",
-						"v1",
-						"localentities-stats"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "/loadInitialData",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200\", function () {\r",
-							"    pm.response.to.have.status(200);\r",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{URL_BASE}}/api/v1/localentities-stats/loadInitialData",
-					"host": [
-						"{{URL_BASE}}"
-					],
-					"path": [
-						"api",
-						"v1",
-						"localentities-stats",
-						"loadInitialData"
 					]
 				}
 			},
