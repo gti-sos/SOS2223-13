@@ -3,12 +3,13 @@
   "version": "0.0.0",
   "description": "Grupo SOS 2022-2023 ID-13\r This is a new project",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "start": "node index",
     "test-evolution-stats": "npx newman run ./tests/luimargon3.json -e ./tests/env/luimargon3_localhost.json",
     "test-employment-stats": "npx newman run ./tests/joslopber.json -e ./tests/env/joslopber_localhost.json",
     "test-localentities-stats": "npx newman run ./tests/ireferrom.json -e ./tests/env/ireferrom_localhost.json",
-    "test":"npm run test-evolution-stats && npm run test-employment-stats && npm run test-localentities-stats" 
+    "test": "npm run test-evolution-stats && npm run test-employment-stats && npm run test-localentities-stats"
   },
   "repository": {
     "type": "git",
@@ -23,6 +24,7 @@
   "dependencies": {
     "body-parser": "^1.20.2",
     "cool-ascii-faces": "^1.3.4",
+    "cors": "^2.8.5",
     "express": "^4.18.2",
     "nedb": "^1.8.0"
   }

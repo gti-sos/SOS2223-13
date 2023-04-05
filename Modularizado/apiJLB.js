@@ -9,12 +9,12 @@ const BASE_API_URL = "/api/v1";
 
 */
 
-var Datastore = require('nedb');
+import Datastore from 'nedb';
 var db = new Datastore();
 
 
 
-module.exports =(app)=>{
+function loadBackendJLB(app){
 
 //Redirect /docs
 app.get("/api/v1/employment-stats/docs",(req,res)=>{
@@ -603,6 +603,8 @@ function pagination(req, lista){
 
 
 }
+
+export {loadBackendJLB};
 
 /*
 

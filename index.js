@@ -34,26 +34,29 @@ const { rutaIrene } = require('./Modularizado/apiirene');
 
 */
 
-var express = require("express");
-//var cool = require("cool-ascii-faces");
-var bodyParser = require("body-parser");
-var modulo_luis = require('./Modularizado/api');
-var modulo_irene = require('./Modularizado/apiirene');
-var modulo_jose = require('./Modularizado/apiJLB');
-const { application } = require("express");
+import express from "express";
+import cors from "cors";
+//var modulo_luis = require('./Modularizado/api');
+//var modulo_irene = require('./Modularizado/apiirene');
+import {loadBackendJLB} from './Modularizado/apiJLB.js';
+//const { application } = require("express");
+import {handler} from "./frontend/build/handler.js";
 
 
 var app = express();
+app.use(cors()); 
 var port = process.env.PORT || 8080;
-app.use(bodyParser.json());
+app.use(express.json());
 const BASE_API_URL = "/api/v1";
-app.use("/",express.static("./public"));
+//app.use("/",express.static("./public"));
 
 
+//modulo_irene(app);
+loadBackendJLB(app);
+//modulo_luis(app);
 
-modulo_irene(app);
-modulo_jose(app);
-modulo_luis(app);
+app.use(handler);
+
 
 //ARRANCAR EL SERVIDOR.
 app.listen(port,()=>{
