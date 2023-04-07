@@ -1,13 +1,3 @@
-/*
-// Tener una ruta dinámica “/cool” que muestre una cara ascii tal como se vió en el L05.
-var express = require("express");
-var cool = require("cool-ascii-faces");
-var bodyParser = require("body-parser");
-var app = express();
-var port = process.env.PORT || 8080;
-app.use(bodyParser.json());
-
-*/
 import Datastore from 'nedb';
 var db = new Datastore();
 const API_DOC_PORTAL = "https://documenter.getpostman.com/view/25977296/2s93JzKfV4";
