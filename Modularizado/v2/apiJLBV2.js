@@ -17,8 +17,8 @@ var db = new Datastore();
 function loadBackendJLBV2(app){
 
 //Redirect /docs
-app.get("/api/v1/employment-stats/docs",(req,res)=>{
-  res.redirect("https://documenter.getpostman.com/view/26023285/2s93JzLgAB");
+app.get("/api/v2/employment-stats/docs",(req,res)=>{
+  res.redirect("https://documenter.getpostman.com/view/26023285/2s93XsWkKp");
 });
 
 
