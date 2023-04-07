@@ -258,50 +258,13 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n        \"period\": 1980,\r\n        \"territory\": \"Marruecos\",\r\n        \"total_population\": 407049,\r\n        \"man\": 200870,\r\n        \"woman\": 206179,\r\n        \"under_sixteen_years\": 126573,\r\n        \"from_sixteen_to_sixty_four_years\": 237986,\r\n        \"sixty_five_and_over\": 42490\r\n    }",
+					"raw": "{\r\n        \"period\": 1981,\r\n        \"territory\": \"Granada\",\r\n        \"total_population\": 758607,\r\n        \"man\": 372517,\r\n        \"woman\": 386089,\r\n        \"under_sixteen_years\": 224458,\r\n        \"from_sixteen_to_sixty_four_years\": 452025,\r\n        \"sixty_five_and_over\": 82123\r\n    }",
 					"options": {
 						"raw": {
 							"language": "json"
 						}
 					}
 				},
-				"url": {
-					"raw": "{{URL_BASE}}/api/v1/evolution-stats",
-					"host": [
-						"{{URL_BASE}}"
-					],
-					"path": [
-						"api",
-						"v1",
-						"evolution-stats"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "/Get RutaBase + 1",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200\", function () {\r",
-							"    pm.response.to.have.status(200);\r",
-							"});\r",
-							"\r",
-							"pm.test(\"Evolution-stats must be 25\", function () {\r",
-							"    var jsonData = pm.response.json();\r",
-							"    pm.expect(jsonData).to.have.a.lengthOf(25);\r",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
 				"url": {
 					"raw": "{{URL_BASE}}/api/v1/evolution-stats",
 					"host": [
@@ -727,7 +690,7 @@
 					}
 				},
 				"url": {
-					"raw": "{{URL_BASE}}/api/v1/evolution-stats/Sevilla",
+					"raw": "{{URL_BASE}}/api/v1/evolution-stats/Sevilla/1982",
 					"host": [
 						"{{URL_BASE}}"
 					],
@@ -735,7 +698,8 @@
 						"api",
 						"v1",
 						"evolution-stats",
-						"Sevilla"
+						"Sevilla",
+						"1982"
 					]
 				}
 			},
@@ -756,7 +720,7 @@
 					}
 				},
 				"url": {
-					"raw": "{{URL_BASE}}/api/v1/evolution-stats/Sevilla",
+					"raw": "{{URL_BASE}}/api/v1/evolution-stats/Sevilla/1982",
 					"host": [
 						"{{URL_BASE}}"
 					],
@@ -764,7 +728,8 @@
 						"api",
 						"v1",
 						"evolution-stats",
-						"Sevilla"
+						"Sevilla",
+						"1982"
 					]
 				}
 			},

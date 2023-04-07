@@ -39,6 +39,7 @@ import cors from "cors";
 //var modulo_luis = require('./Modularizado/api');
 //var modulo_irene = require('./Modularizado/apiirene');
 import {loadBackendJLB} from './Modularizado/apiJLB.js';
+import {loadBackendLMMG} from './Modularizado/api.js';
 //const { application } = require("express");
 import {handler} from "./frontend/build/handler.js";
 
@@ -51,9 +52,8 @@ const BASE_API_URL = "/api/v1";
 //app.use("/",express.static("./public"));
 
 
-//modulo_irene(app);
 loadBackendJLB(app);
-//modulo_luis(app);
+loadBackendLMMG(app);
 
 app.use(handler);
 

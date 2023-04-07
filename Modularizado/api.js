@@ -8,11 +8,11 @@ var port = process.env.PORT || 8080;
 app.use(bodyParser.json());
 
 */
-var Datastore = require('nedb');
+import Datastore from 'nedb';
 var db = new Datastore();
 const API_DOC_PORTAL = "https://documenter.getpostman.com/view/25977296/2s93JzKfV4";
 
-module.exports =(app)=>{
+function loadBackendLMMG(app){
 
 
 // CODIGO LUIS MIGUEL PARA ENTREGA F05.
@@ -710,3 +710,5 @@ app.use((err, req, res, next) => {
 
 
 }
+
+export {loadBackendLMMG};
