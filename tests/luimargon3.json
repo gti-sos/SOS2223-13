@@ -205,6 +205,40 @@
 			"response": []
 		},
 		{
+			"name": "Delete ciudad",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{URL_BASE}}/api/v1/evolution-stats/Marruecos/1980",
+					"host": [
+						"{{URL_BASE}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"evolution-stats",
+						"Marruecos",
+						"1980"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "/Post ciudad Existente",
 			"event": [
 				{
@@ -304,6 +338,50 @@
 				"body": {
 					"mode": "raw",
 					"raw": "{\r\n        \"period\": 1980,\r\n        \"territory\": \"Huelva\",\r\n        \"total_population\": 111111,\r\n        \"man\": 111111,\r\n        \"woman\": 111111,\r\n        \"under_sixteen_years\": 111111,\r\n        \"from_sixteen_to_sixty_four_years\": 111111,\r\n        \"sixty_five_and_over\": 111111\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL_BASE}}/api/v1/evolution-stats/Huelva/1980",
+					"host": [
+						"{{URL_BASE}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"evolution-stats",
+						"Huelva",
+						"1980"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Deshacer PUT anterior",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"period\": 1980,\r\n        \"territory\": \"Huelva\",\r\n        \"total_population\": 416795,\r\n        \"man\": 205034,\r\n        \"woman\": 211762,\r\n        \"under_sixteen_years\": 124960,\r\n        \"from_sixteen_to_sixty_four_years\": 242563,\r\n        \"sixty_five_and_over\": 49272\r\n    }",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -622,103 +700,6 @@
 			"response": []
 		},
 		{
-			"name": "/DELETE RutaBase",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200\", function () {\r",
-							"    pm.response.to.have.status(200);\r",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"url": {
-					"raw": "{{URL_BASE}}/api/v1/evolution-stats",
-					"host": [
-						"{{URL_BASE}}"
-					],
-					"path": [
-						"api",
-						"v1",
-						"evolution-stats"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "/Get RutaBase Vacio",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 404\", function () {\r",
-							"    pm.response.to.have.status(404);\r",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{URL_BASE}}/api/v1/evolution-stats",
-					"host": [
-						"{{URL_BASE}}"
-					],
-					"path": [
-						"api",
-						"v1",
-						"evolution-stats"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "/GET loadInitialData",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200\", function () {\r",
-							"    pm.response.to.have.status(200);\r",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{URL_BASE}}/api/v1/evolution-stats/loadInitialData",
-					"host": [
-						"{{URL_BASE}}"
-					],
-					"path": [
-						"api",
-						"v1",
-						"evolution-stats",
-						"loadInitialData"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "/Put RutaConcreta",
 			"event": [
 				{
@@ -739,6 +720,35 @@
 				"body": {
 					"mode": "raw",
 					"raw": "{\r\n        \"period\": 1982,\r\n        \"territory\": \"Sevilla\",\r\n        \"total_population\": 111111,\r\n        \"man\": 111111,\r\n        \"woman\": 111111,\r\n        \"under_sixteen_years\": 11111,\r\n        \"from_sixteen_to_sixty_four_years\": 111111,\r\n        \"sixty_five_and_over\": 111111\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL_BASE}}/api/v1/evolution-stats/Sevilla",
+					"host": [
+						"{{URL_BASE}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"evolution-stats",
+						"Sevilla"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Put deshacer Sevilla",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"period\": 1982,\r\n        \"territory\": \"Sevilla\",\r\n        \"total_population\": 1494347,\r\n        \"man\": 732722,\r\n        \"woman\": 761624,\r\n        \"under_sixteen_years\": 468201,\r\n        \"from_sixteen_to_sixty_four_years\": 884345,\r\n        \"sixty_five_and_over\": 141800\r\n    }",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -795,6 +805,34 @@
 			"response": []
 		},
 		{
+			"name": "Post Huelva",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"period\": 1982,\r\n        \"territory\": \"Huelva\",\r\n        \"total_population\": 421660,\r\n        \"man\": 207739,\r\n        \"woman\": 213921,\r\n        \"under_sixteen_years\": 124533,\r\n        \"from_sixteen_to_sixty_four_years\": 247075,\r\n        \"sixty_five_and_over\": 50051\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL_BASE}}/api/v1/evolution-stats",
+					"host": [
+						"{{URL_BASE}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"evolution-stats"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "/Get RutaBase",
 			"event": [
 				{
@@ -807,7 +845,7 @@
 							"\r",
 							"pm.test(\"Evolution-stats must be 23\", function () {\r",
 							"    var jsonData = pm.response.json();\r",
-							"    pm.expect(jsonData).to.have.a.lengthOf(23);\r",
+							"    pm.expect(jsonData).to.have.a.lengthOf(24);\r",
 							"});"
 						],
 						"type": "text/javascript"
@@ -826,71 +864,6 @@
 						"api",
 						"v1",
 						"evolution-stats"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "/DELETE RutaBase Final",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200\", function () {\r",
-							"    pm.response.to.have.status(200);\r",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"url": {
-					"raw": "{{URL_BASE}}/api/v1/evolution-stats",
-					"host": [
-						"{{URL_BASE}}"
-					],
-					"path": [
-						"api",
-						"v1",
-						"evolution-stats"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "/GET loadInitialData Final",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200\", function () {\r",
-							"    pm.response.to.have.status(200);\r",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{URL_BASE}}/api/v1/evolution-stats/loadInitialData",
-					"host": [
-						"{{URL_BASE}}"
-					],
-					"path": [
-						"api",
-						"v1",
-						"evolution-stats",
-						"loadInitialData"
 					]
 				}
 			},
