@@ -18,7 +18,7 @@ function loadBackendJLBV2(app){
 
 //Redirect /docs
 app.get("/api/v2/employment-stats/docs",(req,res)=>{
-  res.redirect("https://documenter.getpostman.com/view/26023285/2s93XsWkKp");
+  res.redirect("https://documenter.getpostman.com/view/26023285/2s93XsWkKp#25f6d261-72b7-452f-8afe-aa9ceae2968e");
 });
 
 
