@@ -9,7 +9,8 @@
             getEvolution();
         });
         
-        let API = '/api/v1/evolution-stats';
+        let API = '/api/v2/evolution-stats';
+        let mensajeUsuario = "";
         
         if(dev)
             API = 'http://localhost:8080'+API
@@ -40,7 +41,12 @@
                 console.log(`Error parsing result: ${error}`);
             }
             const status = await res.status;
-            resultStatus = status;	
+            resultStatus = status;
+            if(status==404){
+                mensajeUsuario = "Ruta no encontrada"
+            }else if(status==500){
+                mensajeUsuario = "Error servidor"
+            }	
         }
 
 
@@ -66,7 +72,29 @@
             resultStatus = status;
             if(status==201){
                 getEvolution ();
-            }	
+                mensajeUsuario = "Recurso creado";
+            }else if(status==400){
+                getEvolution ();
+                mensajeUsuario = "Falta por insertar alguno/s de los campos";
+        }	
+        }
+
+        async function deleteEvolution(evolutionPeriod,evolutionTerritory){
+            resultStatus = result = "";
+            const res = await fetch(API+"/"+evolutionTerritory+"/"+evolutionPeriod, {
+                method: "DELETE"
+            });
+            const status = await res.status;
+            resultStatus = status;
+            if(status==200){
+                getEvolution ();
+                mensajeUsuario = "Recurso borrado";
+            }else if(status==500){
+                mensajeUsuario = "Error cliente";
+            }else if(status==404){
+                getEvolution ();
+                mensajeUsuario = "No se ha encontrado ese recurso";
+            }
         }
 
         async function deleteEvolutionAll () {
@@ -76,8 +104,11 @@
             });
             const status = await res.status;
             resultStatus = status;
-            if(status==200){
-                await getEvolution ();
+            if(status==200 || status == 204){
+                await getEvolution();
+                mensajeUsuario = "Se han borrado correctamente los datos";
+            }else{
+                mensajeUsuario = "No se han podido borrar los datos";
             }		
         }
     
@@ -87,7 +118,10 @@
         
     
     </script>
-    <h1> Evolution</h1>
+    <h1 style="text-align: center; font-family:'Times New Roman', Times, serif; font-size: 60px;">Datos Evolution</h1>
+    {#if mensajeUsuario !=""}
+    <h2 style="color: red; text-align: center; font-family:Arial, Helvetica, sans-serif">{mensajeUsuario}</h2>
+    {/if}
     <Table>
         <thead>
           <tr>
@@ -124,23 +158,24 @@
             <td>{evol.under_sixteen_years}</td>
             <td>{evol.from_sixteen_to_sixty_four_years}</td>
             <td>{evol.sixty_five_and_over}</td>
-            <td>&nbsp</td>
+            <td><Button on:click={deleteEvolution(evol.territory,evol.period)}>Delete</Button></td>
            
           </tr>
         {/each}
 
-        <td><Button on:click={deleteEvolutionAll}>Delete all</Button></td>
+        <Button color="danger" on:click={deleteEvolutionAll}>Borrar Datos</Button>
           
         </tbody>
     </Table>
 
 
-    {#if resultStatus != ""}
+  {#if resultStatus != ""}
         <p>
-            Result:
+            <strong>Número de datos: {evolution.length}</strong>
         </p>
+        <strong>Result:</strong>
         <pre>
-{resultStatus}
+    {"Código de estado: "+resultStatus}
 {result}
         </pre>
     {/if}
