@@ -4,12 +4,17 @@
         import { onMount } from 'svelte';
         import { dev } from '$app/environment';
         import { Button,Table } from 'sveltestrap';
+        import { page } from '$app/stores';
+
+        onMount(async () => {
+            getEmployment();
+        });
 
        
         
         let advertencia = "";
-        let region = "Almeria";
-        let year = 2017;
+        let region = $page.params.region;
+        let year = $page.params.year;
         
         let API = '/api/v2/employment-stats/'+region+'/'+year;
         
@@ -36,14 +41,7 @@
             try{
                 const data = await res.json();
                 result = JSON.stringify(data,null,2);
-                updatedEmploymentRegion = data.region;
-                updatedEmploymentYear = data.year;
-                updatedEmploymentPeriod = data.period;
-                updatedEmploymentDate = data.date;
-                updatedEmploymentEmployedPerson = data.employed_person;
-                updatedEmploymentInactivePerson = data.inactive_person;
-                updatedEmploymentUnemployedPerson = data.unemployed_person;
-
+                employments = data;
             }catch(error){
                 console.log(`Error parsing result: ${error}`);
             }
@@ -86,9 +84,7 @@
             }
     }
 
-    onMount(async () => {
-            getEmployment();
-        });
+   
 
         
 

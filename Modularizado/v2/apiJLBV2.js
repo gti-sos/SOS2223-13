@@ -385,7 +385,8 @@ app.get('/api/v2/employment-stats/:region/:year', (req, res) => {
 //ESCRITO EN EL GET DE LA RUTA BASE.
 
 //CODIGO PARA ACTUALIZAR MEDIANTE PUT UNA RUTA CONCRETA.
-app.put('/api/v2/employment-stats/:city/:year', (req, res) => {
+
+app.put('/api/v1/employment-stats/:city/:year', (req, res) => {
   const city = req.params.city;
   const year = parseInt(req.params.year);
   const citybody = req.body.region;
@@ -453,6 +454,8 @@ app.put('/api/v2/employment-stats/:city', (req, res) => {
   }
 });
 });
+
+
 
 //METODO DELETE PARA LA RUTA BASE PARA BORRAR DATO ESPECÍFICO.
 app.delete(BASE_API_URL + "/employment-stats", (req, res) => {

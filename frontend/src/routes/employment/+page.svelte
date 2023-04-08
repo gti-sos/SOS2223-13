@@ -105,8 +105,11 @@
             });
             const status = await res.status;
             resultStatus = status;
-            if(status==200){
+            if(status==200 || status == 204){
                 await getEmployments ();
+                advertencia = "Se han borrado correctamente los datos";
+            }else{
+                advertencia = "No se han podido borrar los datos";
             }		
         }
     
@@ -149,7 +152,7 @@
             <td>{employment.year}</td>
             <td>{employment.period}</td>
             <td>{employment.date}</td>
-            <td>{employment.region}</td>
+            <td><a href="/employment/{employment.region}/{employment.year}">{employment.region}</a></td>
             <td>{employment.employed_person}</td>
             <td>{employment.inactive_person}</td>
             <td>{employment.unemployed_person}</td>
@@ -158,7 +161,7 @@
           </tr>
         {/each}
 
-        <td><Button on:click={deleteEmploymentAll}>Delete all</Button></td>
+        <td><Button color="danger" on:click={deleteEmploymentAll}>Delete all</Button></td>
           
         </tbody>
     </Table>
