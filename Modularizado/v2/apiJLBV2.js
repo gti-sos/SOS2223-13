@@ -25,15 +25,15 @@ app.get("/api/v2/employment-stats/docs",(req,res)=>{
 //Código Jose López tarea F05
 var employment_stats = [
   {year:2017 , period:"T1" , date:"2017-T1" , region:"Almeria" , employed_person:347.3 , inactive_person:220.8 , unemployed_person:74.2 },
-  {year:2017 , period:"T2" , date:"2017-T2" , region:"Almeria" , employed_person:345.2 , inactive_person:223.6 , unemployed_person:79.5},
-  {year:2017 , period:"T3" , date:"2017-T3" , region:"Almeria" , employed_person:348.5 , inactive_person:220.7 , unemployed_person:96.4 },
-  {year:2017 , period:"T4" , date:"2017-T4" , region:"Almeria" , employed_person:356 , inactive_person:213.2 , unemployed_person:90.5 },
-  {year:2018 , period:"T1" , date:"2018-T1" , region:"Almeria" , employed_person:349.1 , inactive_person:219.8 , unemployed_person:82 },
-  {year:2018 , period:"T2" , date:"2018-T2" , region:"Almeria" , employed_person:332 , inactive_person:236.7 , unemployed_person:74.8 },
-  {year:2018 , period:"T3" , date:"2018-T3" , region:"Almeria" , employed_person:336.2 , inactive_person:233.2 , unemployed_person:85.8 },
+  {year:2017 , period:"T1" , date:"2017-T1" , region:"Cordoba" , employed_person:380.6 , inactive_person:273.8 , unemployed_person:104.8},
+  {year:2017 , period:"T1" , date:"2017-T1" , region:"Granada" , employed_person:443 , inactive_person:313 , unemployed_person:113.7 },
+  {year:2017 , period:"T1" , date:"2017-T1" , region:"Huelva" , employed_person:243.6 , inactive_person:184.8 , unemployed_person:63.9 },
+  {year:2017 , period:"T1" , date:"2017-T1" , region:"Jaen" , employed_person:299.6 , inactive_person:238.7 , unemployed_person:76.1 },
+  {year:2017 , period:"T1" , date:"2017-T1" , region:"Malaga" , employed_person:764.8 , inactive_person:589.4 , unemployed_person:200.4 },
+  {year:2017 , period:"T1" , date:"2017-T1" , region:"Sevilla" , employed_person:924.7 , inactive_person:655.7 , unemployed_person:243.9 },
   {year:2018 , period:"T4" , date:"2018-T4" , region:"Almeria" , employed_person:339.4 , inactive_person:232.6 , unemployed_person:63.7 },
   {year:2017 , period:"T1" , date:"2017-T1" , region:"Cadiz" , employed_person:577.1 , inactive_person:443.2 , unemployed_person:195.5 },
-  {year:2017 , period:"T2" , date:"2017-T2" , region:"Cadiz" , employed_person:567.2 , inactive_person:453.1 , unemployed_person:168 }
+  {year:2018 , period:"T1" , date:"2018-T1" , region:"Cadiz" , employed_person:556.5 , inactive_person:465.1 , unemployed_person:173.9 }
  ];
 
  db.insert(employment_stats);

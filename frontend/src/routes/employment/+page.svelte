@@ -9,7 +9,8 @@
             getEmployments();
         });
         
-        let API = '/api/v1/employment-stats';
+        let API = '/api/v2/employment-stats';
+        let advertencia = "";
         
         if(dev)
             API = 'http://localhost:8080'+API
@@ -39,7 +40,12 @@
                 console.log(`Error parsing result: ${error}`);
             }
             const status = await res.status;
-            resultStatus = status;	
+            resultStatus = status;
+            if(status==404){
+                advertencia = "Ruta no encontrada"
+            }else if(status==500){
+                advertencia = "Error servidor"
+            }	
         }
 
 
@@ -64,7 +70,29 @@
             resultStatus = status;
             if(status==201){
                 getEmployments ();
-            }	
+                advertencia = "Recurso creado";
+            }else if(status==400){
+                getEmployments ();
+                advertencia = "Falta por insertar alguno/s de los campos";
+        }
+    }
+
+        async function deleteEmployment(employmentRegion,employmentYear){
+            resultStatus = result = "";
+            const res = await fetch(API+"/"+employmentRegion+"/"+employmentYear, {
+                method: "DELETE"
+            });
+            const status = await res.status;
+            resultStatus = status;
+            if(status==200){
+                getEmployments ();
+                advertencia = "Recurso borrado";
+            }else if(status==500){
+                advertencia = "Error cliente";
+            }else if(status==404){
+                getEmployments ();
+                advertencia = "No se ha encontrado ese recurso";
+            }
         }
 
         async function deleteEmploymentAll () {
@@ -86,6 +114,9 @@
     
     </script>
     <h1> Employments</h1>
+    {#if advertencia !=""}
+    <h2 style="color: red; text-align: center; font-family:Arial, Helvetica, sans-serif">{advertencia}</h2>
+    {/if}
     <Table>
         <thead>
           <tr>
@@ -119,7 +150,7 @@
             <td>{employment.employed_person}</td>
             <td>{employment.inactive_person}</td>
             <td>{employment.unemployed_person}</td>
-            <td>&nbsp</td>
+            <td><Button on:click={deleteEmployment(employment.region,employment.year)}>Delete</Button></td>
            
           </tr>
         {/each}
