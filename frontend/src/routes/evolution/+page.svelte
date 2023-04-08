@@ -42,16 +42,33 @@
             }
             const status = await res.status;
             resultStatus = status;
-            if(status==404){
-                mensajeUsuario = "Ruta no encontrada"
-            }else if(status==500){
-                mensajeUsuario = "Error servidor"
-            }	
         }
 
-
+        let insertedData = [];
         async function createEvolution (){
             resultStatus = result = "";
+            const newEvolution = {
+                period: parseInt(newEvolutionPeriod),
+                territory: newEvolutionTerritory,
+                total_population: newEvolutionTotalPopulation,
+                man: newEvolutionMan,
+                woman: newEvolutionWoman,
+                under_sixteen_years: newEvolutionUndersixteenyears,
+                from_sixteen_to_sixty_four_years: newEvolutionSixteensixtyfouryears,
+                sixty_five_and_over: newEvolutionSixtyfiveoveryears
+            };
+            // Comprobar si el nuevo dato ya ha sido insertado previamente
+            const existingData = insertedData.find(data => 
+                data.period === newEvolutionPeriod && data.territory === newEvolutionTerritory && data.total_population === newEvolutionTotalPopulation
+                    && data.man === newEvolutionMan && data.woman === newEvolutionWoman && data.under_sixteen_years === newEvolutionUndersixteenyears && 
+                    data.from_sixteen_to_sixty_four_years === newEvolutionSixteensixtyfouryears && data.sixty_five_and_over === newEvolutionSixtyfiveoveryears
+            );
+
+            if (existingData) {
+                mensajeUsuario = "Ya existe ese dato";
+                return;
+            }
+
             const res = await fetch(API, {
                 method: 'POST',
                 headers:{
@@ -70,16 +87,23 @@
             });
             const status = await res.status;
             resultStatus = status;
-            if(status==201){
-                getEvolution ();
-                mensajeUsuario = "Recurso creado";
-            }else if(status==400){
-                getEvolution ();
-                mensajeUsuario = "Falta por insertar alguno/s de los campos";
-        }	
-        }
+            if (status == 201) {
+                getEvolution();
+                mensajeUsuario = "Se ha creado el nuevo dato introducido";
+                insertedData.push(newEvolution);
+            } else if (status == 409) {
+                mensajeUsuario = "El dato introducido ya existe";
+                getEvolution();
+            } else if (status == 400) {
+                mensajeUsuario = "Las propiedades introducidas no tienen un formato correcto";
+                getEvolution();
+            } else {
+                mensajeUsuario = "No se ha podido crear el dato introducido";
+                getEvolution();
+            }
+        }   
 
-        async function deleteEvolution(evolutionPeriod,evolutionTerritory){
+        async function deleteEvolution(evolutionTerritory,evolutionPeriod){
             resultStatus = result = "";
             const res = await fetch(API+"/"+evolutionTerritory+"/"+evolutionPeriod, {
                 method: "DELETE"
@@ -122,7 +146,7 @@
     {#if mensajeUsuario !=""}
     <h2 style="color: red; text-align: center; font-family:Arial, Helvetica, sans-serif">{mensajeUsuario}</h2>
     {/if}
-    <Table>
+    <Table striped>
         <thead>
           <tr>
             <th>Period</th>
@@ -145,20 +169,20 @@
             <td><input bind:value={newEvolutionUndersixteenyears}></td>
             <td><input bind:value={newEvolutionSixteensixtyfouryears}></td>
             <td><input bind:value={newEvolutionSixtyfiveoveryears}></td>
-            <td><Button on:click={createEvolution}>Create</Button></td>
+            <td><Button color="success" on:click={createEvolution}>Create</Button></td>
            
 
         {#each evolution as evol}
           <tr>
             <td>{evol.period}</td>
-            <td>{evol.territory}</td>
+            <td><a href="/evolution/{evol.territory}/{evol.period}">{evol.territory}</a></td>
             <td>{evol.total_population}</td>
             <td>{evol.man}</td>
             <td>{evol.woman}</td>
             <td>{evol.under_sixteen_years}</td>
             <td>{evol.from_sixteen_to_sixty_four_years}</td>
             <td>{evol.sixty_five_and_over}</td>
-            <td><Button on:click={deleteEvolution(evol.territory,evol.period)}>Delete</Button></td>
+            <td><Button color="danger"on:click={deleteEvolution(evol.territory,evol.period)}>Borrar</Button></td>
            
           </tr>
         {/each}
