@@ -74,7 +74,10 @@
             }else if(status==400){
                 getEmployments ();
                 advertencia = "Falta por insertar alguno/s de los campos";
-        }
+            }else if(status==409){
+                getEmployments ();
+                advertencia = "El recurso ya existe";
+            }
     }
 
         async function deleteEmployment(employmentRegion,employmentYear){
