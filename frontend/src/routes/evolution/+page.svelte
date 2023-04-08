@@ -74,16 +74,9 @@
                 headers:{
                     "Content-Type" : "application/json"
                 },
-                body:JSON.stringify({
-                    period: newEvolutionPeriod,
-                    territory: newEvolutionTerritory,
-                    total_population: newEvolutionTotalPopulation,
-                    man: newEvolutionMan,
-                    woman: newEvolutionWoman,
-                    under_sixteen_years: newEvolutionUndersixteenyears,
-                    from_sixteen_to_sixty_four_years: newEvolutionSixteensixtyfouryears,
-                    sixty_five_and_over: newEvolutionSixtyfiveoveryears
-                })     
+                body: JSON.stringify(
+                    newEvolution
+                )     
             });
             const status = await res.status;
             resultStatus = status;
@@ -175,7 +168,7 @@
         {#each evolution as evol}
           <tr>
             <td>{evol.period}</td>
-            <td><a href="/evolution/{evol.territory}/{evol.period}">{evol.territory}</a></td>
+            <td><a href="/evolution-stats/{evol.territory}/{evol.period}">{evol.territory}</a></td>
             <td>{evol.total_population}</td>
             <td>{evol.man}</td>
             <td>{evol.woman}</td>
