@@ -81,8 +81,7 @@
             if(status==200){
                 getEvolution_dato();
                 mensajeUsuario = "Se ha actualizado el dato";
-            }else if(status==400){ 
-                console.log(total_population);
+            }else if(status==400){
                 mensajeUsuario = "Los datos introducidos no son válidos";
             }else{
                 mensajeUsuario = "No se ha podido actualizar el dato";
