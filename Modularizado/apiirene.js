@@ -1,23 +1,10 @@
-/*
-var express = require("express");
-var bodyParser = require("body-parser");
-var appIFR = express();
-var portIFR = process.env.PORT || 8081;
-appIFR.use(bodyParser.json());
-const BASE_API_URL = "/api/v1";
-*/
-
-//NeDB
-const res = require('express/lib/response');
-var Datastore = require('nedb');
+import Datastore from 'nedb';
 var db = new Datastore();
 
 const api_portal = "https://documenter.getpostman.com/view/26054707/2s93JzMgT8";
 
 
-
-
-module.exports =(app)=>{
+function loadBackendIFR(app){
 
   //API
   
@@ -718,15 +705,4 @@ function paginar(req, lista){
 }
 
 
-/*
-module.exports = {
-  express,
-  bodyParser,
-  appIFR,
-  portIFR,
-  localentities_stats,
-  BASE_API_URL,
-  datos_randomIFR,
-  rutaIrene
-};
-*/
+export {loadBackendIFR};

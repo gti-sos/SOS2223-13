@@ -4,6 +4,8 @@ import {loadBackendJLB} from './Modularizado/apiJLB.js';
 import {loadBackendJLBV2} from './Modularizado/v2/apiJLBV2.js';
 import {loadBackendLMMG} from './Modularizado/api.js';
 import {loadBackendLMMGV2} from './Modularizado/v2/apiLMMGV2.js';
+import {loadBackendIFR} from './Modularizado/apiirene.js';
+
 import {handler} from "./frontend/build/handler.js";
 
 
@@ -19,6 +21,7 @@ loadBackendJLB(app);
 loadBackendJLBV2(app);
 loadBackendLMMG(app);
 loadBackendLMMGV2(app);
+loadBackendIFR(app);
 
 app.use(handler);
 
