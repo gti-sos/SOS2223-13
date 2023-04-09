@@ -1,15 +1,15 @@
-<!-- <script>
+<script>
     // @ts-nocheck
     
         import { onMount } from 'svelte';
         import { dev } from '$app/environment';
-        import { Button,Table } from 'sveltestrap';
+        import { Button,Table, ButtonToolbar} from 'sveltestrap';
 
         onMount(async () => {
             getLocalentities();
         });
         
-        let API = '/api/v2/localentities-stats';
+        let API = '/api/v2/localentities';
         let aviso = "";
 
         if(dev)
@@ -29,6 +29,20 @@
         let result = "";
         let resultStatus = "";
     
+
+        async function loadData() {
+            resultStatus = result = "";
+            const res = await fetch(API+'/loadInitialData', {
+                method: 'GET'
+            });
+            const status = await res.status;
+            resultStatus = status;
+            if(status==201){
+                getLocalentities(); 
+            }	
+
+        }
+
         async function getLocalentities () {
             resultStatus = result = "";
             const res = await fetch(API, {
@@ -50,14 +64,14 @@
             resultStatus = result = "";
             const newLocalentities = {
                 province: newLocalentitiesProvince,
-                landline: newLocalentitiesLandline,
+                landline: parseInt(newLocalentitiesLandline),
                 first_name: newLocalentitiesFirstName,
                 second_name: newLocalentitiesSecondName,
                 president_appointment_date: parseInt(newLocalentitiesPresidentAppointmentDate),
-                surface_extension: newLocalentitiesSurfaceExtension,
-                population: newLocalentitiesPopulation,
-                expense: newLocalentitiesExpense,
-                income: newLocalentitiesIncome
+                surface_extension: parseInt(newLocalentitiesSurfaceExtension),
+                population: parseInt(newLocalentitiesPopulation),
+                expense: parseInt(newLocalentitiesExpense),
+                income: parseInt(newLocalentitiesIncome)
             };
 
             const existingData = insertedData.find(data => 
@@ -139,23 +153,28 @@
     
         
     </script>
-    <h1 style="text-align: center; font-family:'Times New Roman', Times, serif; font-size: 60px;">Datos Local Entities</h1>
+    <h1 style="text-align: center; font-family:'Times New Roman', Times, serif; font-size: 60px;">Datos LocalEntities</h1>
+    <h1 class="botones">
+        <ButtonToolbar>
+            <Button outline on:click={loadData}>Cargar Datos Iniciales</Button>
+        </ButtonToolbar>
+    </h1>
     {#if aviso !=""}
     <h2 style="color: red; text-align: center; font-family:Arial, Helvetica, sans-serif">{aviso}</h2>
     {/if}
 
-    <Table>
+    <Table striped>
         <thead>
           <tr>
-            <th>Province</th>
-            <th>Landline</th>
-            <th>First Name</th>
-            <th>Second Name</th>
-            <th>President Appointment Date</th>
-            <th>Surface Extension</th>
-            <th>Population</th>
-            <th>Expense</th>
-            <th>Income</th>
+            <th>Provincia</th>
+            <th>Teléfono</th>
+            <th>Nombre</th>
+            <th>Apellidos</th>
+            <th>Fecha nombramiento presidente</th>
+            <th>Extensión</th>
+            <th>Población</th>
+            <th>Gastos</th>
+            <th>Ingresos</th>
             <th>Action</th>
           </tr>
         </thead>
@@ -170,29 +189,29 @@
             <td><input bind:value={newLocalentitiesExpense}></td>
             <td><input bind:value={newLocalentitiesIncome}></td>
 
-            <td><Button on:click={createLocalentities}>Create</Button></td>
+            <td><Button color="success" on:click={createLocalentities}>Crear</Button></td>
            
 
-        {#each localentities as loen}
+        {#each localentities as localentities}
           <tr>
-            <td>{loen.province}</td>
-            <td><a href="/localentities-stats/{loen.province}/{loen.president_appointment_date}">{loen.province}</a></td>
+            <td>{localentities.province}</td>
+            <td>{localentities.landline}</td>
+            <td>{localentities.first_name}</td>
+            <td>{localentities.second_name}</td>
+            <td>{localentities.president_appointment_date}</td>
+            <td>{localentities.surface_extension}</td>
+            <td>{localentities.population}</td>
+            <td>{localentities.expense}</td>
+            <td>{localentities.income}</td>
 
-            <td>{loen.landline}</td>
-            <td>{loen.first_name}</td>
-            <td>{loen.second_name}</td>
-            <td>{loen.president_appointment_date}</td>
-            <td>{loen.surface_extension}</td>
-            <td>{loen.population}</td>
-            <td>{loen.expense}</td>
-            <td>{loen.income}</td>
+            <td><Button><a href="/localentities/{localentities.province}/{localentities.president_appointment_date}">{localentities.province}</a></Button></td>
 
-            <td><Button on:click={deleteLocalentities(loen.province, loen.president_appointment_date)}>Borrar</Button></td>
+            <td><Button color="danger" on:click={deleteLocalentities(localentities.province, localentities.president_appointment_date)}>Borrar</Button></td>
            
           </tr>
         {/each}
 
-        <td><Button on:click={deleteLocalentitiesAll}>Delete all</Button></td>
+        <td><Button color="danger" on:click={deleteLocalentitiesAll}>Borrar todo</Button></td>
           
         </tbody>
     </Table>
@@ -207,4 +226,4 @@
 {"Código de estado: "+resultStatus}
 {result}
     </pre>
-{/if} -->
+{/if} 

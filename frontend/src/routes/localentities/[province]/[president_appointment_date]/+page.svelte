@@ -1,8 +1,8 @@
-<!-- <script> 
+<script> 
     // @ts-nocheck
     
         import { onMount } from 'svelte';
-        import { dev } from '$app/localentities';
+        import { dev } from '$app/environment';
         import { Button,Table } from 'sveltestrap';
         import { page } from "$app/stores";
 
@@ -14,7 +14,7 @@
         let province = $page.params.province;
         let president_appointment_date = $page.params.president_appointment_date;
 
-        let API = "/api/v2/localentities-stats/"+province+ "/" +president_appointment_date;
+        let API = "/api/v2/localentities/"+province+ '/' +president_appointment_date;
 
         if(dev)
             API = 'http://localhost:8080'+API
@@ -105,19 +105,19 @@
         <h2 style="color: red; text-align: center; font-family:Arial, Helvetica, sans-serif">{aviso}</h2>
     {/if}
 
-    <Table>
+    <Table striped>
         <thead>
           <tr>
-            <th>Provincia</th>
-            <th>Teléfono</th>
-            <th>Nombre</th>
-            <th>Apellido</th>
-            <th>Fecha nombramiento presidente</th>
-            <th>Superficie</th>
-            <th>Poblacion</th>
-            <th>Gastos</th>
-            <th>Ingresos</th>
-            <th>Acción</th>
+            <th style="text-decoration: underline;">Provincia</th>
+            <th style="text-decoration: underline;">Teléfono</th>
+            <th style="text-decoration: underline;">Nombre</th>
+            <th style="text-decoration: underline;">Apellido</th>
+            <th style="text-decoration: underline;">Fecha nombramiento presidente</th>
+            <th style="text-decoration: underline;">Superficie</th>
+            <th style="text-decoration: underline;">Poblacion</th>
+            <th style="text-decoration: underline;">Gastos</th>
+            <th style="text-decoration: underline;">Ingresos</th>
+            <th style="text-decoration: underline;">Acción</th>
           </tr>
         </thead>
         <tbody>
@@ -132,7 +132,7 @@
                 <td><input bind:value={updateLocalentitiesExpense}></td>
                 <td><input bind:value={updateLocalentitiesIncome}></td>
 
-                <td><Button on:click={updateLocalentities}>Actualiza</Button></td>
+                <td><Button color="primary" on:click={updateLocalentities}>Actualiza</Button></td>
             </tr>
         </tbody>
     </Table>
@@ -145,4 +145,4 @@
     {"Código de estado: "+resultStatus}    
 {result}
         </pre>
-    {/if} -->
+    {/if}
