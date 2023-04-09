@@ -13,7 +13,7 @@
         let mensajeUsuario = "";
         let territory = $page.params.territory;
         let period = $page.params.period;
-        let API = "/api/v2/evolution-stats/"+territory+ "/" +period;
+        let API = "/api/v2/evolution/"+territory+ "/" +period;
         if(dev)
             API = "http://localhost:8080"+API
 
@@ -38,7 +38,7 @@
                 const data = await res.json();
                 result = JSON.stringify(data, null, 2);
                 updateEvolutionPeriod = data.period;
-                updateEvolutionTerritory = data.territoryE;
+                updateEvolutionTerritory = data.territory;
                 updateEvolutionTotalPopulation = data.total_population;
                 updateEvolutionMan = data.man;
                 updateEvolutionWoman = data.woman;
