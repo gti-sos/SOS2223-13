@@ -1,4 +1,4 @@
-<script>
+<!-- <script> 
     // @ts-nocheck
     
         import { onMount } from 'svelte';
@@ -145,4 +145,4 @@
     {"Código de estado: "+resultStatus}    
 {result}
         </pre>
-    {/if}
+    {/if} -->

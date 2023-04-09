@@ -3,13 +3,13 @@
     
         import { onMount } from 'svelte';
         import { dev } from '$app/environment';
-        import { Button,Table } from 'sveltestrap';
+        import { Button, Table, ButtonToolbar } from 'sveltestrap';
 
         onMount(async () => {
             getEvolution();
         });
         
-        let API = '/api/v2/evolution-stats';
+        let API = '/api/v2/evolution';
         let mensajeUsuario = "";
         
         if(dev)
@@ -27,6 +27,19 @@
     
         let result = "";
         let resultStatus = "";
+
+        async function loadData() {
+            resultStatus = result = "";
+            const res = await fetch(API+'/loadInitialData', {
+                method: 'GET'
+            });
+            const status = await res.status;
+            resultStatus = status;
+            if(status==201){
+                getEvolution(); 
+            }	
+
+}
     
         async function getEvolution () {
             resultStatus = result = "";
@@ -136,6 +149,11 @@
     
     </script>
     <h1 style="text-align: center; font-family:'Times New Roman', Times, serif; font-size: 60px;">Datos Evolutions</h1>
+    <h1 class="botones">
+        <ButtonToolbar>
+            <Button outline on:click={loadData}>Cargar Datos Iniciales</Button>
+        </ButtonToolbar>
+    </h1>
     {#if mensajeUsuario !=""}
     <h2 style="color: red; text-align: center; font-family:Arial, Helvetica, sans-serif">{mensajeUsuario}</h2>
     {/if}
@@ -168,13 +186,14 @@
         {#each evolutions as evolution}
           <tr>
             <td>{evolution.period}</td>
-            <td><a href="/evolution-stats/{evolution.territory}/{evolution.period}">{evolution.territory}</a></td>
+            <td>{evolution.territory}</td>
             <td>{evolution.total_population}</td>
             <td>{evolution.man}</td>
             <td>{evolution.woman}</td>
             <td>{evolution.under_sixteen_years}</td>
             <td>{evolution.from_sixteen_to_sixty_four_years}</td>
             <td>{evolution.sixty_five_and_over}</td>
+            <td><Button><a href='evolution/{evolution.territory}/{evolution.period}'>Editar</a></Button></td>
             <td><Button color="danger"on:click={deleteEvolution(evolution.territory,evolution.period)}>Borrar</Button></td>
            
           </tr>

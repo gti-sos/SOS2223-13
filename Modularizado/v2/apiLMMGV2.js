@@ -39,7 +39,7 @@ db.insert(evolution_stats);
 const BASE_API_URL = "/api/v2";
 
 //Redirect /docs
-app.get(BASE_API_URL+"/evolution-stats/docs",(req,res)=>{
+app.get(BASE_API_URL+"/evolution/docs",(req,res)=>{
   res.redirect(API_DOC_PORTAL);
 });
 
@@ -62,7 +62,7 @@ app.post(BASE_API_URL + "/evolution-stats", (request, response) => {
     }
   }
   // Verificar que la solicitud se hizo en la ruta correcta
-  if (request.originalUrl !== '/api/v2/evolution-stats') {
+  if (request.originalUrl !== '/api/v2/evolution') {
     res.status(405).json('Método no permitido');
   }else{ 
 
@@ -116,7 +116,7 @@ app.get(BASE_API_URL + "/evolution-stats/loadInitialData", (req, res) => {
 
 //CODIGO PARA MOSTRAR LAS ESTADÍSTICAS A PARTIR DE LA QUERY.
 //GET a evolution-stats
-app.get('/api/v2/evolution-stats', (req, res) => {
+app.get('/api/v2/evolution', (req, res) => {
 
   console.log("/GET evolution-stats");
 
@@ -174,7 +174,7 @@ app.get('/api/v2/evolution-stats', (req, res) => {
                       if(req.query.limit==undefined){ 
                         var cond = true;
                       }else{ 
-                        var cond = (offset + parseInt(req.query.limit)) >= i;
+                        var cond = (parseInt(offset) + parseInt(req.query.limit)) >= i;
                       }
                       return (i>offset)&&cond;
                   });
@@ -252,7 +252,7 @@ app.put(rutaBase, (req, res) => {
 
 
 // Ruta específica que no permite el método POST
-const rutaEspecifica = '/api/v2/evolution-stats/loadInitialData';
+const rutaEspecifica = '/api/v2/evolution/loadInitialData';
 app.post(rutaEspecifica, (req, res) => {
   res.status(405).json('El método POST no está permitido en esta ruta');
 });
@@ -285,7 +285,7 @@ app.post(rutaEspecifica, (req, res) => {
 
 
 //CODIGO PARA PODER HACER GET A UNA CIUDAD ESPECÍFICA Y A UNA CIUDAD Y PERIODO CONCRETO.
-app.get('/api/v2/evolution-stats/:city', (req, res) => {
+app.get('/api/v2/evolution/:city', (req, res) => {
   const city = req.params.city.toLowerCase();
   const from = req.query.from;
   const to = req.query.to;
@@ -409,7 +409,7 @@ app.get('/api/v2/evolution-stats/:city', (req, res) => {
 });
 
 //CODIGO PARA PODER HACER UN GET A UNA CIUDAD Y FECHA ESPECÍFICA.
-app.get('/api/v2/evolution-stats/:territory/:year', (req, res) => {
+app.get('/api/v2/evolution/:territory/:year', (req, res) => {
   const { territory, year } = req.params;
   db.find({},function(err, filteredList){
 
@@ -441,7 +441,7 @@ app.put('/api/v2/evolution-stats/:city/:year', (req, res) => {
   const city = req.params.city;
   const year = parseInt(req.params.year);
   const citybody = req.body.territory;
-  const yearbody = req.body.period;
+  const yearbody = parseInt(req.body.period);
   const body = req.body;
   db.find({},function(err, filteredList){
 
@@ -450,9 +450,9 @@ app.put('/api/v2/evolution-stats/:city/:year', (req, res) => {
     }
   filteredList = filteredList.filter((obj)=>
                 {
-                    return(obj.territory === city && obj.period === year);
+                    return(obj.territory === city && obj.period === parseInt(year));
                 });
-  if (!filteredList || city!==citybody || year!==yearbody) {
+  if (!filteredList || city!==citybody || parsetInt(year)!==yearbody) {
     return res.status(400).json('Estadística errónea');
   }else{
     filteredList.total_population = req.body.total_population || filteredList.total_population;
@@ -609,7 +609,7 @@ app.delete('/api/v2/evolution-stats/:territory', (req, res) => {
 });
 
 //DELETE PARA UNA RUTA ESPECÍFICA DE UNA CIUDAD Y PERIOD.
-app.delete('/api/v2/evolution-stats/:territory/:period', (req, res) => {
+app.delete('/api/v2/evolution/:territory/:period', (req, res) => {
   const territory = req.params.territory;
   const period = req.params.period;
   db.find({},function(err, filteredList){

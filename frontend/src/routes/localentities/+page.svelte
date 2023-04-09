@@ -1,8 +1,8 @@
-<script>
+<!-- <script>
     // @ts-nocheck
     
         import { onMount } from 'svelte';
-        import { dev } from '$app/localentities';
+        import { dev } from '$app/environment';
         import { Button,Table } from 'sveltestrap';
 
         onMount(async () => {
@@ -207,4 +207,4 @@
 {"Código de estado: "+resultStatus}
 {result}
     </pre>
-{/if}
+{/if} -->

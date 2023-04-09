@@ -13,18 +13,19 @@
         let mensajeUsuario = "";
         let territory = $page.params.territory;
         let period = $page.params.period;
-        let API = "/api/v2/evolution/"+territory+ "/" +period;
+    
+        let API = "/evolution/"+ territory +'/' + period;
+       
         if(dev)
             API = "http://localhost:8080"+API
-
         let updateEvolutionTerritory = territory;
         let updateEvolutionPeriod = period;
-        let updateEvolutionTotalPopulation = 'total_population';
-        let updateEvolutionMan = 'man';
-        let updateEvolutionWoman = 'woman';
-        let updateEvolutionUndersixteenyears = 'under_sixteen_years';
-        let updateEvolutionSixteensixtyfouryears = 'from_sixteen_to_sixty_four_years';
-        let updateEvolutionSixtyfiveoveryears = 'sixty_five_and_over';
+        let updateEvolutionTotalPopulation = 0;
+        let updateEvolutionMan = 0;
+        let updateEvolutionWoman = 0;
+        let updateEvolutionUndersixteenyears = 0;
+        let updateEvolutionSixteensixtyfouryears = 0;
+        let updateEvolutionSixtyfiveoveryears = 0;
 
         let result = "";
         let resultStatus = "";
@@ -81,6 +82,7 @@
                 getEvolution_dato();
                 mensajeUsuario = "Se ha actualizado el dato";
             }else if(status==400){ 
+                console.log(total_population);
                 mensajeUsuario = "Los datos introducidos no son válidos";
             }else{
                 mensajeUsuario = "No se ha podido actualizar el dato";
@@ -111,8 +113,8 @@
         </thead>
         <tbody>
             <tr>
-                <td>{updateEvolutionTerritory}</td>
-                <td>{updateEvolutionPeriod}</td>
+                <td><input bind:value={updateEvolutionTerritory}></td>
+                <td><input bind:value={updateEvolutionPeriod}></td>
                 <td><input bind:value={updateEvolutionTotalPopulation}></td>
                 <td><input bind:value={updateEvolutionMan}></td>
                 <td><input bind:value={updateEvolutionWoman}></td>
