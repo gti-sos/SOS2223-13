@@ -5,10 +5,9 @@ import {loadBackendJLBV2} from './Modularizado/v2/apiJLBV2.js';
 import {loadBackendLMMG} from './Modularizado/api.js';
 import {loadBackendLMMGV2} from './Modularizado/v2/apiLMMGV2.js';
 import {loadBackendIFR} from './Modularizado/apiirene.js';
-import {loadBackendIFRV2} from './Modularizado/v2/apiireneV2';
+import {loadBackendIFRV2} from './Modularizado/v2/apiireneV2.js';
 
 import {handler} from "./frontend/build/handler.js";
-import { loadBackendIFRV2 } from "./Modularizado/v2/apiireneV2.js";
 
 
 var app = express();

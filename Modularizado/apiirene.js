@@ -26,7 +26,7 @@ function loadBackendIFR(app){
 
 db.insert(localentities_stats);
 
-BASE_API_URL = "/api/v1";
+const BASE_API_URL = "/api/v1";
 
 //redirect /doc
 app.get(BASE_API_URL + "/localentities-stats/docs", (req,res)=>{
