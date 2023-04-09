@@ -15,7 +15,7 @@
         if(dev)
             API = 'http://localhost:8080'+API
             
-        let evolution = [];
+        let evolutions = [];
         let newEvolutionPeriod = 'period';
         let newEvolutionTerritory = 'territory';
         let newEvolutionTotalPopulation = 'total_population';
@@ -36,7 +36,7 @@
             try{
                 const data = await res.json();
                 result = JSON.stringify(data,null,2);
-                evolution = data;
+                evolutions = data;
             }catch(error){
                 console.log(`Error parsing result: ${error}`);
             }
@@ -135,7 +135,7 @@
         
     
     </script>
-    <h1 style="text-align: center; font-family:'Times New Roman', Times, serif; font-size: 60px;">Datos Evolution</h1>
+    <h1 style="text-align: center; font-family:'Times New Roman', Times, serif; font-size: 60px;">Datos Evolutions</h1>
     {#if mensajeUsuario !=""}
     <h2 style="color: red; text-align: center; font-family:Arial, Helvetica, sans-serif">{mensajeUsuario}</h2>
     {/if}
@@ -165,17 +165,17 @@
             <td><Button color="success" on:click={createEvolution}>Create</Button></td>
            
 
-        {#each evolution as evol}
+        {#each evolutions as evolution}
           <tr>
-            <td>{evol.period}</td>
-            <td><a href="/evolution-stats/{evol.territory}/{evol.period}">{evol.territory}</a></td>
-            <td>{evol.total_population}</td>
-            <td>{evol.man}</td>
-            <td>{evol.woman}</td>
-            <td>{evol.under_sixteen_years}</td>
-            <td>{evol.from_sixteen_to_sixty_four_years}</td>
-            <td>{evol.sixty_five_and_over}</td>
-            <td><Button color="danger"on:click={deleteEvolution(evol.territory,evol.period)}>Borrar</Button></td>
+            <td>{evolution.period}</td>
+            <td><a href="/evolution-stats/{evolution.territory}/{evolution.period}">{evolution.territory}</a></td>
+            <td>{evolution.total_population}</td>
+            <td>{evolution.man}</td>
+            <td>{evolution.woman}</td>
+            <td>{evolution.under_sixteen_years}</td>
+            <td>{evolution.from_sixteen_to_sixty_four_years}</td>
+            <td>{evolution.sixty_five_and_over}</td>
+            <td><Button color="danger"on:click={deleteEvolution(evolution.territory,evolution.period)}>Borrar</Button></td>
            
           </tr>
         {/each}
@@ -188,7 +188,7 @@
 
   {#if resultStatus != ""}
         <p>
-            <strong>Número de datos: {evolution.length}</strong>
+            <strong>Número de datos: {evolutions.length}</strong>
         </p>
         <strong>Result:</strong>
         <pre>
