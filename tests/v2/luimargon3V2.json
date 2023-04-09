@@ -30,16 +30,14 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{URL_BASE}}/api/v2/evolution/Huelva/1980",
+					"raw": "{{URL_BASE}}/api/v2/evolution",
 					"host": [
 						"{{URL_BASE}}"
 					],
 					"path": [
 						"api",
 						"v2",
-						"evolution",
-						"Huelva",
-						"1980"
+						"evolution"
 					]
 				}
 			},

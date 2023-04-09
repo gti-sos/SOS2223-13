@@ -27,6 +27,18 @@ loadBackendIFRV2(app);
 app.use(handler);
 
 
+//VERIFICAR SI METODO POST ES A ESA URL
+app.use((req, res, next) => {
+  // Verificar si la solicitud es un POST y si no es en la ruta correcta
+  if (req.method === 'POST' && req.originalUrl !== '/api/v2/evolution-stats') {
+    res.status(405).json('Método no permitido');
+    return;
+  }
+
+  // Enviar una respuesta con un código de estado 404 Not Found si la ruta no se encuentra
+  res.status(404).json('La ruta solicitada no existe');
+});
+
 //ARRANCAR EL SERVIDOR.
 app.listen(port,()=>{
   console.log(`Server ready in port ${port}`);
@@ -45,17 +57,6 @@ app.use((err, req, res, next) => {
   }
   });
 
-//VERIFICAR SI METODO POST ES A ESA URL
-  app.use((req, res, next) => {
-    // Verificar si la solicitud es un POST y si no es en la ruta correcta
-    if (req.method === 'POST' && req.originalUrl !== '/api/v2/evolution-stats') {
-      res.status(405).json('Método no permitido');
-      return;
-    }
-  
-    // Enviar una respuesta con un código de estado 404 Not Found si la ruta no se encuentra
-    res.status(404).json('La ruta solicitada no existe');
-  });
   
 // Manejador de rutas no encontradas
 app.use((req, res) => {

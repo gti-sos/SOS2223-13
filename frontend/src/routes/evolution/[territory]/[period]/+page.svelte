@@ -59,7 +59,6 @@
 
         async function updateEvolution(){
             resultStatus = result = "";
-            
             const res = await fetch(API, {
                 method: "PUT",
                 headers:{

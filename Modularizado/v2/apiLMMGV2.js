@@ -119,6 +119,7 @@ app.get(BASE_API_URL + "/evolution/loadInitialData", (req, res) => {
 app.get('/api/v2/evolution', (req, res) => {
 
   console.log("/GET evolution");
+  
 
   // Empezamos viendo los registros de la db y eliminamos el _id.
   db.find({}, {_id: 0}, (err, filteredList) => {
@@ -436,6 +437,18 @@ app.get('/api/v2/evolution/:territory/:year', (req, res) => {
   console.log("Solicitud /GET")
 });
 });
+
+app.post('/api/v2/evolution/:city/:year', (req, res) => {
+  db.find({},function(err, filteredList){
+    if(err){
+        res.sendStatus(500, "Client Error");   
+    }else{
+      res.status(405).json('Método no permitido');
+      return;
+  }
+});
+});
+
 //CODIGO PARA ACTUALIZAR MEDIANTE PUT UNA RUTA CONCRETA.
 app.put('/api/v2/evolution/:city/:year', (req, res) => {
   const city = req.params.city;
@@ -661,6 +674,8 @@ function pagination(req, lista){
   return res;
 
 };
+
+
 
 //HASTA AQUÍ LLEGA MI CÓDIGO.
 }
