@@ -41,7 +41,14 @@
             try{
                 const data = await res.json();
                 result = JSON.stringify(data,null,2);
-                employments = data;
+                updatedEmploymentRegion = data.region;
+                updatedEmploymentYear = data.year;
+                updatedEmploymentPeriod = data.period;
+                updatedEmploymentDate = data.date;
+                updatedEmploymentEmployedPerson = data.employed_person;
+                updatedEmploymentInactivePerson = data.inactive_person;
+                updatedEmploymentUnemployedPerson = data.unemployed_person;
+
             }catch(error){
                 console.log(`Error parsing result: ${error}`);
             }
