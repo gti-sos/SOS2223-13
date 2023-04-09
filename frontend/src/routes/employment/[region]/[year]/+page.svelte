@@ -16,7 +16,7 @@
         let region = $page.params.region;
         let year = $page.params.year;
         
-        let API = '/api/v2/employment-stats/'+region+'/'+year;
+        let API = '/api/v2/employment-stats'+'/'+region+'/'+year;
         
         
         if(dev)
