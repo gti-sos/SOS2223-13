@@ -1,9 +1,9 @@
 <script>
     // @ts-nocheck
     
-        import { onMount } from 'svelte';
-        import { dev } from '$app/environment';
-        import { Button, Table, ButtonToolbar } from 'sveltestrap';
+        import { onMount } from "svelte";
+        import { dev } from "$app/environment";
+        import { Button, Table, ButtonToolbar } from "sveltestrap";
 
         onMount(async () => {
             getEvolution();
@@ -63,12 +63,12 @@
             const newEvolution = {
                 period: parseInt(newEvolutionPeriod),
                 territory: newEvolutionTerritory,
-                total_population: newEvolutionTotalPopulation,
-                man: newEvolutionMan,
-                woman: newEvolutionWoman,
-                under_sixteen_years: newEvolutionUndersixteenyears,
-                from_sixteen_to_sixty_four_years: newEvolutionSixteensixtyfouryears,
-                sixty_five_and_over: newEvolutionSixtyfiveoveryears
+                total_population: parseInt(newEvolutionTotalPopulation),
+                man: parseInt(newEvolutionMan),
+                woman: parseInt(newEvolutionWoman),
+                under_sixteen_years: parseInt(newEvolutionUndersixteenyears),
+                from_sixteen_to_sixty_four_years: parseInt(newEvolutionSixteensixtyfouryears),
+                sixty_five_and_over: parseInt(newEvolutionSixtyfiveoveryears)
             };
             // Comprobar si el nuevo dato ya ha sido insertado previamente
             const existingData = insertedData.find(data => 
@@ -160,14 +160,14 @@
     <Table striped>
         <thead>
           <tr>
-            <th>Period</th>
-            <th>Territory</th>
-            <th>Total_population</th>
-            <th>Man</th>
-            <th>Woman</th>
-            <th>Under_sixteen_years</th>
-            <th>From_sixteen_to_sixty_four_years</th>
-            <th>Sixty_five_and_over</th>
+            <th>Periodo</th>
+            <th>Territorio</th>
+            <th>Total Población</th>
+            <th>Hombres</th>
+            <th>Mujeres</th>
+            <th>Menores 16 años</th>
+            <th>De 16 a 64 años</th>
+            <th>A partir de 65 años</th>
             <th>Action</th>
           </tr>
         </thead>
@@ -180,7 +180,7 @@
             <td><input bind:value={newEvolutionUndersixteenyears}></td>
             <td><input bind:value={newEvolutionSixteensixtyfouryears}></td>
             <td><input bind:value={newEvolutionSixtyfiveoveryears}></td>
-            <td><Button color="success" on:click={createEvolution}>Create</Button></td>
+            <td><Button color="success" on:click={createEvolution}>Crear</Button></td>
            
 
         {#each evolutions as evolution}
@@ -209,7 +209,7 @@
         <p>
             <strong>Número de datos: {evolutions.length}</strong>
         </p>
-        <strong>Result:</strong>
+        <strong>Resultado:</strong>
         <pre>
     {"Código de estado: "+resultStatus}
 {result}

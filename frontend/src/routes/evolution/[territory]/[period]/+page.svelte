@@ -15,7 +15,6 @@
         let period = $page.params.period;
     
         let API = "/evolution/"+ territory +'/' + period;
-       
         if(dev)
             API = "http://localhost:8080"+API
         let updateEvolutionTerritory = territory;
@@ -60,12 +59,13 @@
 
         async function updateEvolution(){
             resultStatus = result = "";
+            
             const res = await fetch(API, {
                 method: "PUT",
                 headers:{
                     "Content-Type": "application/json"
                 },
-                body:JSON.stringify({
+                body:({
                     territory: updateEvolutionTerritory,
                     period: updateEvolutionPeriod,
                     total_population: updateEvolutionTotalPopulation,
@@ -113,8 +113,8 @@
         </thead>
         <tbody>
             <tr>
-                <td><input bind:value={updateEvolutionTerritory}></td>
-                <td><input bind:value={updateEvolutionPeriod}></td>
+                <td>{updateEvolutionTerritory}</td>
+                <td>{updateEvolutionPeriod}</td>
                 <td><input bind:value={updateEvolutionTotalPopulation}></td>
                 <td><input bind:value={updateEvolutionMan}></td>
                 <td><input bind:value={updateEvolutionWoman}></td>
@@ -127,7 +127,7 @@
     </Table>
     
     {#if resultStatus != ""}
-            <strong>Result:</strong>
+            <strong>Resultado:</strong>
         <pre>
     {"Código de estado: "+resultStatus}    
 {result}
