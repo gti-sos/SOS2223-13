@@ -14,17 +14,17 @@
         let territory = $page.params.territory;
         let period = $page.params.period;
     
-        let API = "/evolution/"+ territory +'/' + period;
+        let API = "/api/v2/evolution/"+ territory +'/' + period;
         if(dev)
             API = "http://localhost:8080"+API
         let updateEvolutionTerritory = territory;
         let updateEvolutionPeriod = period;
-        let updateEvolutionTotalPopulation = 0;
-        let updateEvolutionMan = 0;
-        let updateEvolutionWoman = 0;
-        let updateEvolutionUndersixteenyears = 0;
-        let updateEvolutionSixteensixtyfouryears = 0;
-        let updateEvolutionSixtyfiveoveryears = 0;
+        let updateEvolutionTotalPopulation = "total_population";
+        let updateEvolutionMan = "man";
+        let updateEvolutionWoman = "woman";
+        let updateEvolutionUndersixteenyears = "under";
+        let updateEvolutionSixteensixtyfouryears = "from";
+        let updateEvolutionSixtyfiveoveryears = "over";
 
         let result = "";
         let resultStatus = "";

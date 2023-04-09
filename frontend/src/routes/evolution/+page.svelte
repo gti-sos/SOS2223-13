@@ -193,7 +193,7 @@
             <td>{evolution.under_sixteen_years}</td>
             <td>{evolution.from_sixteen_to_sixty_four_years}</td>
             <td>{evolution.sixty_five_and_over}</td>
-            <td><Button><a href='evolution/{evolution.territory}/{evolution.period}'>Editar</a></Button></td>
+            <td><Button><a href='/evolution/{evolution.territory}/{evolution.period}'>Editar</a></Button></td>
             <td><Button color="danger"on:click={deleteEvolution(evolution.territory,evolution.period)}>Borrar</Button></td>
            
           </tr>
