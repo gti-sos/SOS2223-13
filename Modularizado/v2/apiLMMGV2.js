@@ -662,20 +662,6 @@ function pagination(req, lista){
 
 };
 
-//VERIFICAR SI METODO POST ES A ESA URL
-app.use((req, res, next) => {
-  // Verificar si la solicitud es un POST y si no es en la ruta correcta
-  if (req.method === 'POST' && req.originalUrl !== '/api/v2/evolution') {
-    res.status(405).json('Método no permitido');
-    return;
-  }
-
-  // Enviar una respuesta con un código de estado 404 Not Found si la ruta no se encuentra
-  res.status(404).json('La ruta solicitada no existe');
-});
-
-
-
 //HASTA AQUÍ LLEGA MI CÓDIGO.
 }
 
