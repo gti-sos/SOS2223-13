@@ -30,14 +30,16 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{URL_BASE}}/api/v2/evolution",
+					"raw": "{{URL_BASE}}/api/v2/evolution/Huelva/1980",
 					"host": [
 						"{{URL_BASE}}"
 					],
 					"path": [
 						"api",
 						"v2",
-						"evolution"
+						"evolution",
+						"Huelva",
+						"1980"
 					]
 				}
 			},
@@ -308,14 +310,14 @@
 					}
 				},
 				"url": {
-					"raw": "{{URL_BASE}}/api/v2/evolution-stats/Huelva/1980",
+					"raw": "{{URL_BASE}}/api/v2/evolution/Huelva/1980",
 					"host": [
 						"{{URL_BASE}}"
 					],
 					"path": [
 						"api",
 						"v2",
-						"evolution-stats",
+						"evolution",
 						"Huelva",
 						"1980"
 					]
@@ -352,14 +354,14 @@
 					}
 				},
 				"url": {
-					"raw": "{{URL_BASE}}/api/v2/evolution-stats/Huelva/1980",
+					"raw": "{{URL_BASE}}/api/v2/evolution/Huelva/1980",
 					"host": [
 						"{{URL_BASE}}"
 					],
 					"path": [
 						"api",
 						"v2",
-						"evolution-stats",
+						"evolution",
 						"Huelva",
 						"1980"
 					]
@@ -607,7 +609,7 @@
 					}
 				},
 				"url": {
-					"raw": "{{URL_BASE}}/api/v2/evolution/Sevilla",
+					"raw": "{{URL_BASE}}/api/v2/evolution/Sevilla/1980",
 					"host": [
 						"{{URL_BASE}}"
 					],
@@ -615,7 +617,8 @@
 						"api",
 						"v2",
 						"evolution",
-						"Sevilla"
+						"Sevilla",
+						"1980"
 					]
 				}
 			},
@@ -649,14 +652,14 @@
 					}
 				},
 				"url": {
-					"raw": "{{URL_BASE}}/api/v2/evolution-stats",
+					"raw": "{{URL_BASE}}/api/v2/evolution",
 					"host": [
 						"{{URL_BASE}}"
 					],
 					"path": [
 						"api",
 						"v2",
-						"evolution-stats"
+						"evolution"
 					]
 				}
 			},

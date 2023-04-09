@@ -444,25 +444,24 @@ app.put('/api/v2/evolution/:city/:year', (req, res) => {
   const yearbody = parseInt(req.body.period);
   const body = req.body;
   db.find({},function(err, filteredList){
-
     if(err){
         res.sendStatus(500, "Client Error");   
     }
   filteredList = filteredList.filter((obj)=>
                 {
-                    return(obj.territory === city && obj.period === parseInt(year));
+                    return(obj.territory === city && obj.period === year);
                 });
-  if (!filteredList || city!==citybody || parsetInt(year)!==yearbody) {
+  if (!filteredList || city!==citybody || year !==yearbody) {
     return res.status(400).json('Estadística errónea');
   }else{
-    filteredList.total_population = parseInt(req.body.total_population) || parseInt(filteredList.total_population);
-    filteredList.man = parseInt(req.body.man) || parseInt(filteredList.man);
-    filteredList.woman = parseInt(req.body.woman) || parseInt(filteredList.woman);
-    filteredList.under_sixteen_years = parseInt(req.body.under_sixteen_years) || parseInt(filteredList.under_sixteen_years);
-    filteredList.from_sixteen_to_sixty_four_years = parseInt(req.body.from_sixteen_to_sixty_four_years) || parseInt(filteredList.from_sixteen_to_sixty_four_years);
-    filteredList.sixty_five_and_over = parseInt(req.body.sixty_five_and_over) || parseInt(filteredList.sixty_five_and_over);
+    filteredList.total_population = req.body.total_population || filteredList.total_population;
+    filteredList.man = req.body.man || filteredList.man;
+    filteredList.woman = req.body.woman || filteredList.woman;
+    filteredList.under_sixteen_years = req.body.under_sixteen_years || filteredList.under_sixteen_years;
+    filteredList.from_sixteen_to_sixty_four_years = req.body.from_sixteen_to_sixty_four_years || filteredList.from_sixteen_to_sixty_four_years;
+    filteredList.sixty_five_and_over = req.body.sixty_five_and_over || filteredList.sixty_five_and_over;
 
-    db.update({ $and: [{ territory: String(city) }, { period: parseInt(year) }] }, { $set: parseInt(body) }, {}, function (err, numUpdated) {
+    db.update({ $and: [{ territory: String(city) }, { period: parseInt(year) }] }, { $set: body }, {}, function (err, numUpdated) {
       if (err) {
           res.sendStatus(500, "INTERNAL SERVER ERROR");
       } else {
@@ -662,6 +661,18 @@ function pagination(req, lista){
   return res;
 
 };
+
+//VERIFICAR SI METODO POST ES A ESA URL
+app.use((req, res, next) => {
+  // Verificar si la solicitud es un POST y si no es en la ruta correcta
+  if (req.method === 'POST' && req.originalUrl !== '/api/v2/evolution') {
+    res.status(405).json('Método no permitido');
+    return;
+  }
+
+  // Enviar una respuesta con un código de estado 404 Not Found si la ruta no se encuentra
+  res.status(404).json('La ruta solicitada no existe');
+});
 
 
 
