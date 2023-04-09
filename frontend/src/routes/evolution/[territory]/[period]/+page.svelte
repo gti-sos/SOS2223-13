@@ -64,7 +64,7 @@
                 headers:{
                     "Content-Type": "application/json"
                 },
-                body:({
+                body: JSON.stringify({
                     territory: updateEvolutionTerritory,
                     period: updateEvolutionPeriod,
                     total_population: updateEvolutionTotalPopulation,
