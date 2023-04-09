@@ -47,7 +47,7 @@ app.post(BASE_API_URL + "/evolution", (request, response) => {
   //var NewEvolution = request.body;
   const territory = request.body.territory;
   const period = request.body.period;
-  console.log("New POST to /evolution-stats"); //console.log en el servidor
+  console.log("New POST to /evolution"); //console.log en el servidor
   db.find({},function(err,filteredList){
 
     if(err){
@@ -91,7 +91,7 @@ app.post(BASE_API_URL + "/evolution", (request, response) => {
 
 //APARTADO CREAR 10 O MÁS DATOS RANDOM
 
-app.get(BASE_API_URL + "/evolution-stats/loadInitialData", (req, res) => {
+app.get(BASE_API_URL + "/evolution/loadInitialData", (req, res) => {
   db.find({}, function(err,filteredList){
 
     if(err){
@@ -115,10 +115,10 @@ app.get(BASE_API_URL + "/evolution-stats/loadInitialData", (req, res) => {
 
 
 //CODIGO PARA MOSTRAR LAS ESTADÍSTICAS A PARTIR DE LA QUERY.
-//GET a evolution-stats
+//GET a evolution
 app.get('/api/v2/evolution', (req, res) => {
 
-  console.log("/GET evolution-stats");
+  console.log("/GET evolution");
 
   // Empezamos viendo los registros de la db y eliminamos el _id.
   db.find({}, {_id: 0}, (err, filteredList) => {
@@ -126,7 +126,7 @@ app.get('/api/v2/evolution', (req, res) => {
               // Comprobamos los errores que han podido surgir
               if(err){
 
-                  console.log(`Error getting evolution-stats`);
+                  console.log(`Error getting evolution`);
 
                   // El estado es el 500 de Internal Server Error
                   res.sendStatus(500);
@@ -134,7 +134,7 @@ app.get('/api/v2/evolution', (req, res) => {
               // Comprobamos si existen datos:
               }else if(filteredList.length == 0){
 
-                  console.log(`Ruta evolution-stats Not Found`);
+                  console.log(`Ruta evolution Not Found`);
 
                   // Si no existen datos usamos el estado es 404 de Not Found
                   res.sendStatus(404);
@@ -182,14 +182,14 @@ app.get('/api/v2/evolution', (req, res) => {
                   // Comprobamos si tras el filtrado sigue habiendo datos, si no hay:
                   if(datos.length == 0){
 
-                      console.log(`evolution-stats not found`);
+                      console.log(`evolution not found`);
                       // Estado 404: Not Found
                       res.sendStatus(404);
 
                   // Si por el contrario encontramos datos
                   }else{
 
-                      console.log(`Datos de evolution-stats devueltos: ${datos.length}`);
+                      console.log(`Datos de evolution devueltos: ${datos.length}`);
                       // Devolvemos dichos datos, estado 200: OK
                       res.json(datos);
 
@@ -205,7 +205,7 @@ const rutaBase = '/api/v2/evolution';
 app.post(rutaBase, (request, response) => {
   const territory = request.body.territory;
   const period = parseInt(request.body.period);
-  console.log("New POST to /evolution-stats"); //console.log en el servidor  
+  console.log("New POST to /evolution"); //console.log en el servidor  
   db.find({},function(err, filteredList){
 
     if(err){
@@ -220,7 +220,7 @@ app.post(rutaBase, (request, response) => {
     }
   }
   // Verificar que la solicitud se hizo en la ruta correcta
-  if (request.originalUrl !== '/api/v2/evolution-stats') {
+  if (request.originalUrl !== '/api/v2/evolution') {
     res.status(405).json('Método no permitido');
     return;
   }else{
@@ -309,7 +309,7 @@ app.get('/api/v2/evolution/:city', (req, res) => {
                 {
                     return(obj.territory.toLowerCase() == city && obj.period >= from && obj.period<= to);
                 });
-    console.log(`/GET to /evolution-stats/${city}?from=${from}&to=${to}`); //console.log en el servidor
+    console.log(`/GET to /evolution/${city}?from=${from}&to=${to}`); //console.log en el servidor
     filteredList.forEach((e)=>{
                   delete e._id;
                 });
@@ -319,7 +319,7 @@ app.get('/api/v2/evolution/:city', (req, res) => {
                 {
                     return(obj.period == period && obj.territory.toLowerCase() == city);
                 });
-                console.log(`/GET to /evolution-stats/${city}?${period}`); //console.log en el servidor
+                console.log(`/GET to /evolution/${city}?${period}`); //console.log en el servidor
                 filteredList.forEach((e)=>{
                   delete e._id;
                 });
@@ -329,7 +329,7 @@ app.get('/api/v2/evolution/:city', (req, res) => {
                 {
                     return(obj.total_population == total_population && obj.territory.toLowerCase() == city);
                 });
-                console.log(`/GET to /evolution-stats/${city}?${total_population}`); //console.log en el servidor
+                console.log(`/GET to /evolution/${city}?${total_population}`); //console.log en el servidor
                 filteredList.forEach((e)=>{
                   delete e._id;
                 });
@@ -340,7 +340,7 @@ app.get('/api/v2/evolution/:city', (req, res) => {
                 {
                     return(obj.man == man && obj.territory.toLowerCase() == city);
                 });
-                console.log(`/GET to /evolution-stats/${city}?${man}`); //console.log en el servidor
+                console.log(`/GET to /evolution/${city}?${man}`); //console.log en el servidor
                 filteredList.forEach((e)=>{
                   delete e._id;
                 });
@@ -350,7 +350,7 @@ app.get('/api/v2/evolution/:city', (req, res) => {
                 {
                     return(obj.woman == woman && obj.territory.toLowerCase() == city);
                 });
-                console.log(`/GET to /evolution-stats/${city}?${woman}`); //console.log en el servidor
+                console.log(`/GET to /evolution/${city}?${woman}`); //console.log en el servidor
                 filteredList.forEach((e)=>{
                   delete e._id;
                 });
@@ -360,7 +360,7 @@ app.get('/api/v2/evolution/:city', (req, res) => {
                 {
                     return(obj.under_sixteen_years == under_sixteen_years && obj.territory.toLowerCase() == city);
                 });
-                console.log(`/GET to /evolution-stats/${city}?${under_sixteen_years}`); //console.log en el servidor
+                console.log(`/GET to /evolution/${city}?${under_sixteen_years}`); //console.log en el servidor
                 filteredList.forEach((e)=>{
                   delete e._id;
                 });
@@ -370,7 +370,7 @@ app.get('/api/v2/evolution/:city', (req, res) => {
                 {
                     return(obj.from_sixteen_to_sixty_four_years == from_sixteen_to_sixty_four_years && obj.territory.toLowerCase() == city);
                 });
-                console.log(`/GET to /evolution-stats/${city}?${from_sixteen_to_sixty_four_years}`); //console.log en el servidor
+                console.log(`/GET to /evolution/${city}?${from_sixteen_to_sixty_four_years}`); //console.log en el servidor
                 filteredList.forEach((e)=>{
                   delete e._id;
                 });
@@ -380,7 +380,7 @@ app.get('/api/v2/evolution/:city', (req, res) => {
                 {
                     return(obj.sixty_five_and_over == sixty_five_and_over && obj.territory.toLowerCase() == city);
                 });
-                console.log(`/GET to /evolution-stats/${city}?${sixty_five_and_over}`); //console.log en el servidor
+                console.log(`/GET to /evolution/${city}?${sixty_five_and_over}`); //console.log en el servidor
                 filteredList.forEach((e)=>{
                   delete e._id;
                 });
@@ -437,7 +437,7 @@ app.get('/api/v2/evolution/:territory/:year', (req, res) => {
 });
 });
 //CODIGO PARA ACTUALIZAR MEDIANTE PUT UNA RUTA CONCRETA.
-app.put('/api/v2/evolution-stats/:city/:year', (req, res) => {
+app.put('/api/v2/evolution/:city/:year', (req, res) => {
   const city = req.params.city;
   const year = parseInt(req.params.year);
   const citybody = req.body.territory;
@@ -474,7 +474,7 @@ app.put('/api/v2/evolution-stats/:city/:year', (req, res) => {
 });
 
 //CODIGO PARA ACTUALIZAR MEDIANTE PUT UNA CIUDAD
-app.put('/api/v2/evolution-stats/:city', (req, res) => {
+app.put('/api/v2/evolution/:city', (req, res) => {
   const city = req.params.city;
   const citybody = req.body.territory;
   const body = req.body;
@@ -512,7 +512,7 @@ app.put('/api/v2/evolution-stats/:city', (req, res) => {
 });
 // DELETE de una lista de recursos
 /*
-app.delete(BASE_API_URL+ "/evolution-stats",(req, res)=>{
+app.delete(BASE_API_URL+ "/evolution",(req, res)=>{
   db.remove({}, { multi: true }, (err, numRemoved)=>{
       if (err){
           res.sendStatus(500,"CLIENT ERROR");
@@ -523,7 +523,7 @@ app.delete(BASE_API_URL+ "/evolution-stats",(req, res)=>{
 });*/
 
 //METODO DELETE PARA LA RUTA BASE PARA BORRAR DATO ESPECÍFICO.
-app.delete(BASE_API_URL + "/evolution-stats", (req, res) => {
+app.delete(BASE_API_URL + "/evolution", (req, res) => {
   db.remove({}, {multi : true}, (err, numRemoved) =>{
 
     if(err){
@@ -572,7 +572,7 @@ app.delete(BASE_API_URL + "/evolution-stats", (req, res) => {
 });
 
 //DELETE PARA UNA RUTA ESPECÍFICA DE UNA CIUDAD.
-app.delete('/api/v2/evolution-stats/:territory', (req, res) => {
+app.delete('/api/v2/evolution/:territory', (req, res) => {
   const territory = req.params.territory;
   db.find({},function(err, filteredList){
 
