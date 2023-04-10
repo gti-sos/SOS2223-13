@@ -16,7 +16,7 @@
         let region = $page.params.region;
         let year = $page.params.year;
         
-        let API = '/api/v2/employment-stats'+'/'+region+'/'+year;
+        let API = '/api/v2/employment'+'/'+region+'/'+year;
         
         
         if(dev)
@@ -82,7 +82,7 @@
             const status = await res.status;
             resultStatus = status;
             if(status==200){
-                //getEmployment ();
+                getEmployment ();
                 advertencia = "Recurso actualizado";
             }else if(status==400){
                 advertencia = "Estadística erronea";

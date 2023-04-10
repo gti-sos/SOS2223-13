@@ -17,7 +17,7 @@ var db = new Datastore();
 function loadBackendJLBV2(app){
 
 //Redirect /docs
-app.get("/api/v2/employment-stats/docs",(req,res)=>{
+app.get("/api/v2/employment/docs",(req,res)=>{
   res.redirect("https://documenter.getpostman.com/view/26023285/2s93XsWkKp#25f6d261-72b7-452f-8afe-aa9ceae2968e");
 });
 
@@ -44,7 +44,7 @@ var employment_stats = [
 
 //Tarea crear 10 datos 
 
-app.get("/api/v2/employment-stats/loadInitialData", (req, res) => {
+app.get("/api/v2/employment/loadInitialData", (req, res) => {
   db.find({}, function(err,filteredList){
 
     if(err){
@@ -63,9 +63,9 @@ app.get("/api/v2/employment-stats/loadInitialData", (req, res) => {
 });
 
 //CODIGO PARA MOSTRAR TODAS LAS ESTADÍSTICAS 
-app.get('/api/v2/employment-stats', (req, res) => {
+app.get('/api/v2/employment', (req, res) => {
 
-  console.log("/GET employment-stats");
+  console.log("/GET employment");
 
   // Empezamos viendo los registros de la db y eliminamos el _id.
   db.find({}, {_id: 0}, (err, filteredList) => {
@@ -73,7 +73,7 @@ app.get('/api/v2/employment-stats', (req, res) => {
               // Comprobamos los errores que han podido surgir
               if(err){
 
-                  console.log(`Error para obtener employment-stats`);
+                  console.log(`Error para obtener employment`);
 
                   // El estado es el 500 de Internal Server Error
                   res.sendStatus(500);
@@ -81,7 +81,7 @@ app.get('/api/v2/employment-stats', (req, res) => {
               // Comprobamos si existen datos:
               }else if(filteredList.length == 0){
 
-                  console.log(`Ruta employment-stats no encontrada`);
+                  console.log(`Ruta employment no encontrada`);
 
                   // Si no existen datos usamos el estado es 404 de Not Found
                   res.sendStatus(404);
@@ -122,14 +122,14 @@ app.get('/api/v2/employment-stats', (req, res) => {
                   // Comprobamos si tras el filtrado sigue habiendo datos, si no hay:
                   if(datos.length == 0){
 
-                      console.log(`employment-stats no encontrado`);
+                      console.log(`employment no encontrado`);
                       // Estado 404: Not Found
                       res.sendStatus(404);
 
                   // Si por el contrario encontramos datos
                   }else{
 
-                      console.log(`Datos de employment-stats devueltos: ${datos.length}`);
+                      console.log(`Datos de employment devueltos: ${datos.length}`);
                       // Devolvemos dichos datos, estado 200: OK
                       res.json(datos);
 
@@ -139,7 +139,7 @@ app.get('/api/v2/employment-stats', (req, res) => {
 });
 
 //CODIGO PARA PODER HACER GET A UNA CIUDAD ESPECÍFICA Y A UNA CIUDAD Y PERIODO CONCRETO.
-app.get('/api/v2/employment-stats/:city', (req, res) => {
+app.get('/api/v2/employment/:city', (req, res) => {
   const city = req.params.city.toLowerCase();
   const from = req.query.from;
   const to = req.query.to;
@@ -161,7 +161,7 @@ app.get('/api/v2/employment-stats/:city', (req, res) => {
                 {
                     return(obj.region.toLowerCase() == city && obj.year >= from && obj.year<= to);
                 });
-    console.log(`/GET to /employment-stats/${city}?from=${from}&to=${to}`); //console.log en el servidor
+    console.log(`/GET to /employment/${city}?from=${from}&to=${to}`); //console.log en el servidor
     res.status(200);
                 filteredList.forEach((e)=>{
                   delete e._id;
@@ -172,7 +172,7 @@ app.get('/api/v2/employment-stats/:city', (req, res) => {
                 {
                     return(obj.year == year && obj.region.toLowerCase() == city);
                 });
-                console.log(`/GET to /employment-stats/${city}?${year}`); //console.log en el servidor
+                console.log(`/GET to /employment/${city}?${year}`); //console.log en el servidor
                 res.status(200);
                 filteredList.forEach((e)=>{
                   delete e._id;
@@ -183,7 +183,7 @@ app.get('/api/v2/employment-stats/:city', (req, res) => {
                 {
                     return(obj.employed_person >= employed_person && obj.region.toLowerCase() == city);
                 });
-                console.log(`/GET to /employment-stats/${city}?${employed_person}`); //console.log en el servidor
+                console.log(`/GET to /employment/${city}?${employed_person}`); //console.log en el servidor
                 res.status(200);
                 filteredList.forEach((e)=>{
                   delete e._id;
@@ -194,7 +194,7 @@ app.get('/api/v2/employment-stats/:city', (req, res) => {
                 {
                     return(obj.inactive_person >= inactive_person && obj.region.toLowerCase() == city);
                 });
-                console.log(`/GET to /employment-stats/${city}?${inactive_person}`); //console.log en el servidor
+                console.log(`/GET to /employment/${city}?${inactive_person}`); //console.log en el servidor
                 res.status(200);
                 filteredList.forEach((e)=>{
                   delete e._id;
@@ -205,7 +205,7 @@ app.get('/api/v2/employment-stats/:city', (req, res) => {
                 {
                     return(obj.unemployed_person >= unemployed_person && obj.region.toLowerCase() == city);
                 });
-                console.log(`/GET to /employment-stats/${city}?${unemployed_person}`); //console.log en el servidor
+                console.log(`/GET to /employment/${city}?${unemployed_person}`); //console.log en el servidor
                 res.status(200);
                 filteredList.forEach((e)=>{
                   delete e._id;
@@ -216,7 +216,7 @@ app.get('/api/v2/employment-stats/:city', (req, res) => {
                 {
                     return(obj.period >= period && obj.region.toLowerCase() == city);
                 });
-                console.log(`/GET to /employment-stats/${city}?period=${period}`); //console.log en el servidor
+                console.log(`/GET to /employment/${city}?period=${period}`); //console.log en el servidor
                 res.status(200);
                 filteredList.forEach((e)=>{
                   delete e._id;
@@ -227,7 +227,7 @@ app.get('/api/v2/employment-stats/:city', (req, res) => {
                 {
                     return(obj.date >= date && obj.region.toLowerCase() == city);
                 });
-                console.log(`/GET to /employment-stats/${city}?date=${date}`); //console.log en el servidor
+                console.log(`/GET to /employment/${city}?date=${date}`); //console.log en el servidor
                 res.status(200);
                 filteredList.forEach((e)=>{
                   delete e._id;
@@ -257,7 +257,7 @@ app.get('/api/v2/employment-stats/:city', (req, res) => {
 });
 
 //HACER UN GET A UNA CIUDAD Y FECHA ESPECÍFICA.
-app.get('/api/v2/employment-stats/:city/:year', (req, res) => {
+app.get('/api/v2/employment/:city/:year', (req, res) => {
   const { city, year } = req.params;
   db.find({},function(err, filteredList){
 
@@ -286,13 +286,13 @@ app.get('/api/v2/employment-stats/:city/:year', (req, res) => {
 });
 
 //Implementacion de buenas practicas en la API
-const rutaRaiz = '/api/v2/employment-stats';
+const rutaRaiz = '/api/v2/employment';
 
 // Método POST para la ruta base
 app.post(rutaRaiz, (request, response) => {
   const region = request.body.region;
   const year = request.body.year;
-  console.log("New POST to /employment-stats"); //console.log en el servidor  
+  console.log("New POST to /employment"); //console.log en el servidor  
   db.find({},function(err, filteredList){
 
     if(err){
@@ -307,7 +307,7 @@ app.post(rutaRaiz, (request, response) => {
     }
   }
   // Verificar que la solicitud se hizo en la ruta correcta
-  if (request.originalUrl !== '/api/v2/employment-stats') {
+  if (request.originalUrl !== '/api/v2/employment') {
     res.status(405).json('Método no permitido');
     return;
   }else{
@@ -340,7 +340,7 @@ app.put(rutaRaiz, (req, res) => {
 
 
 // Ruta específica que no permite el método POST
-const rutaEsp = '/api/v2/employment-stats/loadInitialData';
+const rutaEsp = '/api/v2/employment/loadInitialData';
 app.post(rutaEsp, (req, res) => {
   res.status(405).send('El método POST no está permitido en esta ruta');
 });
@@ -351,7 +351,7 @@ app.post(rutaEsp, (req, res) => {
 
 
 //CODIGO PARA PODER HACER UN GET A UNA CIUDAD Y FECHA ESPECÍFICA.
-app.get('/api/v2/employment-stats/:region/:year', (req, res) => {
+app.get('/api/v2/employment/:region/:year', (req, res) => {
   const { region, year } = req.params;
   db.find({},function(err, filteredList){
 
@@ -386,7 +386,7 @@ app.get('/api/v2/employment-stats/:region/:year', (req, res) => {
 
 //CODIGO PARA ACTUALIZAR MEDIANTE PUT UNA RUTA CONCRETA.
 
-app.put('/api/v1/employment-stats/:city/:year', (req, res) => {
+app.put('/api/v2/employment/:city/:year', (req, res) => {
   const city = req.params.city;
   const year = parseInt(req.params.year);
   const citybody = req.body.region;
@@ -402,8 +402,6 @@ app.put('/api/v1/employment-stats/:city/:year', (req, res) => {
                     return(obj.region === city && obj.year === year);
                 });
   if (!filteredList || city!==citybody || year!==yearbody) {
-    return res.status(400).json('Estadística errónea');
-  }else if(filteredList.length != 7){
     return res.status(400).json('Estadística errónea');
   }else{
     filteredList.period = req.body.period || filteredList.period;
@@ -424,7 +422,7 @@ app.put('/api/v1/employment-stats/:city/:year', (req, res) => {
 });
 
 //CODIGO PARA ACTUALIZAR MEDIANTE PUT UNA CIUDAD
-app.put('/api/v2/employment-stats/:city', (req, res) => {
+app.put('/api/v2/employment/:city', (req, res) => {
   const city = req.params.city;
   const citybody = req.body.region;
   const body = req.body;
@@ -460,7 +458,7 @@ app.put('/api/v2/employment-stats/:city', (req, res) => {
 
 
 //METODO DELETE PARA LA RUTA BASE PARA BORRAR DATO ESPECÍFICO.
-app.delete(BASE_API_URL + "/employment-stats", (req, res) => {
+app.delete(BASE_API_URL + "/employment", (req, res) => {
   db.remove({}, {multi : true}, (err, numRemoved) =>{
 
     if(err){
@@ -508,8 +506,8 @@ app.delete(BASE_API_URL + "/employment-stats", (req, res) => {
 });
 });
 
-//DELETE EN RUTA EMPLOYMENT-STATS DE UNA CIUDAD.
-app.delete('/api/v2/employment-stats/:region', (req, res) => {
+//DELETE EN RUTA EMPLOYMENT DE UNA CIUDAD.
+app.delete('/api/v2/employment/:region', (req, res) => {
   const region = req.params.region;
   db.find({},function(err, filteredList){
 
@@ -547,7 +545,7 @@ app.delete('/api/v2/employment-stats/:region', (req, res) => {
 
 
 //DELETE PARA UNA CIUDAD Y PERIOD.
-app.delete('/api/v2/employment-stats/:city/:period', (req, res) => {
+app.delete('/api/v2/employment/:city/:period', (req, res) => {
   const city = req.params.city;
   const period = req.params.period;
   db.find({},function(err, filteredList){
