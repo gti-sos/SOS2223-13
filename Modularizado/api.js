@@ -257,7 +257,8 @@ app.post(rutaEspecifica, (req, res) => {
   res.status(405).json('El método POST no está permitido en esta ruta');
 });
 
-app.post('/api/v1/evolution-stats/:city/:year'), (req, res) => {
+
+app.post('/api/v1/evolution-stats/:city/:year', (req, res) => {
   db.find({},function(err, filteredList){
     if(err){
         res.sendStatus(500, "Client Error");   
@@ -266,6 +267,9 @@ app.post('/api/v1/evolution-stats/:city/:year'), (req, res) => {
       return;
   }
 });
+});
+
+
 
 // Ruta Específica Método GET
 /*app.get(rutaEspecifica, (req, res) => {
