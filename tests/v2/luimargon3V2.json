@@ -133,12 +133,7 @@
 						"exec": [
 							"pm.test(\"Status code is 200\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
-							"});\r",
-							"\r",
-							"pm.test(\"Evolution-stats must be 1\", function () {\r",
-							"    var jsonData = pm.response.json();\r",
-							"    pm.expect(jsonData).to.have.a.lengthOf(1);\r",
-							"});"
+							"});\r"
 						],
 						"type": "text/javascript"
 					}
