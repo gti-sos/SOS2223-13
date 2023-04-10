@@ -443,7 +443,7 @@ app.get('/api/v1/evolution-stats/:territory/:year', (req, res) => {
     if(req.query.limit != undefined || req.query.offset != undefined){
       filteredList = pagination(req,filteredList);
   }
-    res.status(200).json(filteredList);
+    res.status(200).json(filteredList[0]);
   } else {
     res.status(404).json('La ruta solicitada no existe');
   }
