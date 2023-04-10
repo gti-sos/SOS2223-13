@@ -9,7 +9,7 @@
     "test-evolution-stats": "npx newman run ./tests/luimargon3.json -e ./tests/env/luimargon3_localhost.json",
     "test-employment-stats": "npx newman run ./tests/joslopber.json -e ./tests/env/joslopber_localhost.json",
     "test-localentities-stats": "npx newman run ./tests/ireferrom.json -e ./tests/env/ireferrom_localhost.json",
-    "test": "npm run test-employment-stats "
+    "test": "npm run test-evolution-stats && npm run test-employment-stats  "
   },
   "repository": {
     "type": "git",
