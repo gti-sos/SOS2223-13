@@ -16,13 +16,13 @@
             API = 'http://localhost:8080'+API
             
         let employments = [];
-        let newEmploymentYear = 'year';
-        let newEmploymentPeriod = 'period';
-        let newEmploymentDate = 'date';
+        let newEmploymentYear = 'año';
+        let newEmploymentPeriod = 'periodo';
+        let newEmploymentDate = 'tiempo';
         let newEmploymentRegion = 'region';
-        let newEmploymentEmployedPerson = 'employed person';
-        let newEmploymentInactivePerson = 'inactive person';
-        let newEmploymentUnemployedPerson = 'unemployed person';
+        let newEmploymentEmployedPerson = 'persona empleada';
+        let newEmploymentInactivePerson = 'persona inactiva';
+        let newEmploymentUnemployedPerson = 'persona desempleada';
     
         let result = "";
         let resultStatus = "";
@@ -119,21 +119,21 @@
         
     
     </script>
-    <h1> Employments</h1>
+    <h1> Empleos</h1>
     {#if advertencia !=""}
     <h2 style="color: red; text-align: center; font-family:Arial, Helvetica, sans-serif">{advertencia}</h2>
     {/if}
     <Table>
         <thead>
           <tr>
-            <th>Year</th>
-            <th>Period</th>
-            <th>Date</th>
+            <th>Año</th>
+            <th>Periodo</th>
+            <th>Tiempo</th>
             <th>Region</th>
-            <th>Employed person</th>
-            <th>Inactive person</th>
-            <th>Unemployed person</th>
-            <th>Action</th>
+            <th>Persona empleada</th>
+            <th>Persona inactiva</th>
+            <th>Persona desempleada</th>
+            <th>Acción</th>
           </tr>
         </thead>
         <tbody>
@@ -144,7 +144,7 @@
             <td><input bind:value={newEmploymentEmployedPerson}></td>
             <td><input bind:value={newEmploymentInactivePerson}></td>
             <td><input bind:value={newEmploymentUnemployedPerson}></td>
-            <td><Button on:click={createEmployment}>Create</Button></td>
+            <td><Button on:click={createEmployment}>Crear</Button></td>
            
 
         {#each employments as employment}
@@ -156,12 +156,12 @@
             <td>{employment.employed_person}</td>
             <td>{employment.inactive_person}</td>
             <td>{employment.unemployed_person}</td>
-            <td><Button on:click={deleteEmployment(employment.region,employment.year)}>Delete</Button></td>
+            <td><Button on:click={deleteEmployment(employment.region,employment.year)}>Eliminar</Button></td>
            
           </tr>
         {/each}
 
-        <td><Button color="danger" on:click={deleteEmploymentAll}>Delete all</Button></td>
+        <td><Button color="danger" on:click={deleteEmploymentAll}>Eliminar todo</Button></td>
           
         </tbody>
     </Table>
@@ -169,7 +169,7 @@
 
     {#if resultStatus != ""}
         <p>
-            Result:
+            Resultado:
         </p>
         <pre>
 {resultStatus}

@@ -24,11 +24,11 @@
             
         let updatedEmploymentRegion = region;
         let updatedEmploymentYear = year;
-        let updatedEmploymentPeriod = 'period';
-        let updatedEmploymentDate = 'date';
-        let updatedEmploymentEmployedPerson = 'employed person';
-        let updatedEmploymentInactivePerson = 'inactive person';
-        let updatedEmploymentUnemployedPerson = 'unemployed person';
+        let updatedEmploymentPeriod = 'periodo';
+        let updatedEmploymentDate = 'tiempo';
+        let updatedEmploymentEmployedPerson = 'persona empleada';
+        let updatedEmploymentInactivePerson = 'persona inactiva';
+        let updatedEmploymentUnemployedPerson = 'persona desempleada';
     
         let result = "";
         let resultStatus = "";
@@ -50,7 +50,7 @@
                 updatedEmploymentUnemployedPerson = data.unemployed_person;
 
             }catch(error){
-                console.log(`Error parsing result: ${error}`);
+                console.log(`Error parseando resultado: ${error}`);
             }
             const status = await res.status;
             resultStatus = status;
@@ -102,7 +102,7 @@
         
     
     </script>
-    <h1> Employments Details</h1>
+    <h1> Detalles Empleos</h1>
     {#if advertencia !=""}
     <h2 style="color: red; text-align: center; font-family:Arial, Helvetica, sans-serif">{advertencia}</h2>
     {/if}
@@ -110,13 +110,13 @@
         <thead>
           <tr>
             <th>Region</th>
-            <th>Year</th>
-            <th>Date</th>
-            <th>Period</th>
-            <th>Employed person</th>
-            <th>Inactive person</th>
-            <th>Unemployed person</th>
-            <th>Action</th>
+            <th>Año</th>
+            <th>Tiempo</th>
+            <th>Periodo</th>
+            <th>Persona con empleo</th>
+            <th>Persona inactiva</th>
+            <th>Persona desempleada</th>
+            <th>Acción</th>
           </tr>
         </thead>
         <tbody>
@@ -127,7 +127,7 @@
             <td><input bind:value={updatedEmploymentEmployedPerson}></td>
             <td><input bind:value={updatedEmploymentInactivePerson}></td>
             <td><input bind:value={updatedEmploymentUnemployedPerson}></td>
-            <td><Button on:click={updateEmployment}>Update</Button></td>
+            <td><Button on:click={updateEmployment}>Actualizar</Button></td>
           
         </tbody>
     </Table>
@@ -135,7 +135,7 @@
 
     {#if resultStatus != ""}
         <p>
-            Result:
+            Resultado:
         </p>
         <pre>
     {resultStatus}

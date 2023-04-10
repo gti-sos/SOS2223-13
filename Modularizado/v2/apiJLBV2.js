@@ -257,33 +257,34 @@ app.get('/api/v2/employment/:city', (req, res) => {
 });
 
 //HACER UN GET A UNA CIUDAD Y FECHA ESPECÍFICA.
-app.get('/api/v2/employment/:city/:year', (req, res) => {
-  const { city, year } = req.params;
+app.get('/api/v2/employment/:region/:year', (req, res) => {
+  const { region, year } = req.params;
   db.find({},function(err, filteredList){
 
     if(err){
-        res.sendStatus(500, "Error cliente");   
+        res.sendStatus(500, "Client Error");   
     }
   // Buscamos las estadísticas para el territorio y el año indicados
   filteredList = filteredList.filter((obj)=>
                 {
-                    return(obj.region.toLowerCase() == city.toLowerCase() && obj.year === parseInt(year));
+                    return(obj.region.toLowerCase() == region.toLowerCase() && obj.year === parseInt(year));
                 });
-  
-  if (filteredList) {
+  if(filteredList==0){
+    res.status(404).json('La ruta solicitada no existe');
+  }else if (filteredList) {
     filteredList.forEach((e)=>{
       delete e._id;
     });
     if(req.query.limit != undefined || req.query.offset != undefined){
       filteredList = pagination(req,filteredList);
   }
-    res.send(JSON.stringify(filteredList,null,2));
+    res.status(200).json(filteredList[0]);
   } else {
     res.status(404).json('La ruta solicitada no existe');
   }
-  console.log("Solicitud /GET")
 });
 });
+
 
 //Implementacion de buenas practicas en la API
 const rutaRaiz = '/api/v2/employment';
