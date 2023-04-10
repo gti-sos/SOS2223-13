@@ -148,7 +148,7 @@
         
     
     </script>
-    <h1 style="text-align: center; font-family:'Times New Roman', Times, serif; font-size: 60px;">Datos Evolutions</h1>
+    <h1 style="text-align: center; font-family:'Times New Roman', Times, serif; font-size: 60px;">Datos Evolución</h1>
     <h1 class="botones">
         <ButtonToolbar>
             <Button outline on:click={loadData}>Cargar Datos Iniciales</Button>

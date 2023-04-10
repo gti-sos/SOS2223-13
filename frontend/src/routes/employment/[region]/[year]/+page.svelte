@@ -82,7 +82,7 @@
             const status = await res.status;
             resultStatus = status;
             if(status==200){
-                getEmployment ();
+                //getEmployment ();
                 advertencia = "Recurso actualizado";
             }else if(status==400){
                 advertencia = "Estadística erronea";
