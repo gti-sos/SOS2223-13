@@ -4,9 +4,9 @@
         <p></p>
         <li><strong>Grupo:</strong>
         <ul dir="auto">
-        <li><a href="https://github.com/luismg01">Luis Miguel Martín González</a> (fuente de datos: Evolution)</li>
-        <li><a href="https://github.com/joslopber">José López Berro</a> (fuente de datos: Employment)</li>
-        <li><a href="https://github.com/irenefernandezromero">Irene Fernández Romero</a> (fuente de datos: Locantities)</li>
+        <li><a href="https://github.com/luismg01">Luis Miguel Martín González</a> (fuente de datos: Evolución)</li>
+        <li><a href="https://github.com/joslopber">José López Berro</a> (fuente de datos: Empleado)</li>
+        <li><a href="https://github.com/irenefernandezromero">Irene Fernández Romero</a> (fuente de datos: Entidades locales)</li>
         </ul>
         </li>
         <p></p>
