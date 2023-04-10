@@ -35,9 +35,9 @@
             });
             const status = await res.status;
             resultStatus = status;
-            if(status==201){
+            /*if(status==201){
                 getEvolution(); 
-            }	
+            }^*/	
 
 }
     
@@ -94,18 +94,18 @@
             const status = await res.status;
             resultStatus = status;
             if (status == 201) {
-                getEvolution();
+                //getEvolution();
                 mensajeUsuario = "Se ha creado el nuevo dato introducido";
                 insertedData.push(newEvolution);
             } else if (status == 409) {
                 mensajeUsuario = "El dato introducido ya existe";
-                getEvolution();
+                //getEvolution();
             } else if (status == 400) {
                 mensajeUsuario = "Las propiedades introducidas no tienen un formato correcto";
-                getEvolution();
+                //getEvolution();
             } else {
                 mensajeUsuario = "No se ha podido crear el dato introducido";
-                getEvolution();
+                //getEvolution();
             }
         }   
 
@@ -117,12 +117,12 @@
             const status = await res.status;
             resultStatus = status;
             if(status==200){
-                getEvolution ();
+                //getEvolution ();
                 mensajeUsuario = "Recurso borrado";
             }else if(status==500){
                 mensajeUsuario = "Error cliente";
             }else if(status==404){
-                getEvolution ();
+                //getEvolution ();
                 mensajeUsuario = "No se ha encontrado ese recurso";
             }
         }
@@ -135,7 +135,7 @@
             const status = await res.status;
             resultStatus = status;
             if(status==200 || status == 204){
-                await getEvolution();
+                //await getEvolution();
                 mensajeUsuario = "Se han borrado correctamente los datos";
             }else{
                 mensajeUsuario = "No se han podido borrar los datos";
@@ -203,15 +203,3 @@
           
         </tbody>
     </Table>
-
-
-  {#if resultStatus != ""}
-        <p>
-            <strong>Número de datos: {evolutions.length}</strong>
-        </p>
-        <strong>Resultado:</strong>
-        <pre>
-    {"Código de estado: "+resultStatus}
-{result}
-        </pre>
-    {/if}

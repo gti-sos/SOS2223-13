@@ -123,11 +123,3 @@
             </tr>
         </tbody>
     </Table>
-    
-    {#if resultStatus != ""}
-            <strong>Resultado:</strong>
-        <pre>
-    {"Código de estado: "+resultStatus}    
-{result}
-        </pre>
-    {/if}
