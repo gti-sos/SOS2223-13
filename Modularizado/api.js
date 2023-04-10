@@ -323,6 +323,9 @@ app.get('/api/v1/evolution-stats/:city', (req, res) => {
                 {
                     return(obj.territory.toLowerCase() == city && obj.period >= from && obj.period<= to);
                 });
+    if(filteredList==0){
+    res.status(404).json('La ruta solicitada no existe');
+    }
     console.log(`/GET to /evolution-stats/${city}?from=${from}&to=${to}`); //console.log en el servidor
     filteredList.forEach((e)=>{
                   delete e._id;
@@ -435,6 +438,9 @@ app.get('/api/v1/evolution-stats/:territory/:year', (req, res) => {
                 {
                     return(obj.territory.toLowerCase() == territory.toLowerCase() && obj.period === parseInt(year));
                 });
+  if(filteredList==0){
+    res.status(404).json('La ruta solicitada no existe');
+  }
   
   if (filteredList) {
     filteredList.forEach((e)=>{
@@ -457,6 +463,7 @@ app.put('/api/v1/evolution-stats/:city/:year', (req, res) => {
   const citybody = req.body.territory;
   const yearbody = req.body.period;
   const body = req.body;
+  const tam = Object.keys(req.body).length;
   db.find({},function(err, filteredList){
 
     if(err){
@@ -467,6 +474,8 @@ app.put('/api/v1/evolution-stats/:city/:year', (req, res) => {
                     return(obj.territory === city && obj.period === year);
                 });
   if (!filteredList || city!==citybody || year!==yearbody) {
+    return res.status(400).json('Estadística errónea');
+  }else if(tam != 8){
     return res.status(400).json('Estadística errónea');
   }else{
     filteredList.total_population = req.body.total_population || filteredList.total_population;

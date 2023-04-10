@@ -16,14 +16,14 @@
             API = 'http://localhost:8080'+API
             
         let evolutions = [];
-        let newEvolutionPeriod = 'period';
-        let newEvolutionTerritory = 'territory';
-        let newEvolutionTotalPopulation = 'total_population';
-        let newEvolutionMan = 'man';
-        let newEvolutionWoman = 'woman';
-        let newEvolutionUndersixteenyears = 'under_sixteen_years';
-        let newEvolutionSixteensixtyfouryears = 'from_sixteen_to_sixty_four_years';
-        let newEvolutionSixtyfiveoveryears = 'sixty_five_and_over';
+        let newEvolutionPeriod = 'periodo';
+        let newEvolutionTerritory = 'territorio';
+        let newEvolutionTotalPopulation = 'poblacion total';
+        let newEvolutionMan = 'hombres';
+        let newEvolutionWoman = 'mujeres';
+        let newEvolutionUndersixteenyears = 'menor 16';
+        let newEvolutionSixteensixtyfouryears = 'de 16 a 64';
+        let newEvolutionSixtyfiveoveryears = 'a partir de 65';
     
         let result = "";
         let resultStatus = "";

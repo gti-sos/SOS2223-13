@@ -310,6 +310,9 @@ app.get('/api/v2/evolution/:city', (req, res) => {
                 {
                     return(obj.territory.toLowerCase() == city && obj.period >= from && obj.period<= to);
                 });
+    if(filteredList==0){
+    res.status(404).json('La ruta solicitada no existe');
+    }
     console.log(`/GET to /evolution/${city}?from=${from}&to=${to}`); //console.log en el servidor
     filteredList.forEach((e)=>{
                   delete e._id;
@@ -456,6 +459,7 @@ app.put('/api/v2/evolution/:city/:year', (req, res) => {
   const citybody = req.body.territory;
   const yearbody = parseInt(req.body.period);
   const body = req.body;
+  const tam = Object.keys(req.body).length;
   db.find({},function(err, filteredList){
     if(err){
         res.sendStatus(500, "Client Error");   
@@ -465,6 +469,8 @@ app.put('/api/v2/evolution/:city/:year', (req, res) => {
                     return(obj.territory === city && obj.period === year);
                 });
   if (!filteredList || city!==citybody || year !==yearbody) {
+    return res.status(400).json('Estadística errónea');
+  }else if(tam != 8){
     return res.status(400).json('Estadística errónea');
   }else{
     filteredList.total_population = req.body.total_population || filteredList.total_population;
