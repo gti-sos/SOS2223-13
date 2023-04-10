@@ -422,8 +422,9 @@ app.get('/api/v2/evolution/:territory/:year', (req, res) => {
                 {
                     return(obj.territory.toLowerCase() == territory.toLowerCase() && obj.period === parseInt(year));
                 });
-  
-  if (filteredList) {
+  if(filteredList==0){
+    res.status(404).json('La ruta solicitada no existe');
+  }else if (filteredList) {
     filteredList.forEach((e)=>{
       delete e._id;
     });
@@ -434,7 +435,6 @@ app.get('/api/v2/evolution/:territory/:year', (req, res) => {
   } else {
     res.status(404).json('La ruta solicitada no existe');
   }
-  console.log("Solicitud /GET")
 });
 });
 
