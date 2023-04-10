@@ -391,6 +391,7 @@ app.put('/api/v1/employment-stats/:city/:year', (req, res) => {
   const citybody = req.body.region;
   const yearbody = req.body.year;
   const body = req.body;
+  const tam = Object.keys(req.body).length;
   db.find({},function(err, filteredList){
 
     if(err){
@@ -402,8 +403,8 @@ app.put('/api/v1/employment-stats/:city/:year', (req, res) => {
                 });
   if (!filteredList || city!==citybody || year!==yearbody) {
     return res.status(400).json('Estadística errónea');
-  }else if(filteredList.length != 7){
-    return res.status(400).json('Estadística errónea');
+  }else if(tam != 7){
+      return res.status(400).json('Estadística errónea');
   }else{
     filteredList.period = req.body.period || filteredList.period;
     filteredList.date = req.body.date || filteredList.date;

@@ -9,7 +9,7 @@
             getEmployments();
         });
         
-        let API = '/api/v2/employment-stats';
+        let API = '/api/v2/employment';
         let advertencia = "";
         
         if(dev)
