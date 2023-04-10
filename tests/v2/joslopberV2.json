@@ -7,7 +7,7 @@
 	},
 	"item": [
 		{
-			"name": "GET /employment-stats/",
+			"name": "GET /employment/",
 			"event": [
 				{
 					"listen": "test",
@@ -29,21 +29,21 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{URLBASE}}/api/v2/employment-stats",
+					"raw": "{{URLBASE}}/api/v2/employment",
 					"host": [
 						"{{URLBASE}}"
 					],
 					"path": [
 						"api",
 						"v2",
-						"employment-stats"
+						"employment"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "GET /employment-stats/Almeria/2018",
+			"name": "GET /employment/Almeria/2018",
 			"event": [
 				{
 					"listen": "test",
@@ -65,14 +65,14 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{URLBASE}}/api/v2/employment-stats/Almeria/2018",
+					"raw": "{{URLBASE}}/api/v2/employment/Almeria/2018",
 					"host": [
 						"{{URLBASE}}"
 					],
 					"path": [
 						"api",
 						"v2",
-						"employment-stats",
+						"employment",
 						"Almeria",
 						"2018"
 					]
@@ -81,7 +81,7 @@
 			"response": []
 		},
 		{
-			"name": "Error 404 GET/api/v1/employment-stats/Caceres",
+			"name": "Error 404 GET/api/v2/employment/Caceres",
 			"event": [
 				{
 					"listen": "test",
@@ -99,14 +99,14 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{URLBASE}}/api/v2/employment-stats/Caceres",
+					"raw": "{{URLBASE}}/api/v2/employment/Caceres",
 					"host": [
 						"{{URLBASE}}"
 					],
 					"path": [
 						"api",
 						"v2",
-						"employment-stats",
+						"employment",
 						"Caceres"
 					]
 				}
@@ -114,7 +114,7 @@
 			"response": []
 		},
 		{
-			"name": "GET /employment-stats/Almeria?employed_person=347.3",
+			"name": "GET /employment/Almeria?employed_person=347.3",
 			"event": [
 				{
 					"listen": "test",
@@ -136,14 +136,14 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{URLBASE}}/api/v2/employment-stats/Almeria?employed_person=347.3",
+					"raw": "{{URLBASE}}/api/v2/employment/Almeria?employed_person=347.3",
 					"host": [
 						"{{URLBASE}}"
 					],
 					"path": [
 						"api",
 						"v2",
-						"employment-stats",
+						"employment",
 						"Almeria"
 					],
 					"query": [
@@ -157,7 +157,7 @@
 			"response": []
 		},
 		{
-			"name": "GET /employment-stats?region=Almeria&employed_person=347.3&period=T1",
+			"name": "GET /employment?region=Almeria&employed_person=347.3&period=T1",
 			"event": [
 				{
 					"listen": "test",
@@ -179,14 +179,14 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{URLBASE}}/api/v2/employment-stats?region=Almeria&employed_person=347.3&period=T1",
+					"raw": "{{URLBASE}}/api/v2/employment?region=Almeria&employed_person=347.3&period=T1",
 					"host": [
 						"{{URLBASE}}"
 					],
 					"path": [
 						"api",
 						"v2",
-						"employment-stats"
+						"employment"
 					],
 					"query": [
 						{
@@ -207,7 +207,7 @@
 			"response": []
 		},
 		{
-			"name": "POST /employment-stats",
+			"name": "POST /employment",
 			"event": [
 				{
 					"listen": "test",
@@ -235,21 +235,21 @@
 					}
 				},
 				"url": {
-					"raw": "{{URLBASE}}/api/v2/employment-stats",
+					"raw": "{{URLBASE}}/api/v2/employment",
 					"host": [
 						"{{URLBASE}}"
 					],
 					"path": [
 						"api",
 						"v2",
-						"employment-stats"
+						"employment"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "POST Fallo de dato duplicado /employment-stats",
+			"name": "POST Fallo de dato duplicado /employment",
 			"event": [
 				{
 					"listen": "test",
@@ -277,21 +277,21 @@
 					}
 				},
 				"url": {
-					"raw": "{{URLBASE}}/api/v2/employment-stats",
+					"raw": "{{URLBASE}}/api/v2/employment",
 					"host": [
 						"{{URLBASE}}"
 					],
 					"path": [
 						"api",
 						"v2",
-						"employment-stats"
+						"employment"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "GET /api/v2/employment-stats/Caceres",
+			"name": "GET /api/v2/employment/Caceres",
 			"event": [
 				{
 					"listen": "test",
@@ -313,14 +313,14 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{URLBASE}}/api/v2/employment-stats/Caceres",
+					"raw": "{{URLBASE}}/api/v2/employment/Caceres",
 					"host": [
 						"{{URLBASE}}"
 					],
 					"path": [
 						"api",
 						"v2",
-						"employment-stats",
+						"employment",
 						"Caceres"
 					]
 				}
@@ -328,7 +328,7 @@
 			"response": []
 		},
 		{
-			"name": "DELETE /employment-stats/Caceres",
+			"name": "DELETE /employment/Caceres",
 			"event": [
 				{
 					"listen": "test",
@@ -347,14 +347,14 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "{{URLBASE}}/api/v2/employment-stats/Caceres",
+					"raw": "{{URLBASE}}/api/v2/employment/Caceres",
 					"host": [
 						"{{URLBASE}}"
 					],
 					"path": [
 						"api",
 						"v2",
-						"employment-stats",
+						"employment",
 						"Caceres"
 					]
 				}
@@ -362,7 +362,7 @@
 			"response": []
 		},
 		{
-			"name": "GET /api/v2/employment-stats/Caceres",
+			"name": "GET /api/v2/employment/Caceres",
 			"event": [
 				{
 					"listen": "test",
@@ -381,14 +381,14 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{URLBASE}}/api/v2/employment-stats/Caceres",
+					"raw": "{{URLBASE}}/api/v2/employment/Caceres",
 					"host": [
 						"{{URLBASE}}"
 					],
 					"path": [
 						"api",
 						"v2",
-						"employment-stats",
+						"employment",
 						"Caceres"
 					]
 				}
@@ -396,7 +396,7 @@
 			"response": []
 		},
 		{
-			"name": "POST Faltando un campo /employment-stats",
+			"name": "POST Faltando un campo /employment",
 			"event": [
 				{
 					"listen": "test",
@@ -424,21 +424,21 @@
 					}
 				},
 				"url": {
-					"raw": "{{URLBASE}}/api/v2/employment-stats",
+					"raw": "{{URLBASE}}/api/v2/employment",
 					"host": [
 						"{{URLBASE}}"
 					],
 					"path": [
 						"api",
 						"v2",
-						"employment-stats"
+						"employment"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "PUT /employment-stats/Almeria/2018",
+			"name": "PUT /employment/Almeria/2018",
 			"event": [
 				{
 					"listen": "test",
@@ -458,7 +458,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n        \"year\": 2018,\r\n        \"period\": \"T1\",\r\n        \"date\": \"2018-T1\",\r\n        \"region\": \"Almeria\",\r\n        \"employed_person\": 700,\r\n        \"inactive_person\": 219.8,\r\n        \"unemployed_person\": 82\r\n    }",
+					"raw": "{\r\n        \"year\": 2018,\r\n        \"period\": \"T1\",\r\n        \"date\": \"2018-T1\",\r\n        \"region\": \"Almeria\",\r\n        \"employed_person\": 700,\r\n        \"inactive_person\": 219.8,\r\n        \"unemployed_person\": 82\r\n   }",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -466,14 +466,14 @@
 					}
 				},
 				"url": {
-					"raw": "{{URLBASE}}/api/v2/employment-stats/Almeria/2018",
+					"raw": "{{URLBASE}}/api/v2/employment/Almeria/2018",
 					"host": [
 						"{{URLBASE}}"
 					],
 					"path": [
 						"api",
 						"v2",
-						"employment-stats",
+						"employment",
 						"Almeria",
 						"2018"
 					]
@@ -482,7 +482,7 @@
 			"response": []
 		},
 		{
-			"name": "GET /api/v2/employment-stats/Almeria?employed_person=700&year=2018",
+			"name": "GET /api/v2/employment/Almeria?employed_person=700&year=2018",
 			"event": [
 				{
 					"listen": "test",
@@ -504,14 +504,14 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{URLBASE}}/api/v2/employment-stats/Almeria?employed_person=700&year=2018",
+					"raw": "{{URLBASE}}/api/v2/employment/Almeria?employed_person=700&year=2018",
 					"host": [
 						"{{URLBASE}}"
 					],
 					"path": [
 						"api",
 						"v2",
-						"employment-stats",
+						"employment",
 						"Almeria"
 					],
 					"query": [
@@ -529,7 +529,7 @@
 			"response": []
 		},
 		{
-			"name": "PUT Faltando un campo /employment-stats/Almeria/2018",
+			"name": "PUT Faltando un campo /employment/Almeria/2018",
 			"event": [
 				{
 					"listen": "test",
@@ -557,14 +557,14 @@
 					}
 				},
 				"url": {
-					"raw": "{{URLBASE}}/api/v2/employment-stats/Almeria/2018",
+					"raw": "{{URLBASE}}/api/v2/employment/Almeria/2018",
 					"host": [
 						"{{URLBASE}}"
 					],
 					"path": [
 						"api",
 						"v2",
-						"employment-stats",
+						"employment",
 						"Almeria",
 						"2018"
 					]
@@ -573,7 +573,7 @@
 			"response": []
 		},
 		{
-			"name": "Error 400 /api/v2/employment-stats/Vigo/2018",
+			"name": "Error 400 /api/v2/employment/Vigo/2018",
 			"event": [
 				{
 					"listen": "test",
@@ -591,14 +591,14 @@
 				"method": "PUT",
 				"header": [],
 				"url": {
-					"raw": "{{URLBASE}}/api/v2/employment-stats/Vigo/2018",
+					"raw": "{{URLBASE}}/api/v2/employment/Vigo/2018",
 					"host": [
 						"{{URLBASE}}"
 					],
 					"path": [
 						"api",
 						"v2",
-						"employment-stats",
+						"employment",
 						"Vigo",
 						"2018"
 					]
@@ -626,14 +626,14 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{URLBASE}}/api/v2/employment-stats/loadInitialData",
+					"raw": "{{URLBASE}}/api/v2/employment/loadInitialData",
 					"host": [
 						"{{URLBASE}}"
 					],
 					"path": [
 						"api",
 						"v2",
-						"employment-stats",
+						"employment",
 						"loadInitialData"
 					]
 				}
@@ -669,14 +669,14 @@
 					}
 				},
 				"url": {
-					"raw": "{{URLBASE}}/api/v2/employment-stats/loadInitialData",
+					"raw": "{{URLBASE}}/api/v2/employment/loadInitialData",
 					"host": [
 						"{{URLBASE}}"
 					],
 					"path": [
 						"api",
 						"v2",
-						"employment-stats",
+						"employment",
 						"loadInitialData"
 					]
 				}
@@ -712,14 +712,14 @@
 					}
 				},
 				"url": {
-					"raw": "{{URLBASE}}/api/v2/employment-stats/loadInitialData",
+					"raw": "{{URLBASE}}/api/v2/employment/loadInitialData",
 					"host": [
 						"{{URLBASE}}"
 					],
 					"path": [
 						"api",
 						"v2",
-						"employment-stats",
+						"employment",
 						"loadInitialData"
 					]
 				}
@@ -727,7 +727,7 @@
 			"response": []
 		},
 		{
-			"name": "GET /employment-stats/Almeria",
+			"name": "GET /employment/Almeria",
 			"event": [
 				{
 					"listen": "test",
@@ -749,14 +749,14 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{URLBASE}}/api/v2/employment-stats/Almeria",
+					"raw": "{{URLBASE}}/api/v2/employment/Almeria",
 					"host": [
 						"{{URLBASE}}"
 					],
 					"path": [
 						"api",
 						"v2",
-						"employment-stats",
+						"employment",
 						"Almeria"
 					]
 				}
@@ -764,7 +764,7 @@
 			"response": []
 		},
 		{
-			"name": "PUT /employment-stats/Almeria/2017",
+			"name": "PUT /employment/Almeria/2017",
 			"event": [
 				{
 					"listen": "test",
@@ -792,14 +792,14 @@
 					}
 				},
 				"url": {
-					"raw": "{{URLBASE}}/api/v2/employment-stats/Almeria/2017",
+					"raw": "{{URLBASE}}/api/v2/employment/Almeria/2017",
 					"host": [
 						"{{URLBASE}}"
 					],
 					"path": [
 						"api",
 						"v2",
-						"employment-stats",
+						"employment",
 						"Almeria",
 						"2017"
 					]
@@ -827,14 +827,14 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{URLBASE}}/api/v2/employment-stats/gente",
+					"raw": "{{URLBASE}}/api/v2/employment/gente",
 					"host": [
 						"{{URLBASE}}"
 					],
 					"path": [
 						"api",
 						"v2",
-						"employment-stats",
+						"employment",
 						"gente"
 					]
 				}
@@ -861,14 +861,14 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "{{URLBASE}}/api/v2/employment-stats/",
+					"raw": "{{URLBASE}}/api/v2/employment/",
 					"host": [
 						"{{URLBASE}}"
 					],
 					"path": [
 						"api",
 						"v2",
-						"employment-stats",
+						"employment",
 						""
 					]
 				}
@@ -895,14 +895,14 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{URLBASE}}/api/v2/employment-stats/loadInitialData",
+					"raw": "{{URLBASE}}/api/v2/employment/loadInitialData",
 					"host": [
 						"{{URLBASE}}"
 					],
 					"path": [
 						"api",
 						"v2",
-						"employment-stats",
+						"employment",
 						"loadInitialData"
 					]
 				}
@@ -910,7 +910,7 @@
 			"response": []
 		},
 		{
-			"name": "GET /employment-stats/ Final",
+			"name": "GET /employment/ Final",
 			"event": [
 				{
 					"listen": "test",
@@ -932,14 +932,14 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{URLBASE}}/api/v2/employment-stats",
+					"raw": "{{URLBASE}}/api/v2/employment",
 					"host": [
 						"{{URLBASE}}"
 					],
 					"path": [
 						"api",
 						"v2",
-						"employment-stats"
+						"employment"
 					]
 				}
 			},
