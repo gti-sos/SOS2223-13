@@ -403,6 +403,8 @@ app.put('/api/v1/employment-stats/:city/:year', (req, res) => {
                 });
   if (!filteredList || city!==citybody || year!==yearbody) {
     return res.status(400).json('Estadística errónea');
+  }else if(filteredList.length != 7){
+    return res.status(400).json('Estadística errónea');
   }else{
     filteredList.period = req.body.period || filteredList.period;
     filteredList.date = req.body.date || filteredList.date;
