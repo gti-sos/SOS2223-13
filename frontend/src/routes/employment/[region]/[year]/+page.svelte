@@ -131,14 +131,4 @@
           
         </tbody>
     </Table>
-
-
-    {#if resultStatus != ""}
-        <p>
-            Resultado:
-        </p>
-        <pre>
-    {resultStatus}
-{result}
-        </pre>
-    {/if}
+   
