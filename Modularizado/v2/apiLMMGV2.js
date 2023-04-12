@@ -541,7 +541,8 @@ app.delete(BASE_API_URL + "/evolution", (req, res) => {
           res.sendStatus(500,"ERROR EN CLIENTE");
           return;
       } else {
-      res.sendStatus(200,"DELETED");
+      //res.sendStatus(200,"DELETED");
+      return;
     }
       
   });

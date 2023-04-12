@@ -166,6 +166,13 @@
             const res = await fetch(API, {
                 method: 'DELETE'
             });
+            try{
+                const data = await res.json();
+                result = JSON.stringify(data, null, 2);
+                evolutions = data;
+            }catch(error){
+                console.log(`Error parseando el resultado: ${error}`);
+            }
             const status = await res.status;
             resultStatus = status;
             if(status==200 || status == 204){
@@ -246,6 +253,7 @@
     <h1 class="botones">
         <ButtonToolbar>
             <Button color="success" on:click={loadData}>Cargar Datos Iniciales</Button>
+            <Button color="danger" on:click={deleteEvolutionAll}>Borrar Datos</Button>
         </ButtonToolbar>
     </h1>
     {#if mensajeUsuario !=""}
@@ -306,8 +314,6 @@
            
           </tr>
         {/each}
-
-        <Button color="danger" on:click={deleteEvolutionAll}>Borrar Datos</Button>
           
         </tbody>
     </Table>
