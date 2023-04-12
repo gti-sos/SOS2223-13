@@ -117,7 +117,8 @@ app.get(BASE_API_URL + "/evolution/loadInitialData", (req, res) => {
 //CODIGO PARA MOSTRAR LAS ESTADÍSTICAS A PARTIR DE LA QUERY.
 //GET a evolution
 app.get('/api/v2/evolution', (req, res) => {
-
+  const from = req.query.from;
+  const to = req.query.to;
   console.log("/GET evolution");
   
 
@@ -133,6 +134,20 @@ app.get('/api/v2/evolution', (req, res) => {
                   res.sendStatus(500);
 
               // Comprobamos si existen datos:
+              }else if (from && to && !err) {
+                const provinciasAño = evolution_stats.filter(x => {return x.period >= from && x.period <= to}); 
+                if (from > to) {
+                  res.status(400).json("El rango de años especificado es inválido");
+
+                }else{
+                  res.status(200);
+                  res.json(provinciasAño.map((c)=>{
+                        delete c._id;
+                        return c;
+                    }));
+                    
+                    console.log(`GET en /evolution?from=${from}&to=${to}`); 
+                }
               }else if(filteredList.length == 0){
 
                   console.log(`Ruta evolution Not Found`);
@@ -257,33 +272,6 @@ const rutaEspecifica = '/api/v2/evolution/loadInitialData';
 app.post(rutaEspecifica, (req, res) => {
   res.status(405).json('El método POST no está permitido en esta ruta');
 });
-
-// Ruta Específica Método GET
-/*app.get(rutaEspecifica, (req, res) => {
-  res.json(datos_random);
-  res.status(200);
-});*/
-
-// Ruta Específica Método PUT
-/*app.put(rutaEspecifica, (req, res) => {
-  // Verificar que el cuerpo de la solicitud contenga datos
-  if (!req.body) {
-    // Enviar una respuesta con un código de estado 400 Bad Request si no se proporcionaron datos
-    res.status(400).send('No se proporcionaron datos');
-  } else {
-    // Reemplazar los datos existentes con los nuevos datos
-    datos_random = req.body;
-    // Enviar una respuesta con un código de estado 200 OK
-    res.status(200).json('Los datos se han actualizado correctamente');
-  }
-});*/
-
-//Método DELETE de la ruta específica.
-/*app.delete(rutaEspecifica, (req, res) => {
-  datos_random = [];
-  res.status(200).json('Los datos se han borrado correctamente');
-});*/
-
 
 //CODIGO PARA PODER HACER GET A UNA CIUDAD ESPECÍFICA Y A UNA CIUDAD Y PERIODO CONCRETO.
 app.get('/api/v2/evolution/:city', (req, res) => {
