@@ -54,7 +54,7 @@
     
         async function getEvolution(){
             resultStatus = result = "";
-            const res = await fetch(API, {
+            const res = await fetch(API+"?offset=0&limit=10", {
                 method: "GET"
             });
             try{
@@ -68,20 +68,8 @@
             resultStatus = status;
         }
 
-        async function getPaginacion(){ //
+        async function getPaginacion(offsetFiltro,limitFiltro){ //
             resultStatus = result = "";
-            if(offsetFiltro == "" || limitFiltro == ""){
-                mensajePaginacion = "Los parámetros no pueden estar vacios";
-                return;
-            }else if(isNaN(offsetFiltro) || isNaN(limitFiltro)){
-                mensajePaginacion = "Los parámetros no pueden ser letras";
-                return;
-            }else if(limitFiltro <= 0){
-                mensajePaginacion = "El límite debe ser superior a 0";
-                return;
-            }else{
-                mensajePaginacion = "Se muestran los datos correspondientes al filtro";
-            }
             const res = await fetch(API+"?offset="+offsetFiltro+"&limit="+limitFiltro, {
                 method: "GET"
             });
@@ -134,6 +122,7 @@
             const status = await res.status;
             resultStatus = status;
             if (status == 201) {
+                getEvolution();
                 mensajeUsuario = "Se ha creado el nuevo dato introducido";
                 insertedData.push(newEvolution);
             } else if (status == 409) {
@@ -153,6 +142,7 @@
             const status = await res.status;
             resultStatus = status;
             if(status==200){
+                getEvolution();
                 mensajeUsuario = "Recurso borrado";
             }else if(status==500){
                 mensajeUsuario = "Error cliente";
@@ -250,7 +240,9 @@
         }
     
     
+
     
+
     
         
     
@@ -328,29 +320,29 @@
         </tbody>
     </Table>
 
-    <!--<Pagination style="text-align: center; display: flex; justify-content: center; flex-direction: row; gap: 15px;" ariaLabel="Page navigation example">
-        <PaginationItem disabled>
+    <Pagination ariaLabel="Page navigation example">
+        <PaginationItem>
+          <PaginationLink on:click={() => getPaginacion(0,10)} first href="/evolution"/>
+        </PaginationItem>
+        <!--<PaginationItem disabled>
           <PaginationLink previous href="#" />
-        </PaginationItem>
-        <PaginationItem active>
-          <PaginationLink href={getPaginacion}>1</PaginationLink>
+        </PaginationItem> -->
+        <PaginationItem>
+            <PaginationLink on:click={() => getPaginacion(0,10)} href="/evolution">1</PaginationLink>
         </PaginationItem>
         <PaginationItem>
-          <PaginationLink href="#">2</PaginationLink>
+            <PaginationLink on:click={() => getPaginacion(9,10)} href="/evolution?offset=10&limit=10">2</PaginationLink>
         </PaginationItem>
         <PaginationItem>
-          <PaginationLink href="#">3</PaginationLink>
+            <PaginationLink on:click={() => getPaginacion(19,10)} href="/evolution?offset=20&limit=10">3</PaginationLink>
         </PaginationItem>
-        <PaginationItem>
-          <PaginationLink href="#">4</PaginationLink>
-        </PaginationItem>
-        <PaginationItem>
-          <PaginationLink href="#">5</PaginationLink>
-        </PaginationItem>
-        <PaginationItem>
+        <!-- <PaginationItem>
           <PaginationLink next href="#" />
+        </PaginationItem> -->
+        <PaginationItem>
+          <PaginationLink on:click={() => getPaginacion(19,10)} last href="/evolution?offset=20&limit=10" />
         </PaginationItem>
-    </Pagination>-->
+      </Pagination>
 
     <style>
         .filtros{
@@ -383,9 +375,11 @@
     <h2 style="color: red; text-align: center; font-family:Arial, Helvetica, sans-serif">{mensajePaginacion}</h2>
     {/if}
     <p></p>
-    <div style="text-align: center; display: flex; justify-content: center; flex-direction: row; gap: 15px;">
+    <!-- <div style="text-align: center; display: flex; justify-content: center; flex-direction: row; gap: 15px;">
         <td><input placeholder="A partir de: " bind:value={offsetFiltro}></td>
         <td><input placeholder="Límite" bind:value={limitFiltro}></td>
         <td><Button style="center" color="primary" on:click={getPaginacion}>Paginación</Button></td>
-    </div>
+    </div>-->
     <p></p>
+
+    
