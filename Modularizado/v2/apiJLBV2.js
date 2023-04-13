@@ -25,10 +25,20 @@ app.get("/api/v2/employment/docs",(req,res)=>{
 //Código Jose López tarea F05
 var employment_stats = [
   {year:2017 , period:"T1" , date:"2017-T1" , region:"Almeria" , employed_person:347.3 , inactive_person:220.8 , unemployed_person:74.2 },
+  {year:2019 , period:"T1" , date:"2019-T1" , region:"Almeria" , employed_person:340.7 , inactive_person:233.6 , unemployed_person:54.7 },
+  {year:2020 , period:"T1" , date:"2020-T1" , region:"Almeria" , employed_person:354.4 , inactive_person:227.1 , unemployed_person:69.9 },
   {year:2017 , period:"T1" , date:"2017-T1" , region:"Cordoba" , employed_person:380.6 , inactive_person:273.8 , unemployed_person:104.8},
+  {year:2018 , period:"T1" , date:"2018-T1" , region:"Cordoba" , employed_person:371.7 , inactive_person:280.1 , unemployed_person:94.6},
+  {year:2019 , period:"T1" , date:"2019-T1" , region:"Cordoba" , employed_person:367.1 , inactive_person:284.9 , unemployed_person:77.3},
   {year:2017 , period:"T1" , date:"2017-T1" , region:"Granada" , employed_person:443 , inactive_person:313 , unemployed_person:113.7 },
+  {year:2018 , period:"T1" , date:"2018-T1" , region:"Granada" , employed_person:435.8 , inactive_person:321.7 , unemployed_person:109.9 },
+  {year:2019 , period:"T1" , date:"2019-T1" , region:"Granada" , employed_person:424.5 , inactive_person:337.5 , unemployed_person:92 },
   {year:2017 , period:"T1" , date:"2017-T1" , region:"Huelva" , employed_person:243.6 , inactive_person:184.8 , unemployed_person:63.9 },
+  {year:2018 , period:"T1" , date:"2018-T1" , region:"Huelva" , employed_person:243 , inactive_person:187.4 , unemployed_person:53.4 },
+  {year:2019 , period:"T1" , date:"2019-T1" , region:"Huelva" , employed_person:251.1 , inactive_person:183.1 , unemployed_person:57.7 },
   {year:2017 , period:"T1" , date:"2017-T1" , region:"Jaen" , employed_person:299.6 , inactive_person:238.7 , unemployed_person:76.1 },
+  {year:2018 , period:"T1" , date:"2018-T1" , region:"Jaen" , employed_person:287.8 , inactive_person:245.4 , unemployed_person:64.7 },
+  {year:2019 , period:"T1" , date:"2019-T1" , region:"Jaen" , employed_person:281.8 , inactive_person:248.6 , unemployed_person:57.3 },
   {year:2017 , period:"T1" , date:"2017-T1" , region:"Malaga" , employed_person:764.8 , inactive_person:589.4 , unemployed_person:200.4 },
   {year:2017 , period:"T1" , date:"2017-T1" , region:"Sevilla" , employed_person:924.7 , inactive_person:655.7 , unemployed_person:243.9 },
   {year:2018 , period:"T4" , date:"2018-T4" , region:"Almeria" , employed_person:339.4 , inactive_person:232.6 , unemployed_person:63.7 },
@@ -64,7 +74,8 @@ app.get("/api/v2/employment/loadInitialData", (req, res) => {
 
 //CODIGO PARA MOSTRAR TODAS LAS ESTADÍSTICAS 
 app.get('/api/v2/employment', (req, res) => {
-
+  const from = req.query.from;
+  const to = req.query.to;
   console.log("/GET employment");
 
   // Empezamos viendo los registros de la db y eliminamos el _id.
@@ -79,12 +90,20 @@ app.get('/api/v2/employment', (req, res) => {
                   res.sendStatus(500);
 
               // Comprobamos si existen datos:
-              }else if(filteredList.length == 0){
+              }else if (from && to && !err) {
+                const regYear = employment_stats.filter(x => {return x.year >= from && x.year <= to}); 
+                if (from > to) {
+                  res.status(400).json("El rango de años especificado es inválido");
 
-                  console.log(`Ruta employment no encontrada`);
-
-                  // Si no existen datos usamos el estado es 404 de Not Found
-                  res.sendStatus(404);
+                }else{
+                  res.status(200);
+                  res.json(regYear.map((c)=>{
+                        delete c._id;
+                        return c;
+                    }));
+                    
+                    console.log(`GET en /employment?from=${from}&to=${to}`); 
+                }
 
               }else{
 

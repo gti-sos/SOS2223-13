@@ -4,6 +4,7 @@
         import { onMount } from 'svelte';
         import { dev } from '$app/environment';
         import { Button,Table } from 'sveltestrap';
+        import { Pagination, PaginationItem, PaginationLink } from 'sveltestrap';
 
         onMount(async () => {
             getEmployments();
@@ -11,6 +12,7 @@
         
         let API = '/api/v2/employment';
         let advertencia = "";
+        let advertenciaPaginacion = "";
         
         if(dev)
             API = 'http://localhost:8080'+API
@@ -26,6 +28,12 @@
     
         let result = "";
         let resultStatus = "";
+
+        let anyoInit = "";
+        let anyoFin = "";
+        let filtroRegion = "";
+        let offsetFilter = "";
+        let limitFilter = "";
     
         async function getEmployments () {
             resultStatus = result = "";
@@ -47,6 +55,36 @@
                 advertencia = "Error servidor"
             }	
         }
+
+        async function getPaginacion(){ 
+            resultStatus = result = "";
+            if(offsetFilter == "" || limitFilter == ""){
+                advertenciaPaginacion = "Los parámetros no pueden estar vacios";
+                return;
+            }else if(isNaN(offsetFilter) || isNaN(limitFilter)){
+                advertenciaPaginacion = "Los parámetros no pueden ser letras";
+                return;
+            }else if(limitFilter <= 0){
+                advertenciaPaginacion = "El límite debe ser superior a 0";
+                return;
+            }else{
+                advertenciaPaginacion = "Se muestran los datos correspondientes al filtro";
+            }
+            const res = await fetch(API+"?offset="+offsetFilter+"&limit="+limitFilter, {
+                method: "GET"
+            });
+            console.log(API+"?offset="+offsetFilter+"&limit="+limitFilter);
+            try{
+                const data = await res.json();
+                result = JSON.stringify(data, null, 2);
+                employments = data;
+            }catch(error){
+                console.log(`Error parseando el resultado: ${error}`);
+            }
+            const status = await res.status;
+            resultStatus = status;
+        }
+
 
 
         async function createEmployment (){
@@ -112,6 +150,38 @@
                 advertencia = "No se han podido borrar los datos";
             }		
         }
+
+        async function getEmploymentFiltroAño(){
+            resultStatus = result = "";
+            if(anyoFin < anyoInit){
+                advertencia = "El año final no puede ser menor que el año de inicio";
+                return;
+            }else if(isNaN(anyoInit) || isNaN(anyoFin)){
+                advertencia = "El año de inicio y el año final no pueden ser letras";
+                return;
+            }else if(anyoInit == "" || anyoFin == ""){
+                advertencia = "El año de inicio y el año final no pueden estar vacios";
+                return;
+            }else if(evolutions.length == 0){
+                advertencia = "No hay datos para mostrar";
+                return;
+            }else if(anyoInit <= anyoFin){
+                advertencia = "Se muestran los datos correspondientes al filtro";
+            }
+            const res = await fetch(API+"?from="+anyoInit+"&to="+anyoFin, {
+                method: "GET"
+            });
+            console.log(API+"?from="+anyoInit+"&to="+anyoFin);
+            try{
+                const data = await res.json();
+                result = JSON.stringify(data, null, 2);
+                employments = data;
+            }catch(error){
+                console.log(`Error parseando el resultado: ${error}`);
+            }
+            const status = await res.status;
+            resultStatus = status;
+        }
     
     
     
@@ -123,6 +193,25 @@
     {#if advertencia !=""}
     <h2 style="color: red; text-align: center; font-family:Arial, Helvetica, sans-serif">{advertencia}</h2>
     {/if}
+
+    <div class = "filtros">
+        <div class = "filtroAño">
+            <input placeholder="Año de inicio" bind:value={anyoInit}>
+            <input placeholder="Año Final" bind:value={anyoFin}>
+            <Button color="primary" on:click={getEmploymentFiltroAño}>Filtra por Año</Button>
+        </div>
+        <div class = "filtroProvincia">
+            <input placeholder="Provincia" bind:value={filtroRegion}>
+            <Button color = "primary" on:click={}>Filtra por Provincia</Button> 
+        </div>
+        <div class ="limpiarFiltros">
+            <Button color="secondary" on:click={}>Limpiar Filtros</Button>
+        </div>
+    </div>
+
+    <strong style="margin: 10px;">Número de datos: {employments.length}</strong>
+
+
     <Table>
         <thead>
           <tr>
