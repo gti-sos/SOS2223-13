@@ -123,3 +123,7 @@
             </tr>
         </tbody>
     </Table>
+
+    <div style="justify-content: center; display:flex;">
+        <Button color="secondary" href= "/evolution">Atrás</Button>
+    </div>

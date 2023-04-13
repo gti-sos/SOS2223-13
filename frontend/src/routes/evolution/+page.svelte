@@ -52,17 +52,17 @@
 
 }
     
-        async function getEvolution () {
+        async function getEvolution(){
             resultStatus = result = "";
             const res = await fetch(API, {
-                method: 'GET'
+                method: "GET"
             });
             try{
                 const data = await res.json();
-                result = JSON.stringify(data,null,2);
+                result = JSON.stringify(data, null, 2);
                 evolutions = data;
             }catch(error){
-                console.log(`Error parsing result: ${error}`);
+                console.log(`Error parseando el resultado: ${error}`);
             }
             const status = await res.status;
             resultStatus = status;
@@ -161,25 +161,19 @@
             }
         }
 
-        async function deleteEvolutionAll () {
+        async function deleteEvolutionAll(){
             resultStatus = result = "";
             const res = await fetch(API, {
-                method: 'DELETE'
+                method: "DELETE"
             });
-            try{
-                const data = await res.json();
-                result = JSON.stringify(data, null, 2);
-                evolutions = data;
-            }catch(error){
-                console.log(`Error parseando el resultado: ${error}`);
-            }
             const status = await res.status;
             resultStatus = status;
             if(status==200 || status == 204){
+                await getEvolution();
                 mensajeUsuario = "Se han borrado correctamente los datos";
             }else{
                 mensajeUsuario = "No se han podido borrar los datos";
-            }		
+            }
         }
 
         async function getEvolutionFiltroAño(){
@@ -242,6 +236,18 @@
             const status = await res.status;
             resultStatus = status;
         }
+
+        async function getLimpiarFiltros(){
+        resultStatus = result = "";
+        if(filtroProvincia != "" || anyoInicio != "" || anyoFinal != ""){
+            filtroProvincia = "";
+            anyoInicio = "";
+            anyoFinal = "";
+        }
+        getEvolution();
+        mensajeUsuario = "";
+        return;
+        }
     
     
     
@@ -249,7 +255,7 @@
         
     
     </script>
-    <h1 style="text-align: center; font-family:'Times New Roman', Times, serif; font-size: 60px;">Datos Evolución</h1>
+    <h1 style="text-align: center; font-family:'Times New Roman', Times, serif; font-size: 40px;">Datos Evolución</h1>
     <h1 class="botones">
         <ButtonToolbar>
             <Button color="success" on:click={loadData}>Cargar Datos Iniciales</Button>
@@ -260,15 +266,19 @@
     <h2 style="color: red; text-align: center; font-family:Arial, Helvetica, sans-serif">{mensajeUsuario}</h2>
     {/if}
 
-    <div style="text-align: center; display: flex; justify-content: center; flex-direction: row; gap: 20px;">
-        <td><input placeholder="Año de Inicio" bind:value={anyoInicio}></td>
-        <td><input placeholder="Año Final" bind:value={anyoFinal}></td>
-        <td><Button color="primary" on:click={getEvolutionFiltroAño}>Filtra por Año</Button></td>
-        <p></p>
-        <p></p>
-        <p></p>
-        <td><input placeholder="Provincia" bind:value={filtroProvincia}></td>
-        <td><Button color="primary" on:click={getEvolutionFiltroProvincia}>Filtra por Provincia</Button></td>
+    <div class = "filtros">
+        <div class = "filtroAño">
+            <input placeholder="Año de inicio" bind:value={anyoInicio}>
+            <input placeholder="Año Final" bind:value={anyoFinal}>
+            <Button color="primary" on:click={getEvolutionFiltroAño}>Filtra por Año</Button>
+        </div>
+        <div class = "filtroProvincia">
+            <input placeholder="Provincia" bind:value={filtroProvincia}>
+            <Button color = "primary" on:click={getEvolutionFiltroProvincia}>Filtra por Provincia</Button>
+        </div>
+        <div class ="limpiarFiltros">
+            <Button color="secondary" on:click={getLimpiarFiltros}>Limpiar Filtros</Button>
+        </div>
     </div>
 
     <strong style="margin: 10px;">Número de datos: {evolutions.length}</strong>
@@ -341,6 +351,32 @@
           <PaginationLink next href="#" />
         </PaginationItem>
     </Pagination>-->
+
+    <style>
+        .filtros{
+            display: flex;
+            justify-content: center;
+        }
+    
+        .filtroAño{
+            margin: 30px;
+            display: flex;
+            gap: 15px;
+            }
+    
+        .limpiarFiltros{
+            margin: 30px;
+            display: flex;
+            gap: 15px;
+        }
+        
+        .filtroProvincia{
+            margin: 30px;
+            display: flex;
+            gap: 15px;
+        }
+    </style>
+    
     <hr style="text-align: right; margin-left: 100px; margin-right: 100px;">
 
     {#if mensajePaginacion !=""}

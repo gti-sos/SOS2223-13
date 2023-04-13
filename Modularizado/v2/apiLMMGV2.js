@@ -148,13 +148,6 @@ app.get('/api/v2/evolution', (req, res) => {
                     
                     console.log(`GET en /evolution?from=${from}&to=${to}`); 
                 }
-              }else if(filteredList.length == 0){
-
-                  console.log(`Ruta evolution Not Found`);
-
-                  // Si no existen datos usamos el estado es 404 de Not Found
-                  res.sendStatus(404);
-
               }else{
 
                   // Tenemos que inicializar los valores necesarios para filtrar: tenemos que ver el limit y offset
@@ -196,20 +189,12 @@ app.get('/api/v2/evolution', (req, res) => {
                   });
 
                   // Comprobamos si tras el filtrado sigue habiendo datos, si no hay:
-                  if(datos.length == 0){
-
-                      console.log(`evolution not found`);
-                      // Estado 404: Not Found
-                      res.sendStatus(404);
-
-                  // Si por el contrario encontramos datos
-                  }else{
-
+                
                       console.log(`Datos de evolution devueltos: ${datos.length}`);
                       // Devolvemos dichos datos, estado 200: OK
                       res.json(datos);
 
-                  }
+                  
               }
       })
 });
@@ -516,67 +501,24 @@ app.put('/api/v2/evolution/:city', (req, res) => {
   }
 });
 });
-// DELETE de una lista de recursos
-/*
-app.delete(BASE_API_URL+ "/evolution",(req, res)=>{
-  db.remove({}, { multi: true }, (err, numRemoved)=>{
-      if (err){
-          res.sendStatus(500,"CLIENT ERROR");
-          
-      }
-      res.sendStatus(200,"DELETED");
+
+//METODO DELETE PARA LA RUTA BASE
+app.delete("/api/v2/evolution", (req, res) => {
+  db.remove({}, { multi: true }, (err, numRemoved) => {
+    if (err) {
+      console.log("Error para borrar todos los datos");
+      res.sendStatus(500);
+    } else if (numRemoved == 0) {
+      res.status(404).send("No hay más datos para borrar");
+      console.log("No se encuentran más datos para borrar");
+    } else {
+      console.log("Borrados todos los datos");
+      res.status(200).send("Borrados todos los datos");
+      console.log(numRemoved);
+    }
   });
-});*/
-
-//METODO DELETE PARA LA RUTA BASE PARA BORRAR DATO ESPECÍFICO.
-app.delete(BASE_API_URL + "/evolution", (req, res) => {
-  db.remove({}, {multi : true}, (err, numRemoved) =>{
-
-    if(err){
-        res.sendStatus(500, "Client Error");   
-    }
-  if (!req.body || Object.keys(req.body).length === 0) {
-    db.remove({}, {multi : true}, (err, numRemoved)=>{
-      if (err){
-          res.sendStatus(500,"ERROR EN CLIENTE");
-          return;
-      } else {
-      //res.sendStatus(200,"DELETED");
-      return;
-    }
-      
-  });
-  }else{
-  const { period, territory } = req.body;
-  db.find({},function(err, filteredList){
-
-    if(err){
-        res.sendStatus(500, "Client Error");   
-    }
-  // Buscar el objeto en la matriz evolution_stats
-  filteredList = filteredList.filter((obj)=>
-                {
-                    return(obj.territory === territory && obj.period === period);
-                });
-  db.remove({territory: territory, period: period}, {}, (err, numRemoved)=>{
-    if (err){
-        res.sendStatus(500,"ERROR EN CLIENTE");
-        return;
-    }
-  if (filteredList === []) {
-    // Si el objeto no se encuentra, devolver un código de respuesta 404 Not Found
-    res.status(404).json('El objeto no existe');
-  } else {
-    res.sendStatus(200,"DELETED");
-    return;
-  }
-  });   
 });
-}
 
-
-});
-});
 
 //DELETE PARA UNA RUTA ESPECÍFICA DE UNA CIUDAD.
 app.delete('/api/v2/evolution/:territory', (req, res) => {
