@@ -182,6 +182,47 @@
             const status = await res.status;
             resultStatus = status;
         }
+
+        async function getEmploymentFiltroRegion(){
+            resultStatus = result = "";
+            if(filtroRegion == ""){
+                advertencia= "La provincia no puede estar vacia";
+                return;
+            }else if(!isNaN(filtroRegion)){
+                advertencia = "La provincia no puede ser un número";
+                return;
+            }else if(employments.length == 0){
+                advertencia = "No hay datos para mostrar";
+                return;
+            }else if(filtroRegion){
+                advertencia = "Se muestran los datos correspondientes al filtro";
+            }
+            const res = await fetch(API+"?region="+filtroRegion, {
+                method: "GET"
+            });
+            console.log(API+"?region="+filtroRegion);
+            try{
+                const data = await res.json();
+                result = JSON.stringify(data, null, 2);
+                employments = data;
+            }catch(error){
+                console.log(`Error parseando el resultado: ${error}`);
+            }
+            const status = await res.status;
+            resultStatus = status;
+        }
+
+        async function getLimpiaFiltros(){
+        resultStatus = result = "";
+        if(filtroRegion != "" || anyoInit != "" || anyoFin != ""){
+            filtroRegion = "";
+            anyoInit = "";
+            anyoFin = "";
+        }
+        getEvolution();
+        advertencia = "";
+        return;
+        }
     
     
     
@@ -198,14 +239,14 @@
         <div class = "filtroAño">
             <input placeholder="Año de inicio" bind:value={anyoInit}>
             <input placeholder="Año Final" bind:value={anyoFin}>
-            <Button color="primary" on:click={getEmploymentFiltroAño}>Filtra por Año</Button>
+            <Button color="primary" on:click={getEmploymentFiltroAño}>Filtra por año</Button>
         </div>
-        <div class = "filtroProvincia">
+        <div class = "filtroRegion">
             <input placeholder="Provincia" bind:value={filtroRegion}>
-            <Button color = "primary" on:click={}>Filtra por Provincia</Button> 
+            <Button color = "primary" on:click={getEmploymentFiltroRegion}>Filtra por región</Button> 
         </div>
         <div class ="limpiarFiltros">
-            <Button color="secondary" on:click={}>Limpiar Filtros</Button>
+            <Button color="secondary" on:click={getLimpiaFiltros}>Limpiar filtros</Button>
         </div>
     </div>
 
