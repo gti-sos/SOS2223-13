@@ -29,17 +29,17 @@ db.insert(localentities_stats);
 const BASE_API_URL = "/api/v2";
 
 //redirect /doc
-app.get(BASE_API_URL + "/localentities-stats/docs", (req,res)=>{
+app.get(BASE_API_URL + "/localentities/docs", (req,res)=>{
   res.redirect(api_portal);
 });
 
 
 
-app.post(BASE_API_URL + "/localentities-stats", (request,response) => {
+app.post(BASE_API_URL + "/localentities", (request,response) => {
   const province = request.body.province;
   const president_appointment_date = request.body.president_appointment_date;
   
-  console.log("New POST to /localentities-stats"); //console.log en el servidor
+  console.log("New POST to /localentities"); //console.log en el servidor
   db.find({}, function(error, filteredList){
     if(error){
       res.sendStatus(500, "ERROR CLIENTE");
@@ -53,7 +53,7 @@ app.post(BASE_API_URL + "/localentities-stats", (request,response) => {
       }
     }
 
-    if(request.originalUrl !== '/api/v2/localentities-stats'){
+    if(request.originalUrl !== '/api/v2/localentities'){
       res.status(405).json('Método no permitido');
     } else {
       filteredList = filteredList.filter((obj)=>{
@@ -74,7 +74,7 @@ app.post(BASE_API_URL + "/localentities-stats", (request,response) => {
   //10 o más datos
 
   
-  app.get(BASE_API_URL + "/localentities-stats/loadInitialData", (req, res) => {
+  app.get(BASE_API_URL + "/localentities/loadInitialData", (req, res) => {
     db.find({}, function(error,filteredList){
 
       if(error){
@@ -98,10 +98,10 @@ app.post(BASE_API_URL + "/localentities-stats", (request,response) => {
 
   
 //CODIGO PARA MOSTRAR LAS ESTADÍSTICAS A PARTIR DE LA QUERY.
-//GET a localentities-stats
-app.get('/api/v2/localentities-stats', (req, res) => {
+//GET a localentities
+app.get('/api/v2/localentities', (req, res) => {
 
-  console.log("/GET localentities-stats");
+  console.log("/GET localentities");
 
   // Empezamos viendo los registros de la db y eliminamos el _id.
   db.find({}, {_id: 0}, (error, filteredList) => {
@@ -109,7 +109,7 @@ app.get('/api/v2/localentities-stats', (req, res) => {
               // Comprobamos los errores que han podido surgir
               if(error){
 
-                  console.log(`Error getting localentities-stats`);
+                  console.log(`Error getting localentities`);
 
                   // El estado es el 500 de Internal Server Error
                   res.sendStatus(500);
@@ -117,7 +117,7 @@ app.get('/api/v2/localentities-stats', (req, res) => {
               // Comprobamos si existen datos:
               }else if(filteredList.length == 0){
 
-                  console.log(`Ruta localentities-stats Not Found`);
+                  console.log(`Ruta localentities Not Found`);
 
                   // Si no existen datos usamos el estado es 404 de Not Found
                   res.sendStatus(404);
@@ -164,14 +164,14 @@ app.get('/api/v2/localentities-stats', (req, res) => {
                   // Comprobamos si tras el filtrado sigue habiendo datos, si no hay:
                   if(datos.length == 0){
 
-                      console.log(`localentities-stats not found`);
+                      console.log(`localentities not found`);
                       // Estado 404: Not Found
                       res.sendStatus(404);
 
                   // Si por el contrario encontramos datos
                   }else{
 
-                      console.log(`Datos de localentities-stats devueltos: ${datos.length}`);
+                      console.log(`Datos de localentities devueltos: ${datos.length}`);
                       // Devolvemos dichos datos, estado 200: OK
                       res.json(datos);
 
@@ -182,13 +182,13 @@ app.get('/api/v2/localentities-stats', (req, res) => {
 
 
   //TABLITA AZUL
-  const rutaIrene = '/api/v2/localentities-stats';
+  const rutaIrene = '/api/v2/localentities';
       
   // Método POST para la ruta base
   app.post(rutaIrene, (request, response) => {
     const province = request.body.province;
     const president_appointment_date = request.body.president_appointment_date;
-    console.log("New POST to /localentities-stats"); //console.log en el servidor  
+    console.log("New POST to /localentities"); //console.log en el servidor  
     db.find({}, function(error, filteredList){
 
       if(error){
@@ -203,7 +203,7 @@ app.get('/api/v2/localentities-stats', (req, res) => {
         }
       }
       // Verificar que la solicitud se hizo en la ruta correcta
-      if (request.originalUrl !== '/api/v2/localentities-stats') {
+      if (request.originalUrl !== '/api/v2/localentities') {
         res.status(405).json('Método no permitido');
         return;
       }else{
@@ -231,12 +231,12 @@ app.get('/api/v2/localentities-stats', (req, res) => {
   
   
   // Ruta específica que no permite el método POST
-  const rutaEspecif = '/api/v2/localentities-stats/loadInitialData';
+  const rutaEspecif = '/api/v2/localentities/loadInitialData';
   app.post(rutaEspecif, (req, res) => {
       res.status(405).json('El método POST no está permitido en esta ruta');
   });
   
-  app.post('/api/v2/localentities-stats/:city', (req, res) => {
+  app.post('/api/v2/localentities/:city', (req, res) => {
     db.find({},function(error, filteredList){
       if(error){
           res.sendStatus(500, "Error Cliente");   
@@ -281,7 +281,7 @@ app.get('/api/v2/localentities-stats', (req, res) => {
 
 
 //CODIGO PARA PODER HACER GET A UNA CIUDAD ESPECÍFICA Y A UNA CIUDAD Y PERIODO CONCRETO.
-app.get('/api/v2/localentities-stats/:city', (req, res) => {
+app.get('/api/v2/localentities/:city', (req, res) => {
   const city = req.params.city.toLowerCase();
   const from = req.query.from;
   const to = req.query.to;
@@ -309,7 +309,7 @@ app.get('/api/v2/localentities-stats/:city', (req, res) => {
    if(filteredList==0){
     res.status(404).json('La ruta solicitada no existe');
     }
-    console.log(`/GET to /localentities-stats/${city}?from=${from}&to=${to}`); //console.log en el servidor
+    console.log(`/GET to /localentities/${city}?from=${from}&to=${to}`); //console.log en el servidor
     filteredList.forEach((e)=>{
                   delete e._id;
                 });
@@ -322,7 +322,7 @@ app.get('/api/v2/localentities-stats/:city', (req, res) => {
                   {
                       return(obj.landline == landline && obj.province.toLowerCase() == city);
                   });
-                  console.log(`/GET to /localentities-stats/${city}?${landline}`); //console.log en el servidor
+                  console.log(`/GET to /localentities/${city}?${landline}`); //console.log en el servidor
                   filteredList.forEach((e)=>{
                     delete e._id;
                   });
@@ -335,7 +335,7 @@ app.get('/api/v2/localentities-stats/:city', (req, res) => {
                   {
                       return(obj.first_name == first_name && obj.province.toLowerCase() == cit);
                   });
-                  console.log(`/GET to /localentities-stats/${city}?${first_name}`); //console.log en el servidor
+                  console.log(`/GET to /localentities/${city}?${first_name}`); //console.log en el servidor
                   filteredList.forEach((e)=>{
                     delete e._id;
                   });
@@ -348,7 +348,7 @@ app.get('/api/v2/localentities-stats/:city', (req, res) => {
                   {
                       return(obj.second_name == second_name && obj.province.toLowerCase() == cit);
                   });
-                  console.log(`/GET to /localentities-stats/${city}?${second_name}`); //console.log en el servidor
+                  console.log(`/GET to /localentities/${city}?${second_name}`); //console.log en el servidor
                   filteredList.forEach((e)=>{
                     delete e._id;
                   });
@@ -361,7 +361,7 @@ app.get('/api/v2/localentities-stats/:city', (req, res) => {
                   {
                       return(obj.president_appointment_date == president_appointment_date && obj.province.toLowerCase() == cit);
                   });
-                  console.log(`/GET to /localentities-stats/${city}?${president_appointment_date}`); //console.log en el servidor
+                  console.log(`/GET to /localentities/${city}?${president_appointment_date}`); //console.log en el servidor
                   filteredList.forEach((e)=>{
                     delete e._id;
                   });
@@ -374,7 +374,7 @@ app.get('/api/v2/localentities-stats/:city', (req, res) => {
                   {
                       return(obj.surface_extension == surface_extension && obj.province.toLowerCase() == cit);
                   });
-                  console.log(`/GET to /localentities-stats/${city}?${surface_extension}`); //console.log en el servidor
+                  console.log(`/GET to /localentities/${city}?${surface_extension}`); //console.log en el servidor
                   filteredList.forEach((e)=>{
                     delete e._id;
                   });
@@ -387,7 +387,7 @@ app.get('/api/v2/localentities-stats/:city', (req, res) => {
                   {
                       return(obj.population == population && obj.province.toLowerCase() == cit);
                   });
-                  console.log(`/GET to /localentities-stats/${city}?${population}`); //console.log en el servidor
+                  console.log(`/GET to /localentities/${city}?${population}`); //console.log en el servidor
                   filteredList.forEach((e)=>{
                     delete e._id;
                   });
@@ -400,7 +400,7 @@ app.get('/api/v2/localentities-stats/:city', (req, res) => {
                   {
                       return(obj.expense == expense && obj.province.toLowerCase() == cit);
                   });
-                  console.log(`/GET to /localentities-stats/${city}?${expense}`); //console.log en el servidor
+                  console.log(`/GET to /localentities/${city}?${expense}`); //console.log en el servidor
                   filteredList.forEach((e)=>{
                     delete e._id;
                   });
@@ -413,7 +413,7 @@ app.get('/api/v2/localentities-stats/:city', (req, res) => {
                   {
                       return(obj.income == income && obj.province.toLowerCase() == cit);
                   });
-                  console.log(`/GET to /localentities-stats/${city}?${income}`); //console.log en el servidor
+                  console.log(`/GET to /localentities/${city}?${income}`); //console.log en el servidor
                   filteredList.forEach((e)=>{
                     delete e._id;
                   });
@@ -446,7 +446,7 @@ app.get('/api/v2/localentities-stats/:city', (req, res) => {
 
 
 //CODIGO PARA PODER HACER UN GET A UNA CIUDAD Y FECHA ESPECÍFICA.
-app.get('/api/v2/localentities-stats/:province/:year', (req, res) => {
+app.get('/api/v2/localentities/:province/:year', (req, res) => {
   const { province, year } = req.params;
   db.find({}, function(error, filteredList){
 
@@ -477,7 +477,7 @@ app.get('/api/v2/localentities-stats/:province/:year', (req, res) => {
 
 
 //CODIGO PARA ACTUALIZAR MEDIANTE PUT UNA RUTA CONCRETA.
-app.put('/api/v2/localentities-stats/:city/:year', (req, res) => {
+app.put('/api/v2/localentities/:city/:year', (req, res) => {
   const city = req.params.city;
   const year = parseInt(req.params.year);
   const city_body = req.body.province;
@@ -522,7 +522,7 @@ app.put('/api/v2/localentities-stats/:city/:year', (req, res) => {
 
 
 //CODIGO PARA ACTUALIZAR MEDIANTE PUT UNA CIUDAD
-app.put('/api/v2/localentities-stats/:city', (req, res) => {
+app.put('/api/v2/localentities/:city', (req, res) => {
   const city = req.params.city;
   const citybody = req.body.province;
   const body = req.body;
@@ -556,7 +556,7 @@ app.put('/api/v2/localentities-stats/:city', (req, res) => {
 
 
 //METODO DELETE PARA LA RUTA BASE PARA BORRAR DATO ESPECÍFICO.
-app.delete(BASE_API_URL + "/localentities-stats", (req, res) => {
+app.delete(BASE_API_URL + "/localentities", (req, res) => {
   db.remove({}, {multi : true}, (error, numRemoved) =>{
 
     if(error){
@@ -606,7 +606,7 @@ app.delete(BASE_API_URL + "/localentities-stats", (req, res) => {
 
 
 //DELETE PARA UNA RUTA ESPECÍFICA DE UNA CIUDAD.
-app.delete('/api/v2/localentities-stats/:province', (req, res) => {
+app.delete('/api/v2/localentities/:province', (req, res) => {
   const province = req.params.province;
   db.find({},function(error, filteredList){
 
@@ -644,7 +644,7 @@ app.delete('/api/v2/localentities-stats/:province', (req, res) => {
 
 
 //DELETE PARA UNA RUTA ESPECÍFICA DE UNA CIUDAD Y PERIOD.
-app.delete('/api/v2/localentities-stats/:province/:president_appointment_date', (req, res) => {
+app.delete('/api/v2/localentities/:province/:president_appointment_date', (req, res) => {
   const province = req.params.province;
   const president_appointment_date = req.params.president_appointment_date;
   db.find({},function(error, filteredList){
