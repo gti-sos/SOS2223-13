@@ -74,9 +74,8 @@ app.get("/api/v2/employment/loadInitialData", (req, res) => {
 
 //CODIGO PARA MOSTRAR TODAS LAS ESTADÍSTICAS 
 app.get('/api/v2/employment', (req, res) => {
-  const from = req.query.from;
-  const to = req.query.to;
   console.log("/GET employment");
+  
 
   // Empezamos viendo los registros de la db y eliminamos el _id.
   db.find({}, {_id: 0}, (err, filteredList) => {
@@ -90,21 +89,6 @@ app.get('/api/v2/employment', (req, res) => {
                   res.sendStatus(500);
 
               // Comprobamos si existen datos:
-              }else if (from && to && !err) {
-                const regYear = employment_stats.filter(x => {return x.year >= from && x.year <= to}); 
-                if (from > to) {
-                  res.status(400).json("El rango de años especificado es inválido");
-
-                }else{
-                  res.status(200);
-                  res.json(regYear.map((c)=>{
-                        delete c._id;
-                        return c;
-                    }));
-                    
-                    console.log(`GET en /employment?from=${from}&to=${to}`); 
-                }
-
               }else{
 
                   // Tenemos que inicializar los valores necesarios para filtrar: tenemos que ver el limit y offset
@@ -118,41 +102,49 @@ app.get('/api/v2/employment', (req, res) => {
                   // Tenemos que filtrar los datos, para ver cada posible campo y devolver true si no se pasa en la query, 
                   // y si es un parámetro en la query se comprueba la condicion
                   let datos = filteredList.filter((x) => {
-                      return (((req.query.year == undefined)||(parseInt(req.query.year) === x.year))&&
-                      ((req.query.from == undefined)||(parseInt(req.query.from) <= x.period))&&
-                      ((req.query.to == undefined)||(parseInt(req.query.to) >= x.period))&&
-                      ((req.query.period == undefined)||(req.query.period === x.period))&&
-                      ((req.query.date == undefined)||(req.query.date === x.date))&&
-                      ((req.query.region == undefined)||(req.query.region === x.region))&&
-                      ((req.query.employed_person == undefined)||(parseInt(req.query.employed_person) <= x.employed_person))&&
-                      ((req.query.inactive_person == undefined)||(parseInt(req.query.inactive_person) >= x.inactive_person))&&
-                      ((req.query.unemployed_person == undefined)||(parseInt(req.query.unemployed_person) <= x.unemployed_person)));
-                  }).filter((x) => {
+                    return (((req.query.year == undefined)||(parseInt(req.query.year) === x.year))&&
+                    ((req.query.from == undefined)||(parseInt(req.query.from) <= x.period))&&
+                    ((req.query.to == undefined)||(parseInt(req.query.to) >= x.period))&&
+                    ((req.query.period == undefined)||(req.query.period === x.period))&&
+                    ((req.query.date == undefined)||(req.query.date === x.date))&&
+                    ((req.query.region == undefined)||(req.query.region === x.region))&&
+                    ((req.query.employed_person == undefined)||(parseInt(req.query.employed_person) <= x.employed_person))&&
+                    ((req.query.inactive_person == undefined)||(parseInt(req.query.inactive_person) >= x.inactive_person))&&
+                    ((req.query.unemployed_person == undefined)||(parseInt(req.query.unemployed_person) <= x.unemployed_person)));
+                }).filter((x) => {
                       // La paginación
                       i = i+1;
                       if(req.query.limit==undefined){ 
                         var cond = true;
                       }else{ 
-                        var cond = (offset + parseInt(req.query.limit)) >= i;
+                        var cond = (parseInt(offset) + parseInt(req.query.limit)) >= i;
                       }
                       return (i>offset)&&cond;
                   });
 
                   // Comprobamos si tras el filtrado sigue habiendo datos, si no hay:
+                
+                  
+
                   if(datos.length == 0){
 
-                      console.log(`employment no encontrado`);
-                      // Estado 404: Not Found
-                      res.sendStatus(404);
+                    console.log(`employment no encontrado`);
+                    // Estado 404: Not Found
+                    res.status(404).json(datos);
 
-                  // Si por el contrario encontramos datos
-                  }else{
+                // Si por el contrario encontramos datos
+                }else{
 
-                      console.log(`Datos de employment devueltos: ${datos.length}`);
-                      // Devolvemos dichos datos, estado 200: OK
-                      res.json(datos);
 
-                  }
+                    console.log(`Datos de employment devueltos: ${datos.length}`);
+                    // Devolvemos dichos datos, estado 200: OK
+                    res.json(datos);
+
+                }
+
+                
+
+                  
               }
       })
 });
@@ -480,53 +472,21 @@ app.put('/api/v2/employment/:city', (req, res) => {
 
 
 
-//METODO DELETE PARA LA RUTA BASE PARA BORRAR DATO ESPECÍFICO.
-app.delete(BASE_API_URL + "/employment", (req, res) => {
-  db.remove({}, {multi : true}, (err, numRemoved) =>{
-
-    if(err){
-        res.sendStatus(500, "Error cliente");   
+//METODO DELETE PARA LA RUTA BASE PARA BORRAR TODOS LOS DATOS.
+app.delete("/api/v2/employment", (req, res) => {
+  db.remove({}, { multi: true }, (err, numRemoved) => {
+    if (err) {
+      console.log("Error para borrar todos los datos");
+      res.sendStatus(500);
+    } else if (numRemoved == 0) {
+      res.status(404).send("No hay más datos para borrar");
+      console.log("No se encuentran más datos para borrar");
+    } else {
+      console.log("Borrados todos los datos");
+      res.status(200).send("Borrados todos los datos");
+      console.log(numRemoved);
     }
-  if (!req.body || Object.keys(req.body).length === 0) {
-    db.remove({}, {multi : true}, (err, numRemoved)=>{
-      if (err){
-          res.sendStatus(500,"Error cliente");
-          return;
-      } else {
-      res.sendStatus(200,"Deleted");
-    }
-      
   });
-  }else{
-  const { year, region } = req.body;
-  db.find({},function(err, filteredList){
-
-    if(err){
-        res.sendStatus(500, "Error cliente");   
-    }
-  // Buscar el objeto en la matriz evolution_stats
-  filteredList = filteredList.filter((obj)=>
-                {
-                    return(obj.region === region && obj.year === year);
-                });
-  db.remove({region: region, year: year}, {}, (err, numRemoved)=>{
-    if (err){
-        res.sendStatus(500,"Error cliente");
-        return;
-    }
-  if (filteredList === []) {
-    // Si el objeto no se encuentra, devolver un código de respuesta 404 Not Found
-    res.status(404).json('El objeto no existe');
-  } else {
-    res.sendStatus(200,"Deleted");
-    return;
-  }
-  });   
-});
-}
-
-
-});
 });
 
 //DELETE EN RUTA EMPLOYMENT DE UNA CIUDAD.

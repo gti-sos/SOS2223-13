@@ -3,7 +3,7 @@
     
         import { onMount } from 'svelte';
         import { dev } from '$app/environment';
-        import { Button,Table } from 'sveltestrap';
+        import { Button,ButtonToolbar,Table } from 'sveltestrap';
         import { Pagination, PaginationItem, PaginationLink } from 'sveltestrap';
 
         onMount(async () => {
@@ -35,41 +35,24 @@
         let offsetFilter = "";
         let limitFilter = "";
     
-        async function getEmployments () {
+        async function getEmployments(){
             resultStatus = result = "";
-            const res = await fetch(API, {
-                method: 'GET'
+            const res = await fetch(API+"?offset=0&limit=10", {
+            method: "GET"
             });
             try{
                 const data = await res.json();
-                result = JSON.stringify(data,null,2);
+                result = JSON.stringify(data, null, 2);
                 employments = data;
             }catch(error){
-                console.log(`Error parsing result: ${error}`);
+                console.log(`Error parseando el resultado: ${error}`);
             }
             const status = await res.status;
             resultStatus = status;
-            if(status==404){
-                advertencia = "Ruta no encontrada"
-            }else if(status==500){
-                advertencia = "Error servidor"
-            }	
         }
 
-        async function getPaginacion(){ 
+        async function getPaginacion(offsetFilter,limitFilter){
             resultStatus = result = "";
-            if(offsetFilter == "" || limitFilter == ""){
-                advertenciaPaginacion = "Los parámetros no pueden estar vacios";
-                return;
-            }else if(isNaN(offsetFilter) || isNaN(limitFilter)){
-                advertenciaPaginacion = "Los parámetros no pueden ser letras";
-                return;
-            }else if(limitFilter <= 0){
-                advertenciaPaginacion = "El límite debe ser superior a 0";
-                return;
-            }else{
-                advertenciaPaginacion = "Se muestran los datos correspondientes al filtro";
-            }
             const res = await fetch(API+"?offset="+offsetFilter+"&limit="+limitFilter, {
                 method: "GET"
             });
@@ -136,19 +119,21 @@
             }
         }
 
-        async function deleteEmploymentAll () {
+        async function deleteEmploymentAll(){
             resultStatus = result = "";
             const res = await fetch(API, {
-                method: 'DELETE'
+                method: "DELETE"
             });
             const status = await res.status;
             resultStatus = status;
             if(status==200 || status == 204){
-                await getEmployments ();
+                await getEmployments();
                 advertencia = "Se han borrado correctamente los datos";
+                setTimeout(() => {advertencia = '';}, 3000);
             }else{
                 advertencia = "No se han podido borrar los datos";
-            }		
+                setTimeout(() => {advertencia = '';}, 3000);
+            }
         }
 
         async function getEmploymentFiltroAño(){
@@ -219,7 +204,7 @@
             anyoInit = "";
             anyoFin = "";
         }
-        getEvolution();
+        getEmployments();
         advertencia = "";
         return;
         }
@@ -231,6 +216,11 @@
     
     </script>
     <h1> Empleos</h1>
+    <h1 class="botones">
+        <ButtonToolbar>
+            <Button color="danger" on:click={deleteEmploymentAll}>Borrar Datos</Button>
+        </ButtonToolbar>
+    </h1>
     {#if advertencia !=""}
     <h2 style="color: red; text-align: center; font-family:Arial, Helvetica, sans-serif">{advertencia}</h2>
     {/if}
@@ -291,10 +281,32 @@
           </tr>
         {/each}
 
-        <td><Button color="danger" on:click={deleteEmploymentAll}>Eliminar todo</Button></td>
           
         </tbody>
     </Table>
+
+    <Pagination ariaLabel="Page navigation example">
+        <PaginationItem>
+          <PaginationLink on:click={() => getPaginacion(0,10)} first href="/employment"/>
+        </PaginationItem>
+        <!--<PaginationItem disabled>
+          <PaginationLink previous href="#" />
+        </PaginationItem> -->
+        <PaginationItem>
+            <PaginationLink on:click={() => getPaginacion(0,10)} href="/employment">1</PaginationLink>
+        </PaginationItem>
+        <PaginationItem>
+            <PaginationLink on:click={() => getPaginacion(9,10)} href="/employment?offset=10&limit=10">2</PaginationLink>
+        </PaginationItem>
+        <!-- <PaginationItem>
+          <PaginationLink next href="#" />
+        </PaginationItem> -->
+        <PaginationItem>
+          <PaginationLink on:click={() => getPaginacion(9,10)} last href="/employment?offset=10&limit=10" />
+        </PaginationItem>
+      </Pagination>
+
+      <hr style="text-align: right; margin-left: 100px; margin-right: 100px;">
 
 
     
