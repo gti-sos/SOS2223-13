@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "bcfed70b-0883-4d89-b674-8132773c97e9",
-		"name": "lab13",
+		"_postman_id": "ae2fde99-f455-4ae3-9bba-d33cdf17833d",
+		"name": "lab13V2",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "26054707"
 	},
@@ -27,13 +27,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{URL_BASE}}/api/v1/localentities-stats",
+					"raw": "{{URL_BASE}}/api/v2/localentities-stats",
 					"host": [
 						"{{URL_BASE}}"
 					],
 					"path": [
 						"api",
-						"v1",
+						"v2",
 						"localentities-stats"
 					]
 				}
@@ -59,13 +59,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{URL_BASE}}/api/v1/localentities-stats?president_appointment_date=2014",
+					"raw": "{{URL_BASE}}/api/v2/localentities-stats?president_appointment_date=2014",
 					"host": [
 						"{{URL_BASE}}"
 					],
 					"path": [
 						"api",
-						"v1",
+						"v2",
 						"localentities-stats"
 					],
 					"query": [
@@ -97,13 +97,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{URL_BASE}}/api/v1/localentities-stats/Almeria",
+					"raw": "{{URL_BASE}}/api/v2/localentities-stats/Almeria",
 					"host": [
 						"{{URL_BASE}}"
 					],
 					"path": [
 						"api",
-						"v1",
+						"v2",
 						"localentities-stats",
 						"Almeria"
 					]
@@ -130,13 +130,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{URL_BASE}}/api/v1/localentities-stats/Almeria/2015",
+					"raw": "{{URL_BASE}}/api/v2/localentities-stats/Almeria/2015",
 					"host": [
 						"{{URL_BASE}}"
 					],
 					"path": [
 						"api",
-						"v1",
+						"v2",
 						"localentities-stats",
 						"Almeria",
 						"2015"
@@ -173,13 +173,13 @@
 					}
 				},
 				"url": {
-					"raw": "{{URL_BASE}}/api/v1/localentities-stats",
+					"raw": "{{URL_BASE}}/api/v2/localentities-stats",
 					"host": [
 						"{{URL_BASE}}"
 					],
 					"path": [
 						"api",
-						"v1",
+						"v2",
 						"localentities-stats"
 					]
 				}
@@ -210,13 +210,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{URL_BASE}}/api/v1/localentities-stats",
+					"raw": "{{URL_BASE}}/api/v2/localentities-stats",
 					"host": [
 						"{{URL_BASE}}"
 					],
 					"path": [
 						"api",
-						"v1",
+						"v2",
 						"localentities-stats"
 					]
 				}
@@ -251,13 +251,13 @@
 					}
 				},
 				"url": {
-					"raw": "{{URL_BASE}}/api/v1/localentities-stats/Madrid",
+					"raw": "{{URL_BASE}}/api/v2/localentities-stats/Madrid",
 					"host": [
 						"{{URL_BASE}}"
 					],
 					"path": [
 						"api",
-						"v1",
+						"v2",
 						"localentities-stats",
 						"Madrid"
 					]
@@ -285,13 +285,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{URL_BASE}}/api/v1/localentities-stats",
+					"raw": "{{URL_BASE}}/api/v2/localentities-stats",
 					"host": [
 						"{{URL_BASE}}"
 					],
 					"path": [
 						"api",
-						"v1",
+						"v2",
 						"localentities-stats"
 					]
 				}
@@ -326,13 +326,13 @@
 					}
 				},
 				"url": {
-					"raw": "{{URL_BASE}}/api/v1/localentities-stats",
+					"raw": "{{URL_BASE}}/api/v2/localentities-stats",
 					"host": [
 						"{{URL_BASE}}"
 					],
 					"path": [
 						"api",
-						"v1",
+						"v2",
 						"localentities-stats"
 					]
 				}
@@ -367,13 +367,13 @@
 					}
 				},
 				"url": {
-					"raw": "{{URL_BASE}}/api/v1/localentities-stats/Sevilla/2014",
+					"raw": "{{URL_BASE}}/api/v2/localentities-stats/Sevilla/2014",
 					"host": [
 						"{{URL_BASE}}"
 					],
 					"path": [
 						"api",
-						"v1",
+						"v2",
 						"localentities-stats",
 						"Sevilla",
 						"2014"
@@ -406,13 +406,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{URL_BASE}}/api/v1/localentities-stats",
+					"raw": "{{URL_BASE}}/api/v2/localentities-stats",
 					"host": [
 						"{{URL_BASE}}"
 					],
 					"path": [
 						"api",
-						"v1",
+						"v2",
 						"localentities-stats"
 					]
 				}
@@ -447,13 +447,13 @@
 					}
 				},
 				"url": {
-					"raw": "{{URL_BASE}}/api/v1/localentities-stats/Sevilla/2014",
+					"raw": "{{URL_BASE}}/api/v2/localentities-stats/Sevilla/2014",
 					"host": [
 						"{{URL_BASE}}"
 					],
 					"path": [
 						"api",
-						"v1",
+						"v2",
 						"localentities-stats",
 						"Sevilla",
 						"2014"
@@ -486,13 +486,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{URL_BASE}}/api/v1/localentities-stats",
+					"raw": "{{URL_BASE}}/api/v2/localentities-stats",
 					"host": [
 						"{{URL_BASE}}"
 					],
 					"path": [
 						"api",
-						"v1",
+						"v2",
 						"localentities-stats"
 					]
 				}
@@ -518,13 +518,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{URL_BASE}}/api/v1/localentities-stats/Sevilla?from=2014&to=2016",
+					"raw": "{{URL_BASE}}/api/v2/localentities-stats/Sevilla?from=2014&to=2016",
 					"host": [
 						"{{URL_BASE}}"
 					],
 					"path": [
 						"api",
-						"v1",
+						"v2",
 						"localentities-stats",
 						"Sevilla"
 					],
@@ -561,13 +561,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{URL_BASE}}/api/v1/localentities-stats?from=2014&to=2016",
+					"raw": "{{URL_BASE}}/api/v2/localentities-stats?from=2014&to=2016",
 					"host": [
 						"{{URL_BASE}}"
 					],
 					"path": [
 						"api",
-						"v1",
+						"v2",
 						"localentities-stats"
 					],
 					"query": [
@@ -612,13 +612,13 @@
 					}
 				},
 				"url": {
-					"raw": "{{URL_BASE}}/api/v1/localentities-stats",
+					"raw": "{{URL_BASE}}/api/v2/localentities-stats",
 					"host": [
 						"{{URL_BASE}}"
 					],
 					"path": [
 						"api",
-						"v1",
+						"v2",
 						"localentities-stats"
 					]
 				}
@@ -644,13 +644,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{URL_BASE}}/api/v1/localentities-stats/Zaragoza",
+					"raw": "{{URL_BASE}}/api/v2/localentities-stats/Zaragoza",
 					"host": [
 						"{{URL_BASE}}"
 					],
 					"path": [
 						"api",
-						"v1",
+						"v2",
 						"localentities-stats",
 						"Zaragoza"
 					]
@@ -686,13 +686,13 @@
 					}
 				},
 				"url": {
-					"raw": "{{URL_BASE}}/api/v1/localentities-stats",
+					"raw": "{{URL_BASE}}/api/v2/localentities-stats",
 					"host": [
 						"{{URL_BASE}}"
 					],
 					"path": [
 						"api",
-						"v1",
+						"v2",
 						"localentities-stats"
 					]
 				}
@@ -727,13 +727,13 @@
 					}
 				},
 				"url": {
-					"raw": "{{URL_BASE}}/api/v1/localentities-stats/Sevilla",
+					"raw": "{{URL_BASE}}/api/v2/localentities-stats/Sevilla",
 					"host": [
 						"{{URL_BASE}}"
 					],
 					"path": [
 						"api",
-						"v1",
+						"v2",
 						"localentities-stats",
 						"Sevilla"
 					]
@@ -765,13 +765,13 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{URL_BASE}}/api/v1/localentities-stats",
+					"raw": "{{URL_BASE}}/api/v2/localentities-stats",
 					"host": [
 						"{{URL_BASE}}"
 					],
 					"path": [
 						"api",
-						"v1",
+						"v2",
 						"localentities-stats"
 					]
 				}

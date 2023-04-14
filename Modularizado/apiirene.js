@@ -185,7 +185,7 @@ app.get('/api/v1/localentities-stats', (req, res) => {
   const rutaIrene = '/api/v1/localentities-stats';
       
   // Método POST para la ruta base
-  app.post(rutaIrene + "/localentities-stats", (request, response) => {
+  app.post(rutaIrene, (request, response) => {
     const province = request.body.province;
     const president_appointment_date = request.body.president_appointment_date;
     console.log("New POST to /localentities-stats"); //console.log en el servidor  
@@ -236,6 +236,19 @@ app.get('/api/v1/localentities-stats', (req, res) => {
       res.status(405).json('El método POST no está permitido en esta ruta');
   });
   
+  app.post('/api/v1/localentities-stats/:city', (req, res) => {
+    db.find({},function(error, filteredList){
+      if(error){
+          res.sendStatus(500, "Error Cliente");   
+      }else{
+        res.status(405).json('Método no permitido');
+        return;
+    }
+  });
+  });
+
+
+
   /*
   // Ruta Específica Método GET
   app.get(rutaEspecif, (req, res) => {
@@ -293,15 +306,18 @@ app.get('/api/v1/localentities-stats/:city', (req, res) => {
                   {
                       return(obj.province.toLowerCase() == city && obj.president_appointment_date >= from && obj.president_appointment_date<= to);
                   });
-      console.log(`/GET to /localentities-stats/${city}?from=${from}&to=${to}`); //console.log en el servidor
-      filteredList.forEach((e)=>{
-      delete e._id;
-      });
-      res.status(200).json(filteredList);
+   if(filteredList==0){
+    res.status(404).json('La ruta solicitada no existe');
     }
-    
+    console.log(`/GET to /localentities-stats/${city}?from=${from}&to=${to}`); //console.log en el servidor
+    filteredList.forEach((e)=>{
+                  delete e._id;
+                });
+                res.status(200).json(filteredList);
+    }
     // TELEFONOS
-    else if(landline){
+    
+  else if(landline){
       filteredList = filteredList.filter((obj)=>
                   {
                       return(obj.landline == landline && obj.province.toLowerCase() == city);
@@ -467,6 +483,8 @@ app.put('/api/v1/localentities-stats/:city/:year', (req, res) => {
   const city_body = req.body.province;
   const year_body = req.body.president_appointment_date;
   const body = req.body;
+  const tam = Object.keys(req.body).length;
+
 
   db.find({},function(error, filteredList){
 
@@ -478,6 +496,8 @@ app.put('/api/v1/localentities-stats/:city/:year', (req, res) => {
                     return(obj.province === city && obj.president_appointment_date === year);
                 });
   if (!filteredList || city!==city_body || year!==year_body) {
+    return res.status(400).json('Estadística errónea');
+  }else if(tam != 9){
     return res.status(400).json('Estadística errónea');
   }else{
     filteredList.landline = req.body.landline || filteredList.landline;
@@ -519,17 +539,7 @@ app.put('/api/v1/localentities-stats/:city', (req, res) => {
   if (filteredList.length === 0 || city !== citybody) {
     return res.status(400).json('Estadística errónea');
   } else {
-    /*for (let i = 0; i < statsToUpdate.length; i++) {
-      const stat = statsToUpdate[i];
-      stat.landline = req.body.landline || stat.landline;
-      stat.first_name = req.body.first_name || stat.first_name;
-      stat.second_name = req.body.second_name || stat.second_name;
-      stat.surface_extension = req.body.surface_extension || stat.surface_extension;
-      stat.population = req.body.population || stat.population;
-      stat.expense = req.body.expense || stat.expense;
-      stat.income = req.body.income || stat.income;
-}*/
-  db.update({ province: String(city) }, { $set: body }, { multi: true }, function (error, numUpdated) {
+    db.update({ province: String(city) }, { $set: body }, { multi: true }, function (error, numUpdated) {
     if (error) {
         res.sendStatus(500, "INTERNAL SERVER ERROR");
     } else {
@@ -690,11 +700,6 @@ function paginar(req, lista){
   return res;
 
 };
-
-
-
-
-
 
 
 

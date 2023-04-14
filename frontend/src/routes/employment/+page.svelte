@@ -162,7 +162,7 @@
             }else if(anyoInit == "" || anyoFin == ""){
                 advertencia = "El año de inicio y el año final no pueden estar vacios";
                 return;
-            }else if(evolutions.length == 0){
+            }else if(employments.length == 0){
                 advertencia = "No hay datos para mostrar";
                 return;
             }else if(anyoInit <= anyoFin){
@@ -238,7 +238,7 @@
     <div class = "filtros">
         <div class = "filtroAño">
             <input placeholder="Año de inicio" bind:value={anyoInit}>
-            <input placeholder="Año Final" bind:value={anyoFin}>
+            <input placeholder="Año final" bind:value={anyoFin}>
             <Button color="primary" on:click={getEmploymentFiltroAño}>Filtra por año</Button>
         </div>
         <div class = "filtroRegion">
