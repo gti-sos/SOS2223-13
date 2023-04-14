@@ -29,10 +29,7 @@
     
         let result = "";
         let resultStatus = "";
-
-        let anyoInicio = "";
-        let anyoFinal = "";
-        let filtroProvincia = "";
+        let filtro = "";
         let offsetFiltro = "";
         let limitFiltro = "";
 
@@ -55,7 +52,7 @@
         async function getEvolution(){
             resultStatus = result = "";
             const res = await fetch(API+"?offset=0&limit=10", {
-                method: "GET"
+            method: "GET"
             });
             try{
                 const data = await res.json();
@@ -166,27 +163,11 @@
             }
         }
 
-        async function getEvolutionFiltroAño(){
-            resultStatus = result = "";
-            if(anyoFinal < anyoInicio){
-                mensajeUsuario = "El año final no puede ser menor que el año de inicio";
-                return;
-            }else if(isNaN(anyoInicio) || isNaN(anyoFinal)){
-                mensajeUsuario = "El año de inicio y el año final no pueden ser letras";
-                return;
-            }else if(anyoInicio == "" || anyoFinal == ""){
-                mensajeUsuario = "El año de inicio y el año final no pueden estar vacios";
-                return;
-            }else if(evolutions.length == 0){
-                mensajeUsuario = "No hay datos para mostrar";
-                return;
-            }else if(anyoInicio <= anyoFinal){
-                mensajeUsuario = "Se muestran los datos correspondientes al filtro";
-            }
-            const res = await fetch(API+"?from="+anyoInicio+"&to="+anyoFinal, {
+        async function getEvolutionFiltrado(){
+            const res = await fetch(API+filtro, {
                 method: "GET"
             });
-            console.log(API+"?from="+anyoInicio+"&to="+anyoFinal);
+            console.log(API+filtro);
             try{
                 const data = await res.json();
                 result = JSON.stringify(data, null, 2);
@@ -196,51 +177,15 @@
             }
             const status = await res.status;
             resultStatus = status;
-        }
-
-        async function getEvolutionFiltroProvincia(){
-            resultStatus = result = "";
-            if(filtroProvincia == ""){
-                mensajeUsuario = "La provincia no puede estar vacia";
-                return;
-            }else if(!isNaN(filtroProvincia)){
-                mensajeUsuario = "La provincia no puede ser un número";
-                return;
-            }else if(evolutions.length == 0){
-                mensajeUsuario = "No hay datos para mostrar";
-                return;
-            }else if(filtroProvincia){
-                mensajeUsuario = "Se muestran los datos correspondientes al filtro";
+            if(status==200){
+                mensajeUsuario = "Ahí llevas los datos";
+            }else{
+                mensajeUsuario = "No se han podido encontrar los datos";
             }
-            const res = await fetch(API+"?territory="+filtroProvincia, {
-                method: "GET"
-            });
-            console.log(API+"?territory="+filtroProvincia);
-            try{
-                const data = await res.json();
-                result = JSON.stringify(data, null, 2);
-                evolutions = data;
-            }catch(error){
-                console.log(`Error parseando el resultado: ${error}`);
-            }
-            const status = await res.status;
-            resultStatus = status;
         }
 
-        async function getLimpiarFiltros(){
-        resultStatus = result = "";
-        if(filtroProvincia != "" || anyoInicio != "" || anyoFinal != ""){
-            filtroProvincia = "";
-            anyoInicio = "";
-            anyoFinal = "";
-        }
-        getEvolution();
-        mensajeUsuario = "";
-        return;
-        }
-    
-    
 
+    
     
 
     
@@ -259,17 +204,9 @@
     {/if}
 
     <div class = "filtros">
-        <div class = "filtroAño">
-            <input placeholder="Año de inicio" bind:value={anyoInicio}>
-            <input placeholder="Año Final" bind:value={anyoFinal}>
-            <Button color="primary" on:click={getEvolutionFiltroAño}>Filtra por Año</Button>
-        </div>
         <div class = "filtroProvincia">
-            <input placeholder="Provincia" bind:value={filtroProvincia}>
-            <Button color = "primary" on:click={getEvolutionFiltroProvincia}>Filtra por Provincia</Button>
-        </div>
-        <div class ="limpiarFiltros">
-            <Button color="secondary" on:click={getLimpiarFiltros}>Limpiar Filtros</Button>
+            <input placeholder="Filtra aquí" bind:value={filtro}>
+            <Button color = "primary" on:click={getEvolutionFiltrado}>Filtrar</Button>
         </div>
     </div>
 
@@ -349,24 +286,7 @@
             display: flex;
             justify-content: center;
         }
-    
-        .filtroAño{
-            margin: 30px;
-            display: flex;
-            gap: 15px;
-            }
-    
-        .limpiarFiltros{
-            margin: 30px;
-            display: flex;
-            gap: 15px;
-        }
         
-        .filtroProvincia{
-            margin: 30px;
-            display: flex;
-            gap: 15px;
-        }
     </style>
     
     <hr style="text-align: right; margin-left: 100px; margin-right: 100px;">
