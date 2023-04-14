@@ -98,7 +98,6 @@ app.get(BASE_API_URL + "/evolution/loadInitialData", (req, res) => {
         res.sendStatus(500, "CLIENT ERROR");
     
     }
-    console.log(filteredList);
   if (filteredList.length === 0) {
     for(var i = 0; i<evolution_stats.length;i++){
       db.insert(evolution_stats[i]);
@@ -117,8 +116,6 @@ app.get(BASE_API_URL + "/evolution/loadInitialData", (req, res) => {
 //CODIGO PARA MOSTRAR LAS ESTADÍSTICAS A PARTIR DE LA QUERY.
 //GET a evolution
 app.get('/api/v2/evolution', (req, res) => {
-  const from = req.query.from;
-  const to = req.query.to;
   console.log("/GET evolution");
   
 
@@ -134,20 +131,6 @@ app.get('/api/v2/evolution', (req, res) => {
                   res.sendStatus(500);
 
               // Comprobamos si existen datos:
-              }else if (from && to && !err) {
-                const provinciasAño = evolution_stats.filter(x => {return x.period >= from && x.period <= to}); 
-                if (from > to) {
-                  res.status(400).json("El rango de años especificado es inválido");
-
-                }else{
-                  res.status(200);
-                  res.json(provinciasAño.map((c)=>{
-                        delete c._id;
-                        return c;
-                    }));
-                    
-                    console.log(`GET en /evolution?from=${from}&to=${to}`); 
-                }
               }else{
 
                   // Tenemos que inicializar los valores necesarios para filtrar: tenemos que ver el limit y offset
@@ -192,9 +175,21 @@ app.get('/api/v2/evolution', (req, res) => {
                 
                   
 
+                  if(datos.length == 0){
+
+                    console.log(`evolution not found`);
+                    // Estado 404: Not Found
+                    res.status(404).json(datos);
+
+                // Si por el contrario encontramos datos
+                }else{
+
+
                     console.log(`Datos de evolution devueltos: ${datos.length}`);
                     // Devolvemos dichos datos, estado 200: OK
                     res.json(datos);
+
+                }
 
                 
 
