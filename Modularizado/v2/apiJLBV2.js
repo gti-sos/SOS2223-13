@@ -103,13 +103,13 @@ app.get('/api/v2/employment', (req, res) => {
                   // y si es un parámetro en la query se comprueba la condicion
                   let datos = filteredList.filter((x) => {
                     return (((req.query.year == undefined)||(parseInt(req.query.year) === x.year))&&
-                    ((req.query.from == undefined)||(parseInt(req.query.from) <= x.period))&&
-                    ((req.query.to == undefined)||(parseInt(req.query.to) >= x.period))&&
+                    ((req.query.from == undefined)||(parseInt(req.query.from) <= x.year))&&
+                    ((req.query.to == undefined)||(parseInt(req.query.to) >= x.year))&&
                     ((req.query.period == undefined)||(req.query.period === x.period))&&
                     ((req.query.date == undefined)||(req.query.date === x.date))&&
                     ((req.query.region == undefined)||(req.query.region === x.region))&&
                     ((req.query.employed_person == undefined)||(parseInt(req.query.employed_person) <= x.employed_person))&&
-                    ((req.query.inactive_person == undefined)||(parseInt(req.query.inactive_person) >= x.inactive_person))&&
+                    ((req.query.inactive_person == undefined)||(parseInt(req.query.inactive_person) <= x.inactive_person))&&
                     ((req.query.unemployed_person == undefined)||(parseInt(req.query.unemployed_person) <= x.unemployed_person)));
                 }).filter((x) => {
                       // La paginación
@@ -131,6 +131,10 @@ app.get('/api/v2/employment', (req, res) => {
                     console.log(`employment no encontrado`);
                     // Estado 404: Not Found
                     res.status(404).json(datos);
+
+                  //}else if(datos.region != ){
+
+                  //}
 
                 // Si por el contrario encontramos datos
                 }else{
@@ -325,19 +329,19 @@ app.post(rutaRaiz, (request, response) => {
   }else{
 
   // Verificar si el recurso ya existe
-  //const existingObject = evolution_stats.find(obj => obj.territory === territory && obj.period === period);
+  //const existingObject = employment_stats.find(obj => obj.region === region && obj.year === year);
   filteredList = filteredList.filter((obj)=>
                 {
                     return(region == obj.region && year == obj.year)
                 });
-  //const existingObject = db.find({territory : NewEvolution.territory, period : NewEvolution.period});
+  //const existingObject = db.find({region : NewEvolution.region, year : NewEvolution.year});
   if (filteredList.length !=0) {
     // Si el recurso ya existe, devolver un código de respuesta 409
     response.status(409).json(`El recurso ya existe.`);
   } else {
     // Si el recurso no existe, agregarlo a la lista y devolver un código de respuesta 201
     db.insert(request.body);
-    //evolution_stats.push(request.body);
+    //employment_stats.push(request.body);
     response.sendStatus(201);
   }
 }

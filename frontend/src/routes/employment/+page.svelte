@@ -29,11 +29,16 @@
         let result = "";
         let resultStatus = "";
 
-        let anyoInit = "";
-        let anyoFin = "";
-        let filtroRegion = "";
-        let offsetFilter = "";
-        let limitFilter = "";
+        let from = "";
+        let to = "";
+        let year = "";
+        let period = "";
+        let date = "";
+        let region = "";
+        let employed_person = "";
+        let inactive_person = "";
+        let unemployed_person = "";
+
     
         async function getEmployments(){
             resultStatus = result = "";
@@ -92,12 +97,15 @@
             if(status==201){
                 getEmployments ();
                 advertencia = "Recurso creado";
+                setTimeout(() => {advertencia = '';}, 3000);
             }else if(status==400){
                 getEmployments ();
                 advertencia = "Falta por insertar alguno/s de los campos";
+                setTimeout(() => {advertencia = '';}, 3000);
             }else if(status==409){
                 getEmployments ();
                 advertencia = "El recurso ya existe";
+                setTimeout(() => {advertencia = '';}, 3000);
             }
     }
 
@@ -111,11 +119,14 @@
             if(status==200){
                 getEmployments ();
                 advertencia = "Recurso borrado";
+                setTimeout(() => {advertencia = '';}, 3000);
             }else if(status==500){
                 advertencia = "Error cliente";
+                setTimeout(() => {advertencia = '';}, 3000);
             }else if(status==404){
                 getEmployments ();
                 advertencia = "No se ha encontrado ese recurso";
+                setTimeout(() => {advertencia = '';}, 3000);
             }
         }
 
@@ -136,27 +147,41 @@
             }
         }
 
-        async function getEmploymentFiltroAño(){
-            resultStatus = result = "";
-            if(anyoFin < anyoInit){
-                advertencia = "El año final no puede ser menor que el año de inicio";
-                return;
-            }else if(isNaN(anyoInit) || isNaN(anyoFin)){
-                advertencia = "El año de inicio y el año final no pueden ser letras";
-                return;
-            }else if(anyoInit == "" || anyoFin == ""){
-                advertencia = "El año de inicio y el año final no pueden estar vacios";
-                return;
-            }else if(employments.length == 0){
-                advertencia = "No hay datos para mostrar";
-                return;
-            }else if(anyoInit <= anyoFin){
-                advertencia = "Se muestran los datos correspondientes al filtro";
+        async function getEmploymentFilter(){
+            const consulta = {}; // crea un objeto vacío para los otros campo
+            if (from) { // comprueba si from tiene un valor
+                consulta.from = from; // agrega la propiedad from al objeto consulta
             }
-            const res = await fetch(API+"?from="+anyoInit+"&to="+anyoFin, {
+            if (to) { // comprueba si to tiene un valor
+                consulta.to = to; // agrega la propiedad to al objeto consulta
+            }
+            if (year) { // comprueba si year tiene un valor
+                consulta.year = year; // agrega la propiedad year al objeto consulta
+            }
+            if (period) { // comprueba si period tiene un valor
+                consulta.period = period; // agrega la propiedad period al objeto consulta
+            }
+            if (date) { // comprueba si date tiene un valor
+                consulta.date = date; // agrega la propiedad date al objeto consulta
+            }
+            if (region) { // comprueba si region tiene un valor
+                consulta.region = region; // agrega la propiedad region al objeto consulta
+            }
+            if (employed_person) { // comprueba si employed_person tiene un valor
+                consulta.employed_person = employed_person; // agrega la propiedad employed_person al objeto consulta
+            }
+            if (inactive_person) { // comprueba si inactive_person tiene un valor
+                consulta.inactive_person = inactive_person; // agrega la propiedad inactive_person al objeto consulta
+            }
+            if (unemployed_person) { // comprueba si unemployed_person tiene un valor
+                consulta.unemployed_person = unemployed_person; // agrega la propiedad unemployed_person al objeto consulta
+            }
+            //Realiza la solicitud GET al endpoint /api/v2/employment con los datos de la consulta que se le hayan solicitado
+            console.log(new URLSearchParams(consulta).toString());
+            const res = await fetch(API+`?${new URLSearchParams(consulta).toString()}`, {
                 method: "GET"
             });
-            console.log(API+"?from="+anyoInit+"&to="+anyoFin);
+            
             try{
                 const data = await res.json();
                 result = JSON.stringify(data, null, 2);
@@ -166,48 +191,17 @@
             }
             const status = await res.status;
             resultStatus = status;
+            if(status==200){
+                advertencia = "Datos solicitados";
+                setTimeout(() => {advertencia = '';}, 3000);
+            }else{
+                advertencia = "No se han podido encontrar los datos requeridos";
+                setTimeout(() => {advertencia = '';}, 3000);
+            }
         }
 
-        async function getEmploymentFiltroRegion(){
-            resultStatus = result = "";
-            if(filtroRegion == ""){
-                advertencia= "La provincia no puede estar vacia";
-                return;
-            }else if(!isNaN(filtroRegion)){
-                advertencia = "La provincia no puede ser un número";
-                return;
-            }else if(employments.length == 0){
-                advertencia = "No hay datos para mostrar";
-                return;
-            }else if(filtroRegion){
-                advertencia = "Se muestran los datos correspondientes al filtro";
-            }
-            const res = await fetch(API+"?region="+filtroRegion, {
-                method: "GET"
-            });
-            console.log(API+"?region="+filtroRegion);
-            try{
-                const data = await res.json();
-                result = JSON.stringify(data, null, 2);
-                employments = data;
-            }catch(error){
-                console.log(`Error parseando el resultado: ${error}`);
-            }
-            const status = await res.status;
-            resultStatus = status;
-        }
 
-        async function getLimpiaFiltros(){
-        resultStatus = result = "";
-        if(filtroRegion != "" || anyoInit != "" || anyoFin != ""){
-            filtroRegion = "";
-            anyoInit = "";
-            anyoFin = "";
-        }
-        getEmployments();
-        advertencia = "";
-        return;
-        }
+        
     
     
     
@@ -216,31 +210,28 @@
     
     </script>
     <h1> Empleos</h1>
-    <h1 class="botones">
-        <ButtonToolbar>
-            <Button color="danger" on:click={deleteEmploymentAll}>Borrar Datos</Button>
-        </ButtonToolbar>
-    </h1>
     {#if advertencia !=""}
     <h2 style="color: red; text-align: center; font-family:Arial, Helvetica, sans-serif">{advertencia}</h2>
     {/if}
 
     <div class = "filtros">
-        <div class = "filtroAño">
-            <input placeholder="Año de inicio" bind:value={anyoInit}>
-            <input placeholder="Año final" bind:value={anyoFin}>
-            <Button color="primary" on:click={getEmploymentFiltroAño}>Filtra por año</Button>
-        </div>
-        <div class = "filtroRegion">
-            <input placeholder="Provincia" bind:value={filtroRegion}>
-            <Button color = "primary" on:click={getEmploymentFiltroRegion}>Filtra por región</Button> 
-        </div>
-        <div class ="limpiarFiltros">
-            <Button color="secondary" on:click={getLimpiaFiltros}>Limpiar filtros</Button>
-        </div>
+
+        
+      <label> Desde: <input bind:value={from} type="text" /></label>
+      <label> Hasta: <input bind:value={to} type="text" /></label>
+      <label> Año: <input bind:value={year} type="text" /></label>
+      <label> Periodo: <input bind:value={period} type="text" /></label>
+      <label> Periodo y año: <input bind:value={date} type="text" /></label>
+      <label> Region: <input bind:value={region} type="text" /></label>
+      <label> Persona empleada (>=): <input bind:value={employed_person} type="text" /></label>
+      <label> Persona inactiva (>=): <input bind:value={inactive_person} type="text" /></label>
+      <label> Persona desempleada (>=): <input bind:value={unemployed_person} type="text" /></label>
+  
+    <Button color = "primary" on:click={getEmploymentFilter}>Filtrar</Button>
+
     </div>
 
-    <strong style="margin: 10px;">Número de datos: {employments.length}</strong>
+    <b style="margin: 1px;">Número de datos: {employments.length}</b>
 
 
     <Table>
@@ -285,6 +276,12 @@
         </tbody>
     </Table>
 
+    <h1 class="boton borrado todo">
+        <ButtonToolbar>
+            <Button color="danger" on:click={deleteEmploymentAll}>Borrar todos</Button>
+        </ButtonToolbar>
+    </h1>
+
     <Pagination ariaLabel="Page navigation example">
         <PaginationItem>
           <PaginationLink on:click={() => getPaginacion(0,10)} first href="/employment"/>
@@ -306,7 +303,7 @@
         </PaginationItem>
       </Pagination>
 
-      <hr style="text-align: right; margin-left: 100px; margin-right: 100px;">
+     
 
 
     
