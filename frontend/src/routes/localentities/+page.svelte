@@ -4,6 +4,8 @@
         import { onMount } from 'svelte';
         import { dev } from '$app/environment';
         import { Button,Table, ButtonToolbar} from 'sveltestrap';
+        import { Pagination, PaginationItem, PaginationLink } from 'sveltestrap';
+
 
         onMount(async () => {
             getLocalentities();
@@ -16,15 +18,16 @@
             API = 'http://localhost:8080'+API
             
         let localentities = [];
-        let newLocalentitiesProvince = 'province';
-        let newLocalentitiesLandline = 'landline';
-        let newLocalentitiesFirstName = 'first_name';
-        let newLocalentitiesSecondName = 'second_name';
-        let newLocalentitiesPresidentAppointmentDate = 'president_appointment_date';
-        let newLocalentitiesSurfaceExtension = 'surface_extension';
-        let newLocalentitiesPopulation = 'population';
-        let newLocalentitiesExpense = 'expense';
-        let newLocalentitiesIncome = 'income';
+        let newLocalentitiesProvince = '';
+        let newLocalentitiesLandline = '';
+        let newLocalentitiesFirstName = '';
+        let newLocalentitiesSecondName = '';
+        let newLocalentitiesPresidentAppointmentDate = '';
+        let newLocalentitiesSurfaceExtension = '';
+        let newLocalentitiesPopulation = '';
+        let newLocalentitiesExpense = '';
+        let newLocalentitiesIncome = '';
+
 
         let result = "";
         let resultStatus = "";
@@ -37,15 +40,20 @@
             });
             const status = await res.status;
             resultStatus = status;
-            if(status==201){
-                getLocalentities(); 
+            if(status==200){
+                aviso = "Se han insertado los datos de nuevo";
+                setTimeout(() => {aviso = '';}, 3000);
+                getEvolution();
+            }else{
+                aviso = "No se han podido insertar los datos de nuevo";
+                setTimeout(() => {aviso = '';}, 3000);
             }	
 
         }
 
         async function getLocalentities () {
             resultStatus = result = "";
-            const res = await fetch(API, {
+            const res = await fetch(API+"?offset=0&limit=10", {
                 method: 'GET'
             });
             try{
@@ -58,6 +66,24 @@
             const status = await res.status;
             resultStatus = status;	
         }
+
+        async function getPaginacion(offsetFiltro,limitFiltro){ //
+            resultStatus = result = "";
+            const res = await fetch(API+"?offset="+offsetFiltro+"&limit="+limitFiltro, {
+                method: "GET"
+            });
+            console.log(API+"?offset="+offsetFiltro+"&limit="+limitFiltro);
+            try{
+                const data = await res.json();
+                result = JSON.stringify(data, null, 2);
+                localentities = data;
+            }catch(error){
+                console.log(`Error parseando el resultado: ${error}`);
+            }
+            const status = await res.status;
+            resultStatus = status;
+        }
+
 
         let insertedData = [];
         async function createLocalentities (){
@@ -82,6 +108,7 @@
 
             if (existingData) {
                 aviso = "Ya existe ese dato";
+                setTimeout(() => {aviso = '';}, 3000);
                 return;
             }
 
@@ -100,16 +127,17 @@
             if (status == 201) {
                 getLocalentities();
                 aviso = "Se ha creado el nuevo dato introducido";
+                setTimeout(() => {aviso = '';}, 3000);
                 insertedData.push(newLocalentities);
             } else if (status == 409) {
                 aviso = "El dato introducido ya existe";
-                getLocalentities();
+                setTimeout(() => {aviso = '';}, 3000);
             } else if (status == 400) {
                 aviso = "Las propiedades introducidas no tienen un formato correcto";
-                getLocalentities();
+                setTimeout(() => {aviso = '';}, 3000);
             } else {
                 aviso = "No se ha podido crear el dato introducido";
-                getLocalentities();
+                setTimeout(() => {aviso = '';}, 3000);
             }
         }   
 
@@ -121,16 +149,17 @@
             const status = await res.status;
             resultStatus = status;
             if(status==200){
-                getLocalentities ();
+                getLocalentities();
                 aviso = "Recurso borrado";
+                setTimeout(() => {aviso = '';}, 3000);
             }else if(status==500){
                 aviso = "Error cliente";
+                setTimeout(() => {aviso = '';}, 3000);
             }else if(status==404){
-                getLocalentities ();
                 aviso = "No se ha encontrado ese recurso";
+                setTimeout(() => {aviso = '';}, 3000);
             }
         }
-
 
 
         async function deleteLocalentitiesAll () {
@@ -143,8 +172,10 @@
             if(status==200 || status == 204){
                 await getLocalentities();
                 aviso = "Se han borrado correctamente los datos";
+                setTimeout(() => {aviso = '';}, 3000);
             }else{
                 aviso = "No se han podido borrar los datos";
+                setTimeout(() => {aviso = '';}, 3000);
             }			
         }
     
@@ -152,16 +183,21 @@
     
     
         
-    </script>
-    <h1 style="text-align: center; font-family:'Times New Roman', Times, serif; font-size: 60px;">Datos LocalEntities</h1>
+</script>
+    <h1 style="text-align: center; font-family:'Monaco', monospace, serif; font-size: 60px;">Datos Entidades Locales</h1>
     <h1 class="botones">
         <ButtonToolbar>
-            <Button outline on:click={loadData}>Cargar Datos Iniciales</Button>
+            <Button color="success" on:click={loadData}>Cargar Datos Iniciales</Button>
+            <Button color="danger" on:click={deleteLocalentitiesAll}>Borrar Datos</Button>
+
         </ButtonToolbar>
     </h1>
     {#if aviso !=""}
     <h2 style="color: red; text-align: center; font-family:Arial, Helvetica, sans-serif">{aviso}</h2>
+    
     {/if}
+
+    <strong style="margin: 10px;">Datos que se muestran: {localentities.length}</strong>
 
     <Table striped>
         <thead>
@@ -179,15 +215,15 @@
           </tr>
         </thead>
         <tbody>
-            <td><input bind:value={newLocalentitiesProvince}></td>
-            <td><input bind:value={newLocalentitiesLandline}></td>
-            <td><input bind:value={newLocalentitiesFirstName}></td>
-            <td><input bind:value={newLocalentitiesSecondName}></td>
-            <td><input bind:value={newLocalentitiesPresidentAppointmentDate}></td>
-            <td><input bind:value={newLocalentitiesSurfaceExtension}></td>
-            <td><input bind:value={newLocalentitiesPopulation}></td>
-            <td><input bind:value={newLocalentitiesExpense}></td>
-            <td><input bind:value={newLocalentitiesIncome}></td>
+            <td><input placeholder="Provincia" bind:value={newLocalentitiesProvince}></td>
+            <td><input placeholder="Teléfono" bind:value={newLocalentitiesLandline}></td>
+            <td><input placeholder="Nombre" bind:value={newLocalentitiesFirstName}></td>
+            <td><input placeholder="Apellidos" bind:value={newLocalentitiesSecondName}></td>
+            <td><input placeholder="Fecha Nombramiento Presidente" bind:value={newLocalentitiesPresidentAppointmentDate}></td>
+            <td><input placeholder="Extensión" bind:value={newLocalentitiesSurfaceExtension}></td>
+            <td><input placeholder="Población" bind:value={newLocalentitiesPopulation}></td>
+            <td><input placeholder="Gastos" bind:value={newLocalentitiesExpense}></td>
+            <td><input placeholder="Ingresos" bind:value={newLocalentitiesIncome}></td>
 
             <td><Button color="success" on:click={createLocalentities}>Crear</Button></td>
            
@@ -204,27 +240,36 @@
             <td>{localentities.expense}</td>
             <td>{localentities.income}</td>
 
-            <td><Button><a href="/localentities/{localentities.province}/{localentities.president_appointment_date}">{localentities.province}</a></Button></td>
+            <td><Button><a href='/localentities/{localentities.province}/{localentities.president_appointment_date}'>Editar</a></Button></td>
 
             <td><Button color="danger" on:click={deleteLocalentities(localentities.province, localentities.president_appointment_date)}>Borrar</Button></td>
            
           </tr>
         {/each}
-
-        <td><Button color="danger" on:click={deleteLocalentitiesAll}>Borrar todo</Button></td>
           
         </tbody>
     </Table>
+    <Pagination ariaLabel="Navegación">
+        <PaginationItem>
+          <PaginationLink on:click={() => getPaginacion(0,10)} first href="/localentities"/>
+        </PaginationItem>
 
+        <PaginationItem>
+            <PaginationLink on:click={() => getPaginacion(0,10)} href="/localentities">1</PaginationLink>
+        </PaginationItem>
 
-    {#if resultStatus != ""}
-    <p>
-        <strong>Número de datos: {localentities.length}</strong>
-    </p>
-    <strong>Result:</strong>
-    <pre>
-{"Código de estado: "+resultStatus}
-{result}
-    </pre>
-{/if} 
+        <PaginationItem>
+            <PaginationLink on:click={() => getPaginacion(9,10)} href="/localentities?offset=10&limit=10">2</PaginationLink>
+        </PaginationItem>
+
+        <PaginationItem>
+            <PaginationLink on:click={() => getPaginacion(19,10)} href="/localentities?offset=20&limit=10">3</PaginationLink>
+        </PaginationItem>
+
+        <PaginationItem>
+          <PaginationLink on:click={() => getPaginacion(19,10)} last href="/localentities?offset=20&limit=10" />
+        </PaginationItem>
+      </Pagination>
+    
+    <hr style="text-align: right; margin-left: 100px; margin-right: 100px;">
 
