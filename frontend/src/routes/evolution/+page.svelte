@@ -67,7 +67,7 @@
     
         async function getEvolution(){
             resultStatus = result = "";
-            const res = await fetch(API+"?offset=0&limit=10", {
+            const res = await fetch(API+"?offset=-1&limit=10", {
             method: "GET"
             });
             try{
@@ -240,11 +240,10 @@
                 consulta.sixty_five_and_over_over = sixty_five_and_over_over; // agrega la propiedad territory al objeto consulta
             }
             //Realiza la solicitud GET al endpoint /api/v2/evolution con la consulta creada
-            console.log(new URLSearchParams(consulta).toString());
+            
             const res = await fetch(API+`?${new URLSearchParams(consulta).toString()}`, {
                 method: "GET"
             });
-            
             try{
                 const data = await res.json();
                 result = JSON.stringify(data, null, 2);
@@ -258,8 +257,9 @@
                 mensajeUsuario = "Ahí llevas los datos";
                 setTimeout(() => {mensajeUsuario = '';}, 3000);
             }else{
-                mensajeUsuario = "No se han podido encontrar los datos";
-                setTimeout(() => {mensajeUsuario = '';}, 3000);
+                mensajeUsuario = "No se han podido encontrar los datos: ";
+setTimeout(() => {mensajeUsuario = '';}, 3000);
+
             }
         }
 
@@ -409,13 +409,13 @@
 
     <Pagination ariaLabel="Page navigation example">
         <PaginationItem>
-          <PaginationLink on:click={() => getPaginacion(0,10)} first href="/evolution"/>
+          <PaginationLink on:click={() => getPaginacion(-1,10)} first href="/evolution"/>
         </PaginationItem>
         <!--<PaginationItem disabled>
           <PaginationLink previous href="#" />
         </PaginationItem> -->
         <PaginationItem>
-            <PaginationLink on:click={() => getPaginacion(0,10)} href="/evolution">1</PaginationLink>
+            <PaginationLink on:click={() => getPaginacion(-1,10)} href="/evolution">1</PaginationLink>
         </PaginationItem>
         <PaginationItem>
             <PaginationLink on:click={() => getPaginacion(9,10)} href="/evolution?offset=10&limit=10">2</PaginationLink>
