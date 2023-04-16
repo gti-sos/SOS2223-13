@@ -14,7 +14,7 @@
         let province = $page.params.province;
         let president_appointment_date = $page.params.president_appointment_date;
 
-        let API = "/api/v2/localentities/"+ province + '/' + president_appointment_date;
+        let API = "/api/v2/localentities/"+ province + '/' + president;
 
         if(dev)
             API = 'http://localhost:8080'+API
@@ -23,7 +23,7 @@
         let updateLocalentitiesLandline = "landline";
         let updateLocalentitiesFirstName = "first_name";
         let updateLocalentitiesSecondName = "second_name";
-        let updateLocalentitiesPresidentAppointmentDate = president_appointment_date;
+        let updateLocalentitiesPresident = president_appointment_date;
         let updateLocalentitiesSurfaceExtension = "surface_extension";
         let updateLocalentitiesPopulation = "population";
         let updateLocalentitiesExpense = "expense";
@@ -44,7 +44,7 @@
                 updateLocalentitiesLandline = data.landline;
                 updateLocalentitiesFirstName = data.first_name;
                 updateLocalentitiesSecondName = data.second_name;
-                updateLocalentitiesPresidentAppointmentDate = data.president_appointment_date;
+                updateLocalentitiesPresident = data.president_appointment_date;
                 updateLocalentitiesSurfaceExtension = data.surface_extension;
                 updateLocalentitiesPopulation = data.population;
                 updateLocalentitiesExpense = data.expense;

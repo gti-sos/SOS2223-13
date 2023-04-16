@@ -29,8 +29,8 @@
         let newLocalentitiesIncome = '';
 
 
-        let result = "";
-        let resultStatus = "";
+        let result;
+        let resultStatus;
         //filtro
         let filtro = "";
         let from = "";
@@ -62,7 +62,7 @@
             if(status==200){
                 aviso = "Se han insertado los datos de nuevo";
                 setTimeout(() => {aviso = '';}, 3000);
-                getLocalentitiesFiltrado();
+                getLocalentities();
             }else{
                 aviso = "No se han podido insertar los datos de nuevo";
                 setTimeout(() => {aviso = '';}, 3000);
@@ -72,7 +72,7 @@
 
         async function getLocalentities () {
             resultStatus = result = "";
-            const res = await fetch(API+"?offset=-1&limit=10", {
+            const res = await fetch(API+"?offset=0&limit=10", {
                 method: 'GET'
             });
             try{
@@ -145,11 +145,11 @@
             resultStatus = status;
             if (status == 201) {
                 getLocalentities();
-                aviso = "Se ha creado el nuevo dato introducido";
+                aviso = "Se ha creado el nuevo dato";
                 setTimeout(() => {aviso = '';}, 3000);
                 insertedData.push(newLocalentities);
             } else if (status == 409) {
-                aviso = "El dato introducido ya existe";
+                aviso = "El dato ya existe";
                 setTimeout(() => {aviso = '';}, 3000);
             } else if (status == 400) {
                 aviso = "Las propiedades introducidas no tienen un formato correcto";
@@ -287,6 +287,90 @@ setTimeout(() => {aviso = '';}, 3000);
     
     {/if}
 
+<table>
+    <tr>
+    <label>
+        Desde:
+        <input bind:value={from} type="text" />
+      </label>
+      
+      <label>
+        Hasta:
+        <input bind:value={to} type="text" />
+    </label>
+    <label>
+        Provincia:
+        <input bind:value={province} type="text" />
+      </label>
+
+      <label>
+        Teléfono:
+        <input bind:value={landline} type="text" />
+    </label>
+    <label>
+        Nombre:
+        <input bind:value={first_name} type="text" />
+      </label>
+    </tr>
+    <tr>
+ 
+      <label>
+        Apellidos:
+        <input bind:value={second_name} type="text" />
+    </label>
+    <label>
+        Fecha nombramiento presidente:
+        <input bind:value={president_appointment_date} type="text" />
+      </label>
+      
+      <label>
+        Extensión menor o igual que:
+        <input bind:value={surface_extension_under} type="text" />
+    </label>
+    <label>
+        Extensión mayor o igual que:
+        <input bind:value={surface_extension_over} type="text" />
+      </label>
+      
+      <label>
+        Población menor o igual que:
+        <input bind:value={population_under} type="text" />
+    </label>
+    </tr>
+    <tr>
+
+    <label>
+        Población mayor o igual que:
+        <input bind:value={population_over} type="text" />
+      </label>
+      
+      <label>
+        Gastos menor o igual que:
+        <input bind:value={expense_under} type="text" />
+    </label>
+    <label>
+        Gastos mayor o igual que:
+        <input bind:value={expense_over} type="text" />
+      </label>
+      
+      <label>
+        Ingresos menor o igual que:
+        <input bind:value={income_under} type="text" />
+    </label>
+    <label>
+        Ingresos mayor o igual que:
+        <input bind:value={income_over} type="text" />
+      </label>
+
+    </tr>
+
+    </table>
+
+    <Button color = "primary" on:click={getLocalentitiesFiltrado}>Filtrar</Button>
+    
+    
+
+
     <strong style="margin: 10px;">Datos que se muestran: {localentities.length}</strong>
 
     <Table striped>
@@ -349,11 +433,7 @@ setTimeout(() => {aviso = '';}, 3000);
         </PaginationItem>
 
         <PaginationItem>
-            <PaginationLink on:click={() => getPaginacion(9,10)} href="/localentities?offset=10&limit=10">2</PaginationLink>
-        </PaginationItem>
-
-        <PaginationItem>
-            <PaginationLink on:click={() => getPaginacion(19,10)} href="/localentities?offset=20&limit=10">3</PaginationLink>
+            <PaginationLink on:click={() => getPaginacion(10,10)} href="/localentities?offset=10&limit=10">2</PaginationLink>
         </PaginationItem>
 
         <PaginationItem>
@@ -363,3 +443,18 @@ setTimeout(() => {aviso = '';}, 3000);
     
     <hr style="text-align: right; margin-left: 100px; margin-right: 100px;">
 
+    <style>
+        label {
+          font-weight: bold;
+        }
+      
+        input {
+          width: 150px;
+          padding: 0.1rem;
+          border-radius: 0.25rem;
+          border: 1px solid #ccc;
+          font-size: 1rem;
+          margin-top: 0.5rem;
+        }
+      
+      </style>
