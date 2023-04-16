@@ -115,13 +115,6 @@ app.get('/api/v2/localentities', (req, res) => {
                   res.sendStatus(500);
 
               // Comprobamos si existen datos:
-              }else if(filteredList.length == 0){
-
-                  console.log(`Ruta localentities Not Found`);
-
-                  // Si no existen datos usamos el estado es 404 de Not Found
-                  res.sendStatus(404);
-
               }else{
 
                   // Tenemos que inicializar los valores necesarios para filtrar: tenemos que ver el limit y offset
@@ -132,9 +125,7 @@ app.get('/api/v2/localentities', (req, res) => {
                     var offset = parseInt(req.query.offset);
                   }
 
-                  // Tenemos que filtrar los datos, para ver cada posible campo y devolver true si no se pasa en la query, 
-                  // y si es un parámetro en la query se comprueba la condicion
-                  let datos = filteredList.filter((x) => {
+                let datos = filteredList.filter((x) => {
                       return (((req.query.president_appointment_date == undefined)||(parseInt(req.query.president_appointment_date) === x.president_appointment_date))&&
                       ((req.query.from == undefined)||(parseInt(req.query.from) <= x.president_appointment_date))&&
                       ((req.query.to == undefined)||(parseInt(req.query.to) >= x.president_appointment_date))&&
@@ -236,49 +227,6 @@ app.get('/api/v2/localentities', (req, res) => {
       res.status(405).json('El método POST no está permitido en esta ruta');
   });
   
-  app.post('/api/v2/localentities/:city', (req, res) => {
-    db.find({},function(error, filteredList){
-      if(error){
-          res.sendStatus(500, "Error Cliente");   
-      }else{
-        res.status(405).json('Método no permitido');
-        return;
-    }
-  });
-  });
-
-
-
-  /*
-  // Ruta Específica Método GET
-  app.get(rutaEspecif, (req, res) => {
-      res.json(datos_randomIFR);
-      res.status(200);
-  });
-
-  // Ruta Específica Método PUT
-  app.put(rutaEspecif, (req, res) => {
-      // Verificar que el cuerpo de la solicitud contenga datos
-      if (!req.body) {
-      // Enviar una respuesta con un código de estado 400 Bad Request si no se proporcionaron datos
-      res.status(400).send('No se proporcionaron datos');
-      } else {
-      // Reemplazar los datos existentes con los nuevos datos
-      datos_randomIFR = req.body;
-      // Enviar una respuesta con un código de estado 200 OK
-      res.status(200).json('Los datos se han actualizado correctamente');
-      }
-  });
-  
-  //Método DELETE de la ruta específica.
-  app.delete(rutaEspecif, (req, res) => {
-      datos_randomIFR = [];
-      res.status(200).json('Los datos se han borrado correctamente');
-  });
-  
-
-*/
-
 
 //CODIGO PARA PODER HACER GET A UNA CIUDAD ESPECÍFICA Y A UNA CIUDAD Y PERIODO CONCRETO.
 app.get('/api/v2/localentities/:city', (req, res) => {
@@ -459,18 +407,30 @@ app.get('/api/v2/localentities/:province/:year', (req, res) => {
                     return(obj.province.toLowerCase() == province.toLowerCase() && obj.president_appointment_date === parseInt(year));
                 });
   
-  if (filteredList) {
+  if(filteredList==0){
+    res.status(404).json('La ruta solicitada no existe');
+  }else if (filteredList) {
     filteredList.forEach((e)=>{
       delete e._id;
     });
     if(req.query.limit != undefined || req.query.offset != undefined){
       filteredList = paginar(req,filteredList);
   }
-    res.send(JSON.stringify(filteredList,null,2));
+    res.status(200).json(filteredList[0]);
   } else {
     res.status(404).json('La ruta solicitada no existe');
   }
-  console.log("Solicitud /GET")
+});
+});
+
+app.post('/api/v2/localentities/:city/:year', (req, res) => {
+  db.find({},function(error, filteredList){
+    if(error){
+        res.sendStatus(500, "Client Error");   
+    }else{
+      res.status(405).json('Método no permitido');
+      return;
+  }
 });
 });
 
@@ -554,54 +514,21 @@ app.put('/api/v2/localentities/:city', (req, res) => {
 
 
 
-
-//METODO DELETE PARA LA RUTA BASE PARA BORRAR DATO ESPECÍFICO.
-app.delete(BASE_API_URL + "/localentities", (req, res) => {
-  db.remove({}, {multi : true}, (error, numRemoved) =>{
-
-    if(error){
-        res.sendStatus(500, "ERROR CLIENTE");   
+//METODO DELETE PARA LA RUTA BASE
+app.delete("/api/v2/localentities", (req, res) => {
+  db.remove({}, { multi: true }, (err, numRemoved) => {
+    if (err) {
+      console.log("Error para borrar todos los datos");
+      res.sendStatus(500);
+    } else if (numRemoved == 0) {
+      res.status(404).send("No hay más datos para borrar");
+      console.log("No se encuentran más datos para borrar");
+    } else {
+      console.log("Borrados todos los datos");
+      res.status(200).send("Borrados todos los datos");
+      console.log(numRemoved);
     }
-  if (!req.body || Object.keys(req.body).length === 0) {
-    db.remove({}, {multi : true}, (error, numRemoved)=>{
-      if (error){
-          res.sendStatus(500,"ERROR CLIENTE");
-          return;
-      } else {
-      res.sendStatus(200,"DELETED");
-    }
-      
   });
-  }else{
-  const { president_appointment_date, province } = req.body;
-  db.find({},function(error, filteredList){
-
-    if(error){
-        res.sendStatus(500, "ERROR CLIENTE");   
-    }
-  // Buscar el objeto en la matriz localentities_stats
-  filteredList = filteredList.filter((obj)=>
-                {
-                    return(obj.province === province && obj.president_appointment_date === president_appointment_date);
-                });
-  db.remove({province: province, president_appointment_date: president_appointment_date}, {}, (error, numRemoved)=>{
-    if (error){
-        res.sendStatus(500,"ERROR CLIENTE");
-        return;
-    }
-  if (filteredList === []) {
-    // Si el objeto no se encuentra, devolver un código de respuesta 404 Not Found
-    res.status(404).json('El objeto no existe');
-  } else {
-    res.sendStatus(200,"DELETED");
-    return;
-  }
-  });   
-});
-}
-
-
-});
 });
 
 

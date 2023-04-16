@@ -31,6 +31,25 @@
 
         let result = "";
         let resultStatus = "";
+        //filtro
+        let filtro = "";
+        let from = "";
+        let to = "";
+        let province = "";
+        let landline = "";
+        let first_name = "";
+        let second_name = "";
+        let president_appointment_date = "";
+        let surface_extension_under = "";
+        let surface_extension_over = "";
+        let population_under = "";
+        let population_over = "";
+        let expense_under = "";
+        let expense_over = "";
+        let income_over = "";
+        let income_under = "";
+        let showModal = false;
+
     
 
         async function loadData() {
@@ -43,7 +62,7 @@
             if(status==200){
                 aviso = "Se han insertado los datos de nuevo";
                 setTimeout(() => {aviso = '';}, 3000);
-                getEvolution();
+                getLocalentitiesFiltrado();
             }else{
                 aviso = "No se han podido insertar los datos de nuevo";
                 setTimeout(() => {aviso = '';}, 3000);
@@ -53,7 +72,7 @@
 
         async function getLocalentities () {
             resultStatus = result = "";
-            const res = await fetch(API+"?offset=0&limit=10", {
+            const res = await fetch(API+"?offset=-1&limit=10", {
                 method: 'GET'
             });
             try{
@@ -61,7 +80,7 @@
                 result = JSON.stringify(data,null,2);
                 localentities = data;
             }catch(error){
-                console.log(`Error parsing result: ${error}`);
+                console.log(`Error al parsear el resulado: ${error}`);
             }
             const status = await res.status;
             resultStatus = status;	
@@ -78,7 +97,7 @@
                 result = JSON.stringify(data, null, 2);
                 localentities = data;
             }catch(error){
-                console.log(`Error parseando el resultado: ${error}`);
+                console.log(`Error al parsear el resulado: ${error}`);
             }
             const status = await res.status;
             resultStatus = status;
@@ -141,16 +160,16 @@
             }
         }   
 
-        async function deleteLocalentities(localentitiesProvince, localentitiesPresidentAppointmentDate){
+        async function deleteLocalentities(localentitiesProvince, localentitiesPresident){
             resultStatus = result = "";
-            const res = await fetch(API+"/"+localentitiesProvince+"/"+localentitiesPresidentAppointmentDate, {
+            const res = await fetch(API+"/"+localentitiesProvince+"/"+localentitiesPresident, {
                 method: "DELETE"
             });
             const status = await res.status;
             resultStatus = status;
             if(status==200){
                 getLocalentities();
-                aviso = "Recurso borrado";
+                aviso = "El dato ha borrado correctamente";
                 setTimeout(() => {aviso = '';}, 3000);
             }else if(status==500){
                 aviso = "Error cliente";
@@ -179,7 +198,78 @@
             }			
         }
     
-    
+        async function getLocalentitiesFiltrado(){
+            const consulta = {}; 
+            if (province) { 
+                consulta.province = province; 
+            }
+            if (president_appointment_date) { 
+                consulta.president_appointment_date = president_appointment_date; 
+            }
+            if (from) { 
+                consulta.from = from; 
+            }
+            if (to) { 
+                consulta.to = to; 
+            }
+            if (landline) { 
+                consulta.landline = landline; 
+            }
+            if (first_name) { 
+                consulta.first_name = first_name; 
+            }
+            if (second_name) { 
+                consulta.second_name = second_name; 
+            }
+            if (surface_extension_over) { 
+                consulta.surface_extension_over = surface_extension_over; 
+            }
+            if (surface_extension_under) { 
+                consulta.surface_extension_under = surface_extension_under; 
+            }
+            if (population_over) { 
+                consulta.population_over = population_over; 
+            }
+            if (population_under) { 
+                consulta.population_under = population_under; 
+            }
+            if (expense_over) { 
+                consulta.expense_over = expense_over; 
+            }
+            if (expense_under) { 
+                consulta.expense_under = expense_under; 
+            }
+            if (income_over) { 
+                consulta.income_over = income_over;
+            }
+            if (income_under) { 
+                consulta.income_under = income_under;
+            }
+
+   
+            
+            const res = await fetch(API+`?${new URLSearchParams(consulta).toString()}`, {
+                method: "GET"
+            });
+            try{
+                const data = await res.json();
+                result = JSON.stringify(data, null, 2);
+                localentities = data;
+            }catch(error){
+                console.log(`Error al parsear el resulado: ${error}`);
+            }
+            const status = await res.status;
+            resultStatus = status;
+            if(status==200){
+                aviso = "Se han cargado los datos";
+                setTimeout(() => {aviso = '';}, 3000);
+            }else{
+                aviso = "No se han podido encontrar los datos: ";
+setTimeout(() => {aviso = '';}, 3000);
+
+            }
+        }
+
     
     
         
@@ -251,11 +341,11 @@
     </Table>
     <Pagination ariaLabel="Navegación">
         <PaginationItem>
-          <PaginationLink on:click={() => getPaginacion(0,10)} first href="/localentities"/>
+          <PaginationLink on:click={() => getPaginacion(-1,10)} first href="/localentities"/>
         </PaginationItem>
 
         <PaginationItem>
-            <PaginationLink on:click={() => getPaginacion(0,10)} href="/localentities">1</PaginationLink>
+            <PaginationLink on:click={() => getPaginacion(-1,10)} href="/localentities">1</PaginationLink>
         </PaginationItem>
 
         <PaginationItem>

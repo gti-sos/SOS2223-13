@@ -14,20 +14,20 @@
         let province = $page.params.province;
         let president_appointment_date = $page.params.president_appointment_date;
 
-        let API = "/api/v2/localentities/"+province+ '/' +president_appointment_date;
+        let API = "/api/v2/localentities/"+ province + '/' + president_appointment_date;
 
         if(dev)
             API = 'http://localhost:8080'+API
             
         let updateLocalentitiesProvince = province;
-        let updateLocalentitiesLandline = 'landline';
-        let updateLocalentitiesFirstName = 'first_name';
-        let updateLocalentitiesSecondName = 'second_name';
+        let updateLocalentitiesLandline = "landline";
+        let updateLocalentitiesFirstName = "first_name";
+        let updateLocalentitiesSecondName = "second_name";
         let updateLocalentitiesPresidentAppointmentDate = president_appointment_date;
-        let updateLocalentitiesSurfaceExtension = 'surface_extension';
-        let updateLocalentitiesPopulation = 'population';
-        let updateLocalentitiesExpense = 'expense';
-        let updateLocalentitiesIncome = 'income';
+        let updateLocalentitiesSurfaceExtension = "surface_extension";
+        let updateLocalentitiesPopulation = "population";
+        let updateLocalentitiesExpense = "expense";
+        let updateLocalentitiesIncome = "income";
 
         let result = "";
         let resultStatus = "";
@@ -51,13 +51,13 @@
                 updateLocalentitiesIncome = data.income;
 
             }catch(error){
-                console.log(`Error parsing result: ${error}`);
+                console.log(`Error al parsear el resultado: ${error}`);
             }
 
             const status = await res.status;
             resultStatus = status;	
             if(status==404){
-                aviso = `La ruta solicitada "${province}/${president_appointment_date}" no existe`;
+                aviso = `La ruta solicitada "${province}/${president}" no existe`;
             }
         }
 
@@ -68,7 +68,7 @@
                 headers:{
                     "Content-Type": "application/json"
                 },
-                body:JSON.stringify({
+                body: JSON.stringify({
                     province: updateLocalentitiesProvince,
                     landline: updateLocalentitiesLandline,
                     first_name: updateLocalentitiesFirstName,
@@ -99,7 +99,7 @@
     
     </script>
 
-    <h1 style="text-align: center; font-family:'Times New Roman', Times, serif; font-size: 60px;">Local Entities Cambios</h1>
+    <h1 style="text-align: center; font-family:'Monaco', monospace, serif; font-size: 60px;">Local Entities Cambios</h1>
       
     {#if aviso !=""}
         <h2 style="color: red; text-align: center; font-family:Arial, Helvetica, sans-serif">{aviso}</h2>
@@ -126,7 +126,7 @@
                 <td><input bind:value={updateLocalentitiesLandline}></td>
                 <td><input bind:value={updateLocalentitiesFirstName}></td>
                 <td><input bind:value={updateLocalentitiesSecondName}></td>
-                <td>{updateLocalentitiesPresidentAppointmentDate}</td>
+                <td>{updateLocalentitiesPresident}</td>
                 <td><input bind:value={updateLocalentitiesSurfaceExtension}></td>
                 <td><input bind:value={updateLocalentitiesPopulation}></td>
                 <td><input bind:value={updateLocalentitiesExpense}></td>
@@ -137,13 +137,6 @@
         </tbody>
     </Table>
 
-
-    
-    {#if resultStatus != ""}
-            <strong>Result:</strong>
-        <pre>
-    {"Código de estado: "+resultStatus}    
-{result}
-        </pre>
-    {/if}
-    
+    <div style="justify-content: center; display:flex;">
+        <Button color="secondary" href= "/localentities">Atrás</Button>
+    </div>
