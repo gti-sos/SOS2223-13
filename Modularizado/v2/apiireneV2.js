@@ -525,7 +525,7 @@ app.delete("/api/v2/localentities", (req, res) => {
       console.log("No se encuentran más datos para borrar");
     } else {
       console.log("Borrados todos los datos");
-      //res.status(200).send("Borrados todos los datos");
+      res.status(200).send("Borrados todos los datos");
       console.log(numRemoved);
     }
   });

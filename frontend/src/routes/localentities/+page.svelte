@@ -6,7 +6,6 @@
         import { Button,Table, ButtonToolbar} from 'sveltestrap';
         import { Pagination, PaginationItem, PaginationLink } from 'sveltestrap';
 
-
         onMount(async () => {
             getLocalentities();
         });
@@ -28,10 +27,8 @@
         let newLocalentitiesExpense = '';
         let newLocalentitiesIncome = '';
 
-
         let result;
         let resultStatus;
-        //filtro
         let filtro = "";
         let from = "";
         let to = "";
@@ -49,8 +46,6 @@
         let income_over = "";
         let income_under = "";
         let showModal = false;
-
-    
 
         async function loadData() {
             resultStatus = result = "";
@@ -181,21 +176,21 @@
         }
 
 
-        async function deleteLocalentitiesAll () {
+        async function deleteLocalentitiesAll(){
             resultStatus = result = "";
             const res = await fetch(API, {
-                method: 'DELETE'
+                method: "DELETE"
             });
             const status = await res.status;
             resultStatus = status;
             if(status==200 || status == 204){
-                await getLocalentities();
-                aviso = "Se han borrado correctamente los datos";
-                setTimeout(() => {aviso = ''; location.reload();}, 3000);
+                await getEvolution();
+                mensajeUsuario = "Se han borrado correctamente los datos";
+                setTimeout(() => {mensajeUsuario = '';}, 3000);
             }else{
-                aviso = "No se han podido borrar los datos";
-                setTimeout(() => {aviso = '';}, 3000);
-            }			
+                mensajeUsuario = "No se han podido borrar los datos";
+                setTimeout(() => {mensajeUsuario = '';}, 3000);
+            }
         }
     
         async function getLocalentitiesFiltrado(){
@@ -265,7 +260,7 @@
                 setTimeout(() => {aviso = '';}, 3000);
             }else{
                 aviso = "No se han podido encontrar los datos: ";
-setTimeout(() => {aviso = '';}, 3000);
+                setTimeout(() => {aviso = '';}, 3000);
 
             }
         }
