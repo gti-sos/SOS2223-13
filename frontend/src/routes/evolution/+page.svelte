@@ -373,7 +373,7 @@ setTimeout(() => {mensajeUsuario = '';}, 3000);
             <th>Menores 16 años</th>
             <th>De 16 a 64 años</th>
             <th>A partir de 65 años</th>
-            <th>Action</th>
+            <th>Acción</th>
           </tr>
         </thead>
         <tbody>

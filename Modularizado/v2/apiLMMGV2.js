@@ -47,8 +47,18 @@ app.post(BASE_API_URL + "/evolution", (request, response) => {
   //var NewEvolution = request.body;
   const territory = request.body.territory;
   const period = request.body.period;
+  const total_population = request.body.total_population;
+  const man = request.body.man;
+  const woman = request.body.woman;
+  const under_sixteen_years = request.body.under_sixteen_years;
+  const from_sixteen_to_sixty_four_years = request.body.from_sixteen_to_sixty_four_years;
+  const sixty_five_and_over = request.body.sixty_five_and_over;
   const tam = Object.keys(request.body).length;
   console.log("New POST to /evolution"); //console.log en el servidor
+  if (!isNaN(territory) || isNaN(period) || isNaN(total_population) || isNaN(man) || isNaN(woman) || isNaN(under_sixteen_years) 
+  || isNaN(from_sixteen_to_sixty_four_years) || isNaN(sixty_five_and_over)) {
+    return response.status(400).json("Uno o más campos no son números");
+}
   db.find({},function(err,filteredList){
 
     if(err){
