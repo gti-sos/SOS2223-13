@@ -65,7 +65,7 @@
 
         }
 
-        async function getLocalentities () {
+        async function getLocalentities(){
             resultStatus = result = "";
             const res = await fetch(API+"?offset=-1&limit=10", {
                 method: 'GET'
@@ -185,11 +185,11 @@
             resultStatus = status;
             if(status==200 || status == 204){
                 await getLocalentities();
-                mensajeUsuario = "Se han borrado correctamente los datos";
-                setTimeout(() => {mensajeUsuario = '';}, 3000);
+                aviso = "Se han borrado correctamente los datos";
+                setTimeout(() => {aviso = '';}, 3000);
             }else{
-                mensajeUsuario = "No se han podido borrar los datos";
-                setTimeout(() => {mensajeUsuario = '';}, 3000);
+                aviso = "No se han podido borrar los datos";
+                setTimeout(() => {aviso = '';}, 3000);
             }
         }
     
