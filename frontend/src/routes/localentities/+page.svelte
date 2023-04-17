@@ -72,7 +72,7 @@
 
         async function getLocalentities () {
             resultStatus = result = "";
-            const res = await fetch(API+"?offset=0&limit=10", {
+            const res = await fetch(API+"?offset=-1&limit=10", {
                 method: 'GET'
             });
             try{
@@ -191,7 +191,7 @@
             if(status==200 || status == 204){
                 await getLocalentities();
                 aviso = "Se han borrado correctamente los datos";
-                setTimeout(() => {aviso = '';}, 3000);
+                setTimeout(() => {aviso = ''; location.reload();}, 3000);
             }else{
                 aviso = "No se han podido borrar los datos";
                 setTimeout(() => {aviso = '';}, 3000);
@@ -414,7 +414,7 @@ setTimeout(() => {aviso = '';}, 3000);
             <td>{localentities.expense}</td>
             <td>{localentities.income}</td>
 
-            <td><Button><a href='/localentities/{localentities.province}/{localentities.president_appointment_date}'>Editar</a></Button></td>
+            <td><Button><a href='/localentities/{localentities.province}/{localentities.president}'>Editar</a></Button></td>
 
             <td><Button color="danger" on:click={deleteLocalentities(localentities.province, localentities.president_appointment_date)}>Borrar</Button></td>
            
@@ -423,19 +423,25 @@ setTimeout(() => {aviso = '';}, 3000);
           
         </tbody>
     </Table>
-    <Pagination ariaLabel="Navegación">
+    <Pagination ariaLabel="Page navigation example">
         <PaginationItem>
           <PaginationLink on:click={() => getPaginacion(-1,10)} first href="/localentities"/>
         </PaginationItem>
-
+        <!--<PaginationItem disabled>
+          <PaginationLink previous href="#" />
+        </PaginationItem> -->
         <PaginationItem>
             <PaginationLink on:click={() => getPaginacion(-1,10)} href="/localentities">1</PaginationLink>
         </PaginationItem>
-
         <PaginationItem>
-            <PaginationLink on:click={() => getPaginacion(10,10)} href="/localentities?offset=10&limit=10">2</PaginationLink>
+            <PaginationLink on:click={() => getPaginacion(9,10)} href="/localentities?offset=10&limit=10">2</PaginationLink>
         </PaginationItem>
-
+        <PaginationItem>
+            <PaginationLink on:click={() => getPaginacion(19,10)} href="/localentities?offset=20&limit=10">3</PaginationLink>
+        </PaginationItem>
+        <!-- <PaginationItem>
+          <PaginationLink next href="#" />
+        </PaginationItem> -->
         <PaginationItem>
           <PaginationLink on:click={() => getPaginacion(19,10)} last href="/localentities?offset=20&limit=10" />
         </PaginationItem>

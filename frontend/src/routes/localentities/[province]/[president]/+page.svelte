@@ -12,7 +12,7 @@
         
         let aviso = "";
         let province = $page.params.province;
-        let president_appointment_date = $page.params.president_appointment_date;
+        let president = $page.params.president_appointment_date;
 
         let API = "/api/v2/localentities/"+ province + '/' + president;
 
@@ -23,7 +23,7 @@
         let updateLocalentitiesLandline = "landline";
         let updateLocalentitiesFirstName = "first_name";
         let updateLocalentitiesSecondName = "second_name";
-        let updateLocalentitiesPresident = president_appointment_date;
+        let updateLocalentitiesPresident = president;
         let updateLocalentitiesSurfaceExtension = "surface_extension";
         let updateLocalentitiesPopulation = "population";
         let updateLocalentitiesExpense = "expense";
@@ -44,7 +44,7 @@
                 updateLocalentitiesLandline = data.landline;
                 updateLocalentitiesFirstName = data.first_name;
                 updateLocalentitiesSecondName = data.second_name;
-                updateLocalentitiesPresident = data.president_appointment_date;
+                updateLocalentitiesPresident = data.president;
                 updateLocalentitiesSurfaceExtension = data.surface_extension;
                 updateLocalentitiesPopulation = data.population;
                 updateLocalentitiesExpense = data.expense;
@@ -73,7 +73,7 @@
                     landline: updateLocalentitiesLandline,
                     first_name: updateLocalentitiesFirstName,
                     second_name: updateLocalentitiesSecondName,
-                    president_appointment_date: updateLocalentitiesPresidentAppointmentDate,
+                    president: updateLocalentitiesPresident,
                     surface_extension: updateLocalentitiesSurfaceExtension,
                     population: updateLocalentitiesPopulation,
                     expense: updateLocalentitiesExpense,
