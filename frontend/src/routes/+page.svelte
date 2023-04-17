@@ -40,9 +40,9 @@
         <p></p>
         <li><strong>Documentación-V2:</strong>
         <ul dir="auto">
-        <li><a href="https://sos2223-13.appspot.com/api/v1/evolution/docs" rel="nofollow">https://sos2223-13.appspot.com/api/v1/evolution/docs</a> (desarrollado por <a href="https://github.com/luismg01">Luis Miguel Martín González</a>)</li>
+        <li><a href="https://sos2223-13.appspot.com/api/v2/evolution/docs" rel="nofollow">https://sos2223-13.appspot.com/api/v1/evolution/docs</a> (desarrollado por <a href="https://github.com/luismg01">Luis Miguel Martín González</a>)</li>
         <li><a href="https://sos2223-13.appspot.com/api/v2/employment/docs" rel="nofollow">https://sos2223-13.appspot.com/api/v2/employments/docs</a> (desarrollado por <a href="https://github.com/joslopber">Jose López Berro</a>)</li>
-        <li><a href="https://sos2223-13.appspot.com/api/v1/localentities-stats/docs" rel="nofollow">https://sos2223-13.appspot.com/api/v1/locantities-stats/docs</a> (desarrollado por <a href="https://github.com/irenefernandezromero">Irene Fernández Romero</a>)</li>
+        <li><a href="https://sos2223-13.appspot.com/api/v2/localentities-stats/docs" rel="nofollow">https://sos2223-13.appspot.com/api/v1/locantities-stats/docs</a> (desarrollado por <a href="https://github.com/irenefernandezromero">Irene Fernández Romero</a>)</li>
         </ul></li>
         <p></p>
         <li><strong>Frontends:</strong>

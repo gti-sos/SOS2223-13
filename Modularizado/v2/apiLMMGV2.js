@@ -47,11 +47,14 @@ app.post(BASE_API_URL + "/evolution", (request, response) => {
   //var NewEvolution = request.body;
   const territory = request.body.territory;
   const period = request.body.period;
+  const tam = Object.keys(request.body).length;
   console.log("New POST to /evolution"); //console.log en el servidor
   db.find({},function(err,filteredList){
 
     if(err){
         res.sendStatus(500, "CLIENT ERROR");
+    }else if(tam != 8){
+      return response.status(400).json('Estadística errónea');
     }
 
   // Validar que se envíen todos los campos necesarios
