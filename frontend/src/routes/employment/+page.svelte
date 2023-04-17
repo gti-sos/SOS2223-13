@@ -42,7 +42,7 @@
     
         async function getEmployments(){
             resultStatus = result = "";
-            const res = await fetch(API+"?offset=0&limit=10", {
+            const res = await fetch(API+"?offset=-1&limit=10", {
             method: "GET"
             });
             try{
@@ -284,13 +284,13 @@
 
     <Pagination ariaLabel="Page navigation example">
         <PaginationItem>
-          <PaginationLink on:click={() => getPaginacion(0,10)} first href="/employment"/>
+          <PaginationLink on:click={() => getPaginacion(-1,10)} first href="/employment"/>
         </PaginationItem>
         <!--<PaginationItem disabled>
           <PaginationLink previous href="#" />
         </PaginationItem> -->
         <PaginationItem>
-            <PaginationLink on:click={() => getPaginacion(0,10)} href="/employment">1</PaginationLink>
+            <PaginationLink on:click={() => getPaginacion(-1,10)} href="/employment">1</PaginationLink>
         </PaginationItem>
         <PaginationItem>
             <PaginationLink on:click={() => getPaginacion(9,10)} href="/employment?offset=10&limit=10">2</PaginationLink>

@@ -308,11 +308,14 @@ const rutaRaiz = '/api/v2/employment';
 app.post(rutaRaiz, (request, response) => {
   const region = request.body.region;
   const year = request.body.year;
+  const tam = Object.keys(request.body).length;
   console.log("New POST to /employment"); //console.log en el servidor  
   db.find({},function(err, filteredList){
 
     if(err){
         res.sendStatus(500, "Error cliente");   
+    }else if(tam != 7){
+      return response.status(400).json('Estadística errónea');
     }
     // Validar que se envíen todos los campos necesarios
   const requiredFields = ['year', 'period', 'date', 'region', 'employed_person', 'inactive_person', 'unemployed_person'];
