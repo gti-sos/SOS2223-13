@@ -184,7 +184,7 @@
             const status = await res.status;
             resultStatus = status;
             if(status==200 || status == 204){
-                await getEvolution();
+                await getLocalentities();
                 mensajeUsuario = "Se han borrado correctamente los datos";
                 setTimeout(() => {mensajeUsuario = '';}, 3000);
             }else{
