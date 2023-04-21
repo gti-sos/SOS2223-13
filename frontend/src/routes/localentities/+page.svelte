@@ -409,7 +409,7 @@
             <td>{localentities.expense}</td>
             <td>{localentities.income}</td>
 
-            <td><Button><a href='/localentities/{localentities.province}/{localentities.president}'>Editar</a></Button></td>
+            <td><Button><a href='/localentities/{localentities.province}/{localentities.president_appointment_date}'>Editar</a></Button></td>
 
             <td><Button color="danger" on:click={deleteLocalentities(localentities.province, localentities.president_appointment_date)}>Borrar</Button></td>
            

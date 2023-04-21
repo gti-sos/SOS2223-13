@@ -157,7 +157,7 @@ app.get('/api/v2/localentities', (req, res) => {
 
                       console.log(`localentities not found`);
                       // Estado 404: Not Found
-                      res.sendStatus(404);
+                      res.status(404).json(datos);
 
                   // Si por el contrario encontramos datos
                   }else{
