@@ -308,8 +308,17 @@ const rutaRaiz = '/api/v2/employment';
 app.post(rutaRaiz, (request, response) => {
   const region = request.body.region;
   const year = request.body.year;
+  const period = request.body.period;
+  const date = request.body.date;
+  const employed = request.body.employed_person;
+  const inactive = request.body.inactive_person;
+  const unemployed = request.body.unemployed_person;
   const tam = Object.keys(request.body).length;
-  console.log("New POST to /employment"); //console.log en el servidor  
+  console.log("New POST to /employment"); //console.log en el servidor 
+  if (!isNaN(year) || isNaN(period) || isNaN(date) || isNaN(region) || isNaN(employed) || isNaN(inactive) 
+  || isNaN(unemployed)) {
+    return response.status(400).json("Uno o más campos no son números");
+} 
   db.find({},function(err, filteredList){
 
     if(err){
