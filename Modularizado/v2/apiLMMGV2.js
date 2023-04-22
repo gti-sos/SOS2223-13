@@ -609,6 +609,20 @@ app.delete('/api/v2/evolution/:territory/:period', (req, res) => {
 });
 });
 
+app.get(BASE_API_URL+"/graficoLMMG", (request, response) =>{
+  console.log("Grafica");
+  db.find({},{_id: 0}).sort({territory: 1, period:1}).exec(function(err, filteredList){
+      if(err){
+          console.log("Error obteniendo los datos");
+          response.status(500).json("ERROR obteniendo los datos");
+      
+      }else{
+          response.json(filteredList);
+      }
+  });
+  console.log("Se ha generado la gráfica");
+});
+
 function pagination(req, lista){
 
   var res = [];
@@ -623,8 +637,6 @@ function pagination(req, lista){
   return res;
 
 };
-
-
 
 //HASTA AQUÍ LLEGA MI CÓDIGO.
 }
