@@ -20,6 +20,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"fusioncharts": "^3.20.0",
 		"sveltestrap": "^5.10.0"
 	}
 }

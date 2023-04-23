@@ -157,8 +157,8 @@ Highcharts.chart('container', {
     números de personas, finalmente los colores representan tanto la característica como el año al que pertenece.
   </p>
 </figure>
-
-{#if resultStatus != ""}
+</main>
+<!-- {#if resultStatus != ""}
     <p>
         Result:
         Numero: {graph.length}
@@ -168,4 +168,4 @@ Highcharts.chart('container', {
     {result}
     </pre>
 {/if}
-</main>
+</main> -->
