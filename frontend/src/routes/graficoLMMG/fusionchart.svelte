@@ -13,10 +13,10 @@
     const delay = ms => new Promise(res => setTimeout(res, ms));
     import { dev } from "$app/environment"; 
     // Include the core fusioncharts file from core  -
-    import FusionCharts from 'fusioncharts';
-    import Charts from 'fusioncharts/fusioncharts.charts';
-    import FusionTheme from 'fusioncharts/themes/fusioncharts.theme.fusion';
-    import SvelteFC, { fcRoot } from 'svelte-fusioncharts';
+    //import FusionCharts from 'fusioncharts';
+    //import Charts from 'fusioncharts/fusioncharts.charts';
+    //import FusionTheme from 'fusioncharts/themes/fusioncharts.theme.fusion';
+    //import SvelteFC, { fcRoot } from 'svelte-fusioncharts';
 
     let API = "/api/v2/graficoLMMG";
     let graph = [];
