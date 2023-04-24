@@ -3,6 +3,5 @@
     <a href="/employment">Empleos</a>
     <a href="/evolution">Evolución</a>
     <a href="/graficoLMMG">GrafoLMMG</a>
-    <a href="/graficoFusion">graficoFusion</a>
     <a href="/localentities">Entidades locales</a>
 </nav>
