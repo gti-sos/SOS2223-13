@@ -15,12 +15,9 @@
     let result = "";
     let resultStatus = ""; 
 
-    onMount(async () =>{
-      getGraph()
-    });
 
-    if(dev)
-        API = "http://localhost:8080"+API
+    if(dev) 
+       API = "http://localhost:8080"+API
     async function getGraph(){
             resultStatus = result = "";
             const res = await fetch(API, {
@@ -40,7 +37,7 @@
                   de16a64.push(graph["from_sixteen_to_sixty_four_years"]);
                   partir65.push(graph["sixty_five_and_over"]);                  
             });
-            console.log(1);
+                await delay(500);
                 loadChart();
             }catch(error){
                 console.log(`Error devolviendo la gráfica: ${error}`);
@@ -93,6 +90,7 @@
         var dataPlot = [trace_poblacion, trace_hombres, trace_mujeres,trace_menor16,trace_de16a64,trace_partir65];
         Plotly.newPlot('myDiv', dataPlot);
     }
+    onMount(getGraph);
     
 </script>
 
@@ -101,11 +99,16 @@
 </svelte:head>
 
 <main>
-    <h2>Gráfica de datos sobre Provincias y Años de Andalucía</h2>
+    <h2>Gráfica de datos sobre las Provincias y Años de andalucia</h2>
     <h4>Biblioteca: Plotly</h4>
-    <body>
-    <div class="chart-container">
-        <div id="myDiv" class="chart"><!-- Plotly chart will be drawn inside this DIV --></div>
-    </div>
-</body>
+    <div id='myDiv'><!-- Plotly chart will be drawn inside this DIV --></div>
 </main>
+
+<style>
+    h2{
+        text-align: center;
+    }
+    h4{
+        text-align: center;
+    }
+</style>
