@@ -17,7 +17,6 @@
       .catch(err => console.error(err));
   });
 </script>
-
 <main>
   <figure class="text-center">
     <blockquote class="blockquote">
@@ -30,23 +29,17 @@
         <th>Ciudad:</th>
         <th>Region:</th>
         <th>País:</th>
-        <th>Zona horaria:</th>
+        <th>Continente:</th>
       </tr>
     </thead>
     <tbody>
-      {#each Object.entries(data) as [key, value] }
-        {#if typeof value === "object" }
-          {#each Object.entries(value) as [subKey, subValue] }
-            <tr>
-              <td>{subValue}</td>
-            </tr>
-          {/each}
-        {:else}
           <tr>
-            <td>{value}</td>
+            <td>{data.city}</td>
+            <td>{data.region}</td>
+            <td>{data.country}</td>
+            <td>{data.continent}</td>
           </tr>
-        {/if}
-      {/each}
+
     </tbody>
   </Table>
 </main>
