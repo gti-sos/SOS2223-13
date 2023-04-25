@@ -1,143 +1,70 @@
-<svelte:head>
-    <script src="https://code.highcharts.com/highcharts.js"></script>
-    <script src="https://code.highcharts.com/modules/exporting.js"></script>
-    <script src="https://code.highcharts.com/modules/export-data.js"></script>
-    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
-</svelte:head>
-
 <script>
     // @ts-nocheck
-    import {onMount} from "svelte";
-    const delay = ms => new Promise(res => setTimeout(res, ms));
-    import { dev } from "$app/environment"; 
-    let graph = [];
-    let provincia_año = [];
-    let temp_max = [];
-    let temp_min = [];
-    let temp_med = [];
+    import { onMount } from "svelte";
+    import { Button, Table } from 'sveltestrap';
     onMount(async () =>{
-        getGraph()
-    });
-    async function getGraph(){
+            getAgroclimatic();
+        });
+    let agroclimatics = [];
+    async function getAgroclimatic() {
         const res1 = await fetch(
-            "https://sos2223-12.appspot.com/api/v2/agroclimatic/loadInitialData"
+            "https://sos2223-12.appspot.com/api/v2/agroclimatic/loadinitialdata"
         );
         if (res1.ok) {
+            console.log("Fetching agroclimatics....");
             const res = await fetch(
                 "https://sos2223-12.appspot.com/api/v2/agroclimatic"
             );
-            if(res.ok){
-                    const valores = await res.json();
-                    graph = valores;
-                    graph.forEach(graph =>{
-                        console.log(graph);
-                        provincia_año.push(graph.province+"-"+graph.year);
-                        temp_max.push(graph["maximun_temperature"]);
-                        temp_min.push(graph["minimun_temperature"]);
-                        temp_med.push(graph["medium_temperature"]);
-                        
-                    });
-                    await delay(500);
-                    loadChart(); 
-            }else{
-                console.log("Error al cargar la gráfica");
+            if (res.ok) {
+                const data = await res.json();
+                agroclimatics = data;
+                console.log("Received agroclimatics: " + agroclimatics.length);
             }
         }
     }
-    async function loadChart(){  
-        
-        Highcharts.chart('container', {
-        chart: {
-            type: 'column'
-        },
-        title: {
-            text: 'Estadísticas Agroclimáticas',
-            style: {
-                fontWeight: 'bold',
-                fontFamily: 'Times New Roman',
-                fontSize: 40,
-            },
-        },
-        
-        subtitle: {
-            text: 'Gráfica con HighCharts',
-            style:{
-                fontFamily: 'Times New Roman',
-                fontWeight: 'bold',
-                fontSize: 12,
-                color: 'black'
-            },
-        },
-        xAxis: {
-            title:{
-                text: "Provincia-Año",
-                style: {
-                    fontWeight: 'bold'
-                }
-            },
-            categories: provincia_año,
-            crosshair: true
-        },
-        yAxis: {
-            min: 0,
-            max: 50,
-            title: {
-                text: 'Temperatura',
-                style: {
-                    fontWeight: 'bold'
-                }
-            }
-        },
-        tooltip: {
-            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-            '<td style="padding:0"><b>{point.y: 2f}ºC</b></td></tr>',
-            footerFormat: '</table>',
-            shared: true,
-            useHTML: true
-        },
-        plotOptions: {
-            column: {
-            pointPadding: 0.2,
-            borderWidth: 2,
-            borderColor: "#000"
-            }
-        },
-        series: [{
-            name: 'Temperatura Máxima',
-            data: temp_max 
-        }, {
-            name: 'Temperatura Mínima',
-            data: temp_min 
-        }, {
-            name: 'Temperatura Media',
-            data: temp_med 
-        }],
-        responsive: {
-                rules: [{
-                    condition: {
-                        maxWidth: 1000
-                    },
-                    chartOptions: {
-                        legend: {
-                            layout: 'horizontal',
-                            align: 'center',
-                            verticalAlign: 'bottom'
-                        }
-                    }
-                }]
-            }
-        });
-    }
-    
 </script>
 
- 
 <main>
-    <figure class="highcharts-figure" style="margin-left: 25px; margin-right:25px">
-        <div id="container"></div>
-        <p class="highcharts-description" style="text-align:center">
-            Gráfico de Columnas sobre las Estadísticas Agroclimáticas de diferentes provincias de Andalucía en diversos años.
-        </p>
+    <figure class="text-center">
+        <blockquote class="blockquote">
+            <h1>API: agroclimatic</h1>
+        </blockquote>
     </figure>
+    <td align="center">
+        <Button
+            color="success"
+            on:click={function () {
+                window.location.href = `https://sos2223-13.appspot.com/Usos/uso1chart`;
+            }}
+        >
+            Gráfica
+        </Button>
+    </td>
+    {#await agroclimatics}
+        loading
+    {:then agroclimatics}
+        <Table bordered>
+            <thead id="titulitos">
+                <tr>
+                    <th style="text-decoration: underline;">Provincia:</th>
+                    <th style="text-decoration: underline;">Año:</th>
+                    <th style="text-decoration: underline;">Máxima Temperatura:</th>
+                    <th style="text-decoration: underline;">Mínima Temperatura:</th>
+                    <th style="text-decoration: underline;">Media Temperatura:</th>
+                  </tr>
+            </thead>
+            <tbody>
+                <tr />
+                {#each agroclimatics as agroclimatic }
+          <tr>
+            <td>{agroclimatic.province}</td>
+            <td>{agroclimatic.year}</td>
+            <td>{agroclimatic.maximun_temperature}</td>
+            <td>{agroclimatic.minimun_temperature}</td>
+            <td>{agroclimatic.medium_temperature}</td>
+          </tr>
+        {/each}
+            </tbody>
+        </Table>
+    {/await}
 </main>
