@@ -15,6 +15,9 @@
     let result = "";
     let resultStatus = ""; 
 
+    onMount(async () =>{
+      getGraph()
+    });
 
     if(dev) 
        API = "http://localhost:8080"+API
@@ -88,15 +91,20 @@
             name: 'A partir de 65 años'
         };
         var dataPlot = [trace_poblacion, trace_hombres, trace_mujeres,trace_menor16,trace_de16a64,trace_partir65];
-        Plotly.newPlot('myDiv', dataPlot);
+        var layout = { 
+  font: {size: 18}
+};
+
+       var config = {responsive: true}
+        Plotly.newPlot('myDiv', dataPlot, layout,config);
     }
-    onMount(getGraph);
     
 </script>
 
-<svelte:head>
-    <script src='https://cdn.plot.ly/plotly-2.11.1.min.js'></script>
-</svelte:head>
+<head>
+	<!-- Load plotly.js into the DOM -->
+	<script src='https://cdn.plot.ly/plotly-2.20.0.min.js'></script>
+</head>
 
 <main>
     <h2>Gráfica de datos sobre las Provincias y Años de andalucia</h2>
