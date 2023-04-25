@@ -584,6 +584,25 @@ app.delete('/api/v2/employment/:city/:period', (req, res) => {
 });
 
 
+app.get(BASE_API_URL+"/data", (request,response) => {
+        
+  console.log(`New GET to /data`);
+  
+  db.find({},{_id: 0}).sort({region: 1, year:1}).exec(function(err, filteredList){
+    if(err){
+        console.log("Error para obtener los datos");
+        response.status(500).json("Error para obtener los datos");
+    
+    }else{
+        response.json(filteredList);
+    }
+});
+console.log("Gráfica creada");
+  
+
+});
+
+
 
 function pagination(req, lista){
 
@@ -607,23 +626,6 @@ function pagination(req, lista){
 }
 
 export {loadBackendJLBV2};
-
-/*
-
-//EXPORTACION
-module.exports = {
-  express,
-  cool,
-  bodyParser,
-  appJLB,
-  portJLB,
-  datos_10,
-  BASE_API_URL,
-  datos_10,
-  rutaRaiz
-};
-
-*/
 
 
 
