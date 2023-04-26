@@ -3,7 +3,6 @@
 </script>
 
 <main>
-
     <slot></slot> 
     <hr style="margin-left: 100%; margin-right: 100%">
     <Integracion2></Integracion2>
