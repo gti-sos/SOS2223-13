@@ -1,9 +1,10 @@
-<!--<script>
+<script>
     // @ts-nocheck
     import {onMount} from 'svelte';    
     import {Button} from 'sveltestrap';
     const delay = ms => new Promise(res => setTimeout(res,ms));
-    let xLabel = [];
+    let xLabel1 = [];
+    let xLabel2 = [];
     //Evolution
     let EvolutionStats = [];
     let poblaciontotal = [];
@@ -13,21 +14,32 @@
     let de16a64 = [];
     let partir65 = []; 
     //Agroclimatics
-    let AgroclimaticStats = [];
-    let temp_max = [];
-    let temp_min = [];
-    let temp_med = []; 
+    let response = [];
+    let population = [];
+    //let temp_min = [];
+    //let temp_med = []; 
     async function getData(){
-        await fetch("https://sos2223-12.appspot.com/api/v2/agroclimatic/loadInitialData");
+        //const fetch = require('node-fetch');
+        const url = 'https://country-facts.p.rapidapi.com/region/europe';
+        const options = {
+            method: 'GET',
+            headers: {
+    'content-type': 'application/octet-stream',
+    'X-RapidAPI-Key': '855564e830mshf28ff549a54319bp1c402cjsnf5e497f427c7',
+    'X-RapidAPI-Host': 'country-facts.p.rapidapi.com',
+  }
+        };
+        //const result = await response.text();
+        //console.log(result);
         await fetch("https://sos2223-13.appspot.com/api/v2/evolution/loadinitialdata");
         
-        const Agroclimaticstats = await fetch("https://sos2223-12.appspot.com/api/v2/agroclimatic");
+        const Response = await fetch(url, options);
         const evolution2 = await fetch("https://sos2223-13.appspot.com/api/v2/evolution");
-        if (Agroclimaticstats.ok && evolution2.ok){
+        if (Response.ok && evolution2.ok){
             
             EvolutionStats = await evolution2.json();
-            AgroclimaticStats = await Agroclimaticstats.json();
-            
+            response = await Response.json();
+            console.log(response);
             //Evolution
             EvolutionStats.sort((a,b) => (a.period > b.period) ? 1 : ((b.period > a.period) ? -1 : 0));
             EvolutionStats.sort((a,b) => (a.territory > b.territory) ? 1 : ((b.territory > a.territory) ? -1 : 0));
@@ -40,12 +52,12 @@
                 partir65.push(element.sixty_five_and_over);
             });
             //Agroclimatics
-            AgroclimaticStats.sort((a,b) => (a.year > b.year) ? 1 : ((b.year > a.year) ? -1 : 0));
-            AgroclimaticStats.sort((a,b) => (a.province > b.province) ? 1 : ((b.province > a.province) ? -1 : 0));
-            AgroclimaticStats.forEach(element=>{
-                temp_max.push(parseFloat(element.maximun_temperature));
-                temp_min.push(parseFloat(element.minimun_temperature));
-                temp_med.push(parseFloat(element.medium_temperature));
+            //response.sort((a,b) => (a.year > b.year) ? 1 : ((b.year > a.year) ? -1 : 0));
+            //response.sort((a,b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
+            response.forEach(element=>{
+                population.push(parseFloat(element.population));
+                //temp_min.push(parseFloat(element.minimun_temperature));
+                //temp_med.push(parseFloat(element.medium_temperature));
             });
             
             //EvolutionStats.forEach(element =>{
@@ -55,20 +67,24 @@
               //  xLabel.push(element.province+","+parseInt(element.year));
             //});
             EvolutionStats.forEach(element =>{
-                xLabel.push(element.territory+","+parseInt(element.period));
+                xLabel1.push(element.territory+","+parseInt(element.period));
             });
-            AgroclimaticStats.forEach(element =>{
-                xLabel.push(element.province+","+parseInt(element.year));
+            response.forEach(element =>{
+                //console.log(element.population);
+                xLabel2.push(element.name.common);
             });
-            xLabel=new Set(xLabel);
-            xLabel=Array.from(xLabel);
-            xLabel.sort();
+            xLabel1=new Set(xLabel1);
+            xLabel1=Array.from(xLabel1);
+            xLabel2=new Set(xLabel2);
+            xLabel2=Array.from(xLabel2);
+            //xLabel.sort();
             await delay(500);
             loadGraph();
         }   
     }
     async function loadGraph(){
-        console.log(xLabel);
+        console.log(population);
+        //console.log(xLabel);
         Highcharts.chart('container', {
             chart: {
                 type: 'area'
@@ -77,7 +93,7 @@
                 text: 'Gráficas conjuntas'
             },
             subtitle: {
-                text: 'Integracion Evolution + AgroclimaticStats | Tipo: Area'
+                text: 'Integracion Evolution + ApiPopulation | Tipo: Area'
             },
             yAxis: {
                 title: {
@@ -86,10 +102,10 @@
             },
             xAxis: {
                 title: {
-                    text: "Provincia-Año",
+                    text: "Territorio-Año",
                 },
                 //max: 48,
-                categories: xLabel, //province_period
+                categories: xLabel1, //province_period
                 crosshair: true
             },
             legend: {
@@ -125,17 +141,17 @@
                 },
                 //Agroclimatics
                 {
-                name: 'Temperatura máxima',
-                data: temp_max
+                name: 'Poblacion',
+                data: population
                 },
-                {
-                name: 'Temperatura mínima',
-                data: temp_min
-                },
-                {
-                name: 'Temperatura media',
-                data: temp_med
-                },
+               // {
+                //name: 'Temperatura mínima',
+                //data: temp_min
+                //},
+                //{
+                //name: 'Temperatura media',
+                //data: temp_med
+                //},
             ],
             responsive: {
                 rules: [{
@@ -175,4 +191,4 @@
     </figure>
 
     <Button outline color="secondary" href="/">Volver</Button>
-</main>-->
+</main>
