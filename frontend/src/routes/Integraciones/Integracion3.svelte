@@ -85,7 +85,7 @@ const options = {
                     result2 = JSON.stringify(valores2, null, 2);
                     //console.log(grafica2);
                     grafica2 = valores2;
-                    provincia_año2.push("World - Real Time");
+                    provincia_año2.push("Mundo Tiempo Real");
                     total_population.push(0);
                     hombres.push(0); 
                     mujeres.push(0); 
