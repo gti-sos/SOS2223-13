@@ -80,7 +80,6 @@
             method: "GET"
                 
             });
-            
             if(res2.ok){
                 try{
                     const valores2 = await res2.json();
@@ -89,7 +88,6 @@
                     grafica2 = valores2;
                     grafica2.sort((a, b) => (a.name.common > b.name.common) ? 1 : ((b.name.common > a.name.common) ? -1 : 0));
                     grafica2.forEach(grafica2 =>{
-                        population.push(grafica2.population);
                         provincia_año2.push(grafica2.name.common+"- 2022");
                         total_population.push(0);
                         hombres.push(0); 
@@ -97,6 +95,10 @@
                         debajo16.push(0); 
                         entre16y64.push(0); 
                         mayor65.push(0);
+                        var numeroConComas = grafica2.population;
+                        var numeroSinComas = numeroConComas.replace(/,/g, "");
+                        population.push(Number(numeroSinComas));
+
                         
                     });
                     
@@ -115,13 +117,12 @@
             
     }
     async function loadChart(){  
-        console.log(population);
-        Highcharts.chart('container', {
+        Highcharts.chart('container2', {
         chart: {
             type: 'column'
         },
         title: {
-            text: 'Estadísticas Agroclimáticas y Evolución',
+            text: 'Estadísticas Evolución + ApiPaisesEuropeos',
             style: {
                 fontWeight: 'bold',
                 fontFamily: 'Times New Roman',
@@ -151,7 +152,7 @@
         yAxis: {
             min: 0,
             title: {
-                text: 'Valor',
+                text: 'Personas',
                 style: {
                     fontWeight: 'bold'
                 }
@@ -173,9 +174,6 @@
             }
         },
         series: [{
-            name: 'Población',
-            data: population 
-        }, {
             name: 'Población Total',
             data: total_population
         }, {
@@ -193,7 +191,10 @@
         }, {
             name: 'Mas de 65 años',
             data: mayor65
-        }],
+        },{
+            name: 'Población',
+            data: population 
+        },],
         responsive: {
                 rules: [{
                     condition: {
@@ -214,7 +215,7 @@
 
 <main>
     <figure class="highcharts-figure">
-        <div id="container"></div>
+        <div id="container2"></div>
         <p class="highcharts-description">
             Gráfico con Api de Países Europeos.
         </p>

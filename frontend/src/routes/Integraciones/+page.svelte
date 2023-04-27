@@ -1,4 +1,4 @@
-<!--<svelte:head>
+<svelte:head>
     <script src="https://code.highcharts.com/highcharts.js"></script>
     <script src="https://code.highcharts.com/modules/exporting.js"></script>
     <script src="https://code.highcharts.com/modules/export-data.js"></script>
@@ -84,8 +84,6 @@
                     grafica2.sort((a, b) => (a.province > b.province) ? 1 : ((b.province > a.province) ? -1 : 0));
                     grafica2.sort((a, b) => (a.year > b.year) ? 1 : ((b.year > a.year) ? -1 : 0));
                     grafica2.forEach(grafica2 =>{
-                        console.log(grafica2);
-                        
                         temp_max.push(grafica2["maximun_temperature"]);
                         temp_min.push(grafica2["minimun_temperature"]);
                         temp_med.push(grafica2["medium_temperature"]);
@@ -115,9 +113,9 @@
     }
     async function loadChart(){  
         
-        Highcharts.chart('container', {
+        Highcharts.chart('container1', {
         chart: {
-            type: 'column'
+            type: 'area'
         },
         title: {
             text: 'Estadísticas Agroclimáticas y Evolución',
@@ -150,7 +148,7 @@
         yAxis: {
             min: 0,
             title: {
-                text: 'Valor',
+                text: 'Personas',
                 style: {
                     fontWeight: 'bold'
                 }
@@ -216,17 +214,14 @@
         });
     }
 </script>
-
 <main>
     <h1 style="text-align: center; font-family:'Times New Roman', Times, serif; font-size: 45px; text-decoration:underline">Datos Evolución</h1>
     <figure class="highcharts-figure" style="margin-left: 25px; margin-right:25px">
-        <div id="container"></div>
+        <div id="container1"></div>
         <p class="highcharts-description" style="text-align:center">
             Gráfico de Columnas sobre las Estadísticas Agroclimáticas y Evolución.
         </p>
     </figure>
     <Button outline color="secondary" href="/">Volver</Button>
     <hr style="text-align: right; margin-left: 100px; margin-right: 100px;">
-
-
-</main>-->
+</main>
