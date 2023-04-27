@@ -81,15 +81,15 @@
         type: 'area'
     },
     accessibility: {
-        description: 'Image description: An area chart compares the nuclear stockpiles of the USA and the USSR/Russia between 1945 and 2017. The number of nuclear weapons is plotted on the Y-axis and the years on the X-axis. The chart is interactive, and the year-on-year stockpile levels can be traced for each country. The US has a stockpile of 6 nuclear weapons at the dawn of the nuclear age in 1945. This number has gradually increased to 369 by 1950 when the USSR enters the arms race with 6 weapons. At this point, the US starts to rapidly build its stockpile culminating in 32,040 warheads by 1966 compared to the USSR’s 7,089. From this peak in 1966, the US stockpile gradually decreases as the USSR’s stockpile expands. By 1978 the USSR has closed the nuclear gap at 25,393. The USSR stockpile continues to grow until it reaches a peak of 45,000 in 1986 compared to the US arsenal of 24,401. From 1986, the nuclear stockpiles of both countries start to fall. By 2000, the numbers have fallen to 10,577 and 21,000 for the US and Russia, respectively. The decreases continue until 2017 at which point the US holds 4,018 weapons compared to Russia’s 4,500.'
+        description: 'Image description: comparación de personas empleadas en las distintas provincias de Andalucía entre 2017 y 2020.'
     },
     title: {
-        text: 'US and USSR nuclear stockpiles'
+        text: 'Cantidad de personas empleadas en Andalucía entre 2017-2020'
     },
-    subtitle: {
-        text: 'Source: <a href="https://fas.org/issues/nuclear-weapons/status-world-nuclear-forces/" ' +
-            'target="_blank">FAS</a>'
-    },
+    //subtitle: {
+    //    text: 'Source: <a href="https://fas.org/issues/nuclear-weapons/status-world-nuclear-forces/" ' +
+    //        'target="_blank">FAS</a>'
+    //},
     xAxis: {
         allowDecimals: false,
         labels: {
@@ -98,22 +98,22 @@
             }
         },
         accessibility: {
-            rangeDescription: 'Range: 1940 to 2017.'
+            rangeDescription: 'Rango entre 2017 y 2020.'
         }
         //categories: region_year,
     },
     yAxis: {
         title: {
-            text: 'Nuclear weapon states'
+            text: 'Personas'
         },
         labels: {
             formatter: function () {
-                return this.value / 1000 + 'k';
+                return this.value / 1 +'k';
             }
         }
     },
     tooltip: {
-        pointFormat: '{series.name} had stockpiled <b>{point.y:,.0f}</b><br/>warheads in {point.x}'
+        pointFormat: '{series.name} tenía <b>{point.y:,.0f}</b> mil<br/>personas empleadas en {point.x}'
     },
     plotOptions: {
         area: {
@@ -142,6 +142,22 @@
     },{
         name: 'Jaen',
         data: employed_person_jaen
+    },
+    {
+        name: 'Cadiz',
+        data: employed_person_cadiz
+    },
+    {
+        name: 'Sevilla',
+        data: employed_person_sevilla
+    },
+    {
+        name: 'Huelva',
+        data: employed_person_huelva
+    },
+    {
+        name: 'Cordoba',
+        data: employed_person_cordoba
     }
     ]
     });
@@ -165,13 +181,12 @@
     <figure class="highcharts-figure">
         <div id="container"></div>
         <p class="highcharts-description">
-            Demonstrating a basic area chart, also known as a mountain chart.
-            Area charts are similar to line charts, but commonly used to visualize
-            volumes.
+            Gráfico en el que se muestra la tendencia del empleo entre los años 2017 y 2020
+            en las provincias de Andalucía.
         </p>
     </figure>
 
-    {#if resultStatus != ""}
+<!--   {#if resultStatus != ""}
     <p>
         Result:
     </p>
@@ -179,7 +194,7 @@
     {resultStatus}
     {result}
     </pre>
-{/if}
+{/if}-->
 </main>
 
 
