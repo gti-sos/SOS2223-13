@@ -20,10 +20,14 @@
         API = 'http://localhost:8080'+API
 
         let data = [];
-        let region_year = [];
-        let employed_person = [];
-        let inactive_person = [];
-        let unemployed_person = [];
+        let employed_person_malaga= [];
+        let employed_person_almeria = [];
+        let employed_person_granada = [];
+        let employed_person_jaen = [];
+        let employed_person_cadiz = [];
+        let employed_person_sevilla = [];
+        let employed_person_huelva = [];
+        let employed_person_cordoba = [];
         let advertencia = "";
         let result = "";
         let resultStatus = "";
@@ -40,11 +44,23 @@
                 result = JSON.stringify(dataReceived, null, 2);
                 data = dataReceived;
                 data.forEach(data => {
-                    region_year.push(data.region+"-"+data.year);
-                    employed_person.push(data["employed_person"]);
-                    inactive_person.push(data["inactive_person"]);
-                    unemployed_person.push(data["unemployed_person"]);
-
+                    if(data.region === "Almeria"){
+                        employed_person_almeria.push(data["employed_person"]);
+                    }else if(data.region === "Granada"){
+                        employed_person_granada.push(data["employed_person"]);
+                    }else if(data.region === "Malaga"){
+                        employed_person_malaga.push(data["employed_person"]);
+                    }else if(data.region === "Jaen"){
+                        employed_person_jaen.push(data["employed_person"]);
+                    }else if(data.region === "Cadiz"){
+                        employed_person_cadiz.push(data["employed_person"]);
+                    }else if(data.region === "Sevilla"){
+                        employed_person_sevilla.push(data["employed_person"]);
+                    }else if(data.region === "Huelva"){
+                        employed_person_huelva.push(data["employed_person"]);
+                    }else if(data.region === "Cordoba"){
+                        employed_person_cordoba.push(data["employed_person"]);
+                    }
                 });
                 await delay(300);
                 loadChart();
@@ -84,6 +100,7 @@
         accessibility: {
             rangeDescription: 'Range: 1940 to 2017.'
         }
+        //categories: region_year,
     },
     yAxis: {
         title: {
@@ -100,7 +117,7 @@
     },
     plotOptions: {
         area: {
-            pointStart: 1940,
+            pointStart: 2017,
             marker: {
                 enabled: false,
                 symbol: 'circle',
@@ -114,15 +131,19 @@
         }
     },
     series: [{
-        name: 'USA',
-        data: graphData
+        name: 'Almeria',
+        data: employed_person_almeria
     }, {
-        name: 'USSR/Russia',
-        data: graphData
+        name: 'Granada',
+        data: employed_person_granada
     }, {
-        name: 'China',
-        data: graphData
-    }]
+        name: 'Malaga',
+        data: employed_person_malaga
+    },{
+        name: 'Jaen',
+        data: employed_person_jaen
+    }
+    ]
     });
 
  }

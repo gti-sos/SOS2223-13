@@ -25,25 +25,37 @@ app.get("/api/v2/employment/docs",(req,res)=>{
 //Código Jose López tarea F05
 var employment_stats = [
   {year:2017 , period:"T1" , date:"2017-T1" , region:"Almeria" , employed_person:347.3 , inactive_person:220.8 , unemployed_person:74.2 },
+  {year:2018 , period:"T4" , date:"2018-T4" , region:"Almeria" , employed_person:339.4 , inactive_person:232.6 , unemployed_person:63.7 },
   {year:2019 , period:"T1" , date:"2019-T1" , region:"Almeria" , employed_person:340.7 , inactive_person:233.6 , unemployed_person:54.7 },
   {year:2020 , period:"T1" , date:"2020-T1" , region:"Almeria" , employed_person:354.4 , inactive_person:227.1 , unemployed_person:69.9 },
   {year:2017 , period:"T1" , date:"2017-T1" , region:"Cordoba" , employed_person:380.6 , inactive_person:273.8 , unemployed_person:104.8},
   {year:2018 , period:"T1" , date:"2018-T1" , region:"Cordoba" , employed_person:371.7 , inactive_person:280.1 , unemployed_person:94.6},
   {year:2019 , period:"T1" , date:"2019-T1" , region:"Cordoba" , employed_person:367.1 , inactive_person:284.9 , unemployed_person:77.3},
+  {year:2020 , period:"T1" , date:"2020-T1" , region:"Cordoba" , employed_person:356.1 , inactive_person:277.9 , unemployed_person:89.3},
   {year:2017 , period:"T1" , date:"2017-T1" , region:"Granada" , employed_person:443 , inactive_person:313 , unemployed_person:113.7 },
   {year:2018 , period:"T1" , date:"2018-T1" , region:"Granada" , employed_person:435.8 , inactive_person:321.7 , unemployed_person:109.9 },
   {year:2019 , period:"T1" , date:"2019-T1" , region:"Granada" , employed_person:424.5 , inactive_person:337.5 , unemployed_person:92 },
+  {year:2020 , period:"T1" , date:"2020-T1" , region:"Granada" , employed_person:430.5 , inactive_person:320.5 , unemployed_person:88.7 },
   {year:2017 , period:"T1" , date:"2017-T1" , region:"Huelva" , employed_person:243.6 , inactive_person:184.8 , unemployed_person:63.9 },
   {year:2018 , period:"T1" , date:"2018-T1" , region:"Huelva" , employed_person:243 , inactive_person:187.4 , unemployed_person:53.4 },
   {year:2019 , period:"T1" , date:"2019-T1" , region:"Huelva" , employed_person:251.1 , inactive_person:183.1 , unemployed_person:57.7 },
+  {year:2020 , period:"T1" , date:"2020-T1" , region:"Huelva" , employed_person:225.1 , inactive_person:144.1 , unemployed_person:73.7 },
   {year:2017 , period:"T1" , date:"2017-T1" , region:"Jaen" , employed_person:299.6 , inactive_person:238.7 , unemployed_person:76.1 },
   {year:2018 , period:"T1" , date:"2018-T1" , region:"Jaen" , employed_person:287.8 , inactive_person:245.4 , unemployed_person:64.7 },
   {year:2019 , period:"T1" , date:"2019-T1" , region:"Jaen" , employed_person:281.8 , inactive_person:248.6 , unemployed_person:57.3 },
+  {year:2020 , period:"T1" , date:"2020-T1" , region:"Jaen" , employed_person:256.8 , inactive_person:244.6 , unemployed_person:55.3 },
   {year:2017 , period:"T1" , date:"2017-T1" , region:"Malaga" , employed_person:764.8 , inactive_person:589.4 , unemployed_person:200.4 },
+  {year:2018 , period:"T1" , date:"2018-T1" , region:"Malaga" , employed_person:555.4 , inactive_person:455.4 , unemployed_person:188.2 },
+  {year:2019 , period:"T1" , date:"2019-T1" , region:"Malaga" , employed_person:467.7 , inactive_person:778.5 , unemployed_person:197.3 },
+  {year:2020 , period:"T1" , date:"2020-T1" , region:"Malaga" , employed_person:733.2 , inactive_person:467.8 , unemployed_person:202.5 },
   {year:2017 , period:"T1" , date:"2017-T1" , region:"Sevilla" , employed_person:924.7 , inactive_person:655.7 , unemployed_person:243.9 },
-  {year:2018 , period:"T4" , date:"2018-T4" , region:"Almeria" , employed_person:339.4 , inactive_person:232.6 , unemployed_person:63.7 },
+  {year:2018 , period:"T1" , date:"2018-T1" , region:"Sevilla" , employed_person:955.7 , inactive_person:643.4 , unemployed_person:246.7 },
+  {year:2019 , period:"T1" , date:"2019-T1" , region:"Sevilla" , employed_person:898.5 , inactive_person:677.8 , unemployed_person:226.5 },
+  {year:2020 , period:"T1" , date:"2020-T1" , region:"Sevilla" , employed_person:901.8 , inactive_person:620.2 , unemployed_person:201.8 },
   {year:2017 , period:"T1" , date:"2017-T1" , region:"Cadiz" , employed_person:577.1 , inactive_person:443.2 , unemployed_person:195.5 },
-  {year:2018 , period:"T1" , date:"2018-T1" , region:"Cadiz" , employed_person:556.5 , inactive_person:465.1 , unemployed_person:173.9 }
+  {year:2018 , period:"T1" , date:"2018-T1" , region:"Cadiz" , employed_person:556.5 , inactive_person:465.1 , unemployed_person:173.9 },
+  {year:2019 , period:"T1" , date:"2019-T1" , region:"Cadiz" , employed_person:544.7 , inactive_person:487.9 , unemployed_person:167.8 },
+  {year:2020 , period:"T1" , date:"2020-T1" , region:"Cadiz" , employed_person:574.2 , inactive_person:400.7 , unemployed_person:156.7 }
  ];
 
  db.insert(employment_stats);
