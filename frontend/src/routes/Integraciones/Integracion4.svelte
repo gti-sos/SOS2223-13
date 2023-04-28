@@ -1,3 +1,4 @@
+<!--
 <svelte:head>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.6.2"></script>
 </svelte:head>
@@ -118,7 +119,7 @@
                     data: total_population,
                     borderColor: '#000',
                     backgroundColor: ['red'],
-                    borderWidth: 3,
+                    borderWidth: 0.2,
                      
                     
                 }, {
@@ -126,7 +127,7 @@
                     data: hombres,
                     borderColor: '#000',
                     backgroundColor: ['blue'],
-                    borderWidth: 3,
+                    borderWidth: 0.2,
                     
                     
                 }, {
@@ -134,14 +135,14 @@
                     data: mujeres,
                     borderColor: '#000',
                     backgroundColor: ['green'],
-                    borderWidth: 3,
+                    borderWidth: 0.2,
                     
                 }, {
                     label: 'Menor 16',
                     data: debajo16,
                     borderColor: '#000',
                     backgroundColor: ['yellow'],
-                    borderWidth: 3,
+                    borderWidth: 0.2,
                     
                     
                 }, {
@@ -149,14 +150,14 @@
                     data: entre16y64,
                     borderColor: '#000',
                     backgroundColor: ['black'],
-                    borderWidth: 3,
+                    borderWidth: 0.2,
                     
                 }, {
                     label: 'Mayor 65', 
                     data: mayor65,
                     borderColor: '#000',
                     backgroundColor: ['Orange'],
-                    borderWidth: 3,
+                    borderWidth: 0.2,
                     
                 },
                 {
@@ -164,7 +165,7 @@
                     data: countSpain,
                     borderColor: '#000',
                     backgroundColor: ['Violet'],
-                    borderWidth: 3,
+                    borderWidth: 0.2,
                     
                 }]
             },
@@ -259,3 +260,4 @@
         <Button color="primary" href="/">Volver a Inicio</Button>
     </div>
 </main>
+-->
