@@ -11,9 +11,9 @@
     import { Button } from "sveltestrap";
     const delay = ms => new Promise(res => setTimeout(res, ms));
     //import { dev } from "$app/environment"; 
-    let API = "https://sos2223-13.ew.r.appspot.com/api/v2/evolution";
-    let API2 = "https://sos2223-13.ew.r.appspot.com/api/v2/employment";
-    let API3 = "https://sos2223-13.ew.r.appspot.com/api/v2/localentities";
+    let API = "http://sos2223-13.appspot.com//api/v2/evolution";
+    let API2 = "http://sos2223-13.appspot.com//api/v2/employment";
+    let API3 = "http://sos2223-13.appspot.com//api/v2/localentities";
     let graph = [];
     let graph2 = [];
     let graph3 = [];
@@ -29,7 +29,7 @@
     let empleadas = [];
     let inactivas = [];
     let noempleadas = [];
-    //let telefono = [];
+    let telefono = [];
     let nombre = [];
     let apellido = [];
     let superficie = [];
@@ -46,7 +46,7 @@
         getGraph()
     });
     /*if(dev)
-        API = "http://localhost:12345"+API
+        API = "http://localhost:8080"+API
     */
     async function getGraph(){
         resultStatus = result = "";
@@ -75,7 +75,7 @@
                  empleadas.push(0); 
                     inactivas.push(0); 
                     noempleadas.push(0);  
-                    //telefono.push(0); 
+                    telefono.push(0); 
                         nombre.push(0); 
                         apellido.push(0); 
                         superficie.push(0); 
@@ -107,9 +107,9 @@
                     graph2.sort((a, b) => (a.region > b.region) ? 1 : ((b.region > a.region) ? -1 : 0));
                     graph2.sort((a, b) => (a.year > b.year) ? 1 : ((b.year > a.year) ? -1 : 0));
                     graph2.forEach(graph2 =>{
-                        provincia_año.push(graph2.region+"-"+graph2.year);
-                        periodo.push(graph2["period"]);
-                        fecha.push(graph2["date"]);
+                        provincia_año.push(graph2.region+"-"+graph2.year + "-" + graph2.period+"-"+graph2.date);
+                        //periodo.push(graph2["period"]);
+                        //fecha.push(graph2["date"]);
                         empleadas.push(graph2["employed_person"]);
                         inactivas.push(graph2["inactive_person"]);
                         noempleadas.push(graph2["unemployed_person"]);
@@ -119,7 +119,7 @@
                         menor16.push(0); 
                         de16a64.push(0); 
                         partir65.push(0);
-                        //telefono.push(0); 
+                        telefono.push(0); 
                         nombre.push(0); 
                         apellido.push(0); 
                         superficie.push(0); 
@@ -149,10 +149,11 @@
                     graph3.sort((a, b) => (a.province > b.province) ? 1 : ((b.province > a.province) ? -1 : 0));
                     graph3.sort((a, b) => (a.president_appointment_date > b.president_appointment_date) ? 1 : ((b.president_appointment_date > a.president_appointment_date) ? -1 : 0));
                     graph3.forEach(graph3 =>{
-                        provincia_año.push(graph3.province+"-"+graph3.president_appointment_date);
-                        //telefono.push(graph3["landline"]);
-                        nombre.push(graph3["first_name"]);
-                        apellido.push(graph3["second_name"]);
+                        provincia_año.push(graph3.province+"-"+graph3.president_appointment_date + "-" +
+                        graph3.first_name + "-" + graph3.second_name);
+                        telefono.push(graph3["landline"]);
+                        //nombre.push(graph3["first_name"]);
+                        //apellido.push(graph3["second_name"]);
                         superficie.push(graph3["surface_extension"]);
                         poblacion.push(graph3["population"]);
                         gastos.push(graph3["expense"]);
@@ -257,13 +258,7 @@
         }, {
             name: 'Mayor de 65 años',
             data: partir65
-        }, {
-            name: 'Periodo',
-            data: periodo
-        }, {
-            name: 'Fecha',
-            data: fecha
-        }, {
+        },{
             name: 'Personas empleadas',
             data: empleadas
         },{
@@ -272,17 +267,10 @@
         }, {
             name: 'Personas No Empleadas',
             data: noempleadas 
-        }, //{
-           // name: 'Teléfono',
-            //data: telefono 
-        //}, 
-        {
-            name: 'Nombre',
-            data: nombre
         }, {
-            name: 'Apellidos',
-            data: apellido
-        }, {
+            name: 'Teléfono',
+            data: telefono 
+        },{
             name: 'Superficie',
             data: superficie
         }, {

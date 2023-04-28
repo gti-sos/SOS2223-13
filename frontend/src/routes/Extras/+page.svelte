@@ -1,11 +1,12 @@
 <script>
     // @ts-nocheck
     import { onMount } from "svelte";
-    import { dev } from "$app/environment";
+    //import { dev } from "$app/environment";
     import { Button, Container } from "sveltestrap";
     import * as d3 from "d3";
     let API = "/api/v2/evolution";
-    if (dev) API = "http://localhost:8080" + API;
+    //if (dev) 
+           //API = "http://localhost:8080" + API;
     let evolutions = [];
     let result = "";
     let resultStatus = "";
