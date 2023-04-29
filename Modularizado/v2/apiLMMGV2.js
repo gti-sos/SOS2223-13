@@ -1,4 +1,6 @@
 import Datastore from 'nedb';
+import jwt from "jsonwebtoken";
+import path from "path";
 var db = new Datastore();
 const API_DOC_PORTAL = "https://documenter.getpostman.com/view/25977296/2s93XsXRSY";
 
@@ -638,6 +640,51 @@ function pagination(req, lista){
 
 };
 
+const TOKEN_KEY = "A1B2C3";
+
+const verifyToken = (req,res,next)=> {
+  const authHeader = req.headers["authorization"];
+  const token = authHeader && authHeader.split("")[1];
+  console.log(authHeader);
+  if(token==null)
+    return res.status(401).send("TOKEN REQUERIDO");
+  jwt.verify(token, TOKEN_KEY, (err,user)=>{
+    if(err) return res.status(403).send("TOKEN INVALIDO");
+    console.log(user);
+    req.user = user;
+    next();
+  });
+
+}
+//LOGIN
+app.get("/api/v2/usuario/login", (req, res)=>{
+  console.log("HOLA");
+  res.sendFile(path.join(__dirname, "../../public/login.html"));
+  /*const usuario = req.body.usuario;
+  const clave = req.body.clave;
+  if(usuario=="luis" && clave=="1234"){
+    const datos = {
+      id: "123",
+      nombre: "Luis",
+      email: "luis@gmail.com",
+      codigo: "ABC-LM"
+
+    };
+    const token = jwt.sign(
+      {userId:datos.id, email:datos.email},
+      TOKEN_KEY,
+      {expiresIn: "24h"}
+    );
+    let nDatos = {...datos, token};
+    res.status(200).json(nDatos);
+  }else{
+    res.status(400).send("Credenciales incorrectas");
+  }*/
+});
+
+app.get("/usuario/:id", verifyToken,(req,res)=>{
+  res.json(evolution_stats);
+});
 //HASTA AQUÍ LLEGA MI CÓDIGO.
 }
 
