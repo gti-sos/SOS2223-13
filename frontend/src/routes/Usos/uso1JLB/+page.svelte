@@ -8,7 +8,7 @@
       fetch('https://timezone.abstractapi.com/v1/current_time/?api_key=d7717cab7b834e76a3778ad3dc2b2078&location=Madrid, Spain')
         .then(response => {
           if (!response.ok) {
-            throw new Error('Network response was not ok');
+            throw new Error('Error en la respuesta, no fue ok');
           }
           return response.json();
         })
