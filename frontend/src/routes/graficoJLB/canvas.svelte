@@ -13,41 +13,36 @@
   if (dev) 
        API = 'http://localhost:8080' + API;
 
-  let data = [];
+
   let provincia_period = [];
-  let employed_person = [];
+  let employedData = [];
+  let inactiveData = [];
+  let unemployedData = [];
   let result = "";
   let resultStatus = "";
 
   async function getData() {
     resultStatus = result = "";
-            const res = await fetch(API, {
-                method: "GET"
+    const res = await fetch(API, {
+            method: "GET"
             });
-            if(res.ok){
-              try{
-                const dataReceived = await res.json();
-                result = JSON.stringify(dataReceived, null, 2);
-                data = dataReceived;
-                data.forEach(data => {
-                  provincia_period.push(data.region);
-                  employed_person.push(data["employed_person"]);
-                  //hombres.push(data["man"]);
-                  //mujeres.push(data["woman"]);
-                  //menor16.push(data["under_sixteen_years"]);
-                  //de16a64.push(data["from_sixteen_to_sixty_four_years"]);
-                  //partir65.push(data["sixty_five_and_over"]);                  
-            });
-                await delay(500);
-                loadCharts(); //,3
-            }catch(error){
-                console.log(`Error devolviendo la gráfica: ${error}`);
+        if (res.ok) {
+            const json = await res.json();
+            for(let i = 0; i<json.length; i++){
+                employedData.push({ y: json[i].employed_person, label: json[i].region+" "+json[i].year });
+                inactiveData.push({ y: json[i].inactive_person, label: json[i].region+" "+json[i].year });
+                unemployedData.push({ y: json[i].unemployed_person, label: json[i].region+" "+json[i].year });
             }
-            const status = await res.status;
-            resultStatus = status;
-            }else{
-              console.log("Ha habido un error cargando los datos");
-            }
+            await delay(1000);
+            loadCharts();
+        }else{
+            window.alert('no hay registros');
+            employedData = [];
+            inactiveData = [];
+            unemployedData = [];
+            await delay(1000);
+            loadCharts();
+        }
     
   }
   async function loadCharts(graphData) {
@@ -56,10 +51,10 @@
 const chart = new CanvasJS.Chart("chartContainer", {
 animationEnabled: true,
 title:{
-    text: "Olympic Medals of all Times (till 2016 Olympics)"
+    text: "Situación laboral de los andaluces entre 2017 y 2020. "
 },
 axisY: {
-    title: "Medals",
+    title: "Personas",
     includeZero: true
 },
 legend: {
@@ -73,41 +68,23 @@ toolTip: {
 data: [{
     type: "bar",
     showInLegend: true,
-    name: "Gold",
+    name: "Empleadas",
     color: "gold",
-    dataPoints: [
-        { y: employed_person, label: provincia_period }
-    ]
+    dataPoints: employedData
 },
 {
     type: "bar",
     showInLegend: true,
-    name: "Silver",
+    name: "Inactivas",
     color: "silver",
-    dataPoints: [
-        { y: 212, label: "Italy" },
-        { y: 186, label: "China" },
-        { y: 272, label: "France" },
-        { y: 299, label: "Great Britain" },
-        { y: 270, label: "Germany" },
-        { y: 165, label: "Russia" },
-        { y: 896, label: "USA" }
-    ]
+    dataPoints: inactiveData
 },
 {
     type: "bar",
     showInLegend: true,
-    name: "Bronze",
+    name: "Desempleadas",
     color: "#A57164",
-    dataPoints: [
-        { y: 236, label: "Italy" },
-        { y: 172, label: "China" },
-        { y: 309, label: "France" },
-        { y: 302, label: "Great Britain" },
-        { y: 285, label: "Germany" },
-        { y: 188, label: "Russia" },
-        { y: 788, label: "USA" }
-    ]
+    dataPoints: unemployedData
 }]
 });
 chart.render();
@@ -145,6 +122,6 @@ chart.render();
 </script>
 
 <main>
-  <h1>Graph</h1>
+  <h1>Gráfico canvas</h1>
   <div id="chartContainer" style="height: 300px; width: 100%;"></div>
 </main>

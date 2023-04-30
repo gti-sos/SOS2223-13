@@ -84,7 +84,7 @@
         description: 'Image description: comparación de personas empleadas en las distintas provincias de Andalucía entre 2017 y 2020.'
     },
     title: {
-        text: 'Cantidad de personas empleadas en Andalucía entre 2017-2020'
+        text: 'Situación laboral de los andaluces entre 2017 y 2020.'
     },
     //subtitle: {
     //    text: 'Source: <a href="https://fas.org/issues/nuclear-weapons/status-world-nuclear-forces/" ' +
@@ -177,7 +177,7 @@
 
 
 <main>
-    <h1>Gráfico</h1>
+    <h1>Gráfico highcharts</h1>
     <figure class="highcharts-figure">
         <div id="container"></div>
         <p class="highcharts-description">
