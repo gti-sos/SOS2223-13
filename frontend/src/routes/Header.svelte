@@ -9,5 +9,4 @@
     <a href="/graficoLMMG">GrafoLMMG</a>
     <a href="/graficoJLB">GraficoJLB</a>
     <a href="/graficoIFR">GraficoIFR</a>
-    <a href="/localentities">Entidades locales</a>
 </nav>
