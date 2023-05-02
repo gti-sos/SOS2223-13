@@ -9,7 +9,7 @@
     import { dev } from "$app/environment"; 
     import { Button } from "sveltestrap";
 
-    let API = "/api/v2/graficoIFR";
+    let API = "https://sos2223-13.appspot.com/api/v1/graficoIFR";
 
     let graph = [];
 
