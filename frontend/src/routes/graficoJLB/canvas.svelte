@@ -29,9 +29,9 @@
         if (res.ok) {
             const json = await res.json();
             for(let i = 0; i<json.length; i++){
-                employedData.push({ y: json[i].employed_person, label: json[i].region+" "+json[i].year });
-                inactiveData.push({ y: json[i].inactive_person, label: json[i].region+" "+json[i].year });
-                unemployedData.push({ y: json[i].unemployed_person, label: json[i].region+" "+json[i].year });
+                employedData.push({ y: json[i].employed_person, label: json[i].region+" "+json[i].year+" "+json[i].period+" "+json[i].date});
+                inactiveData.push({ y: json[i].inactive_person, label: json[i].region+" "+json[i].year+" "+json[i].period+" "+json[i].date});
+                unemployedData.push({ y: json[i].unemployed_person, label: json[i].region+" "+json[i].year+" "+json[i].period+" "+json[i].date});
             }
             await delay(1000);
             loadCharts();
