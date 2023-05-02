@@ -295,11 +295,17 @@
         <PaginationItem>
             <PaginationLink on:click={() => getPaginacion(9,10)} href="/employment?offset=10&limit=10">2</PaginationLink>
         </PaginationItem>
+        <PaginationItem>
+            <PaginationLink on:click={() => getPaginacion(19,10)} href="/employment?offset=10&limit=10">3</PaginationLink>
+        </PaginationItem>
+        <PaginationItem>
+            <PaginationLink on:click={() => getPaginacion(29,10)} href="/employment?offset=10&limit=10">4</PaginationLink>
+        </PaginationItem>
         <!-- <PaginationItem>
           <PaginationLink next href="#" />
         </PaginationItem> -->
         <PaginationItem>
-          <PaginationLink on:click={() => getPaginacion(9,10)} last href="/employment?offset=10&limit=10" />
+          <PaginationLink on:click={() => getPaginacion(29,10)} last href="/employment?offset=10&limit=10" />
         </PaginationItem>
       </Pagination>
 
