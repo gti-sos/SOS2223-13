@@ -18,7 +18,7 @@
             
         let localentities = [];
         let newLocalentitiesProvince = '';
-        //let newLocalentitiesLandline = '';
+        let newLocalentitiesLandline = '';
         let newLocalentitiesFirstName = '';
         let newLocalentitiesSecondName = '';
         let newLocalentitiesPresidentAppointmentDate = '';
@@ -33,7 +33,7 @@
         let from = "";
         let to = "";
         let province = "";
-        //let landline = "";
+        let landline = "";
         let first_name = "";
         let second_name = "";
         let president_appointment_date = "";
@@ -104,7 +104,7 @@
             resultStatus = result = "";
             const newLocalentities = {
                 province: newLocalentitiesProvince,
-                //landline: parseInt(newLocalentitiesLandline),
+                landline: parseInt(newLocalentitiesLandline),
                 first_name: newLocalentitiesFirstName,
                 second_name: newLocalentitiesSecondName,
                 president_appointment_date: parseInt(newLocalentitiesPresidentAppointmentDate),
@@ -115,7 +115,7 @@
             };
 
             const existingData = insertedData.find(data => 
-                data.province === newLocalentitiesProvince && /*data.landline === newLocalentitiesLandline &&*/ data.first_name === newLocalentitiesFirstName
+                data.province === newLocalentitiesProvince && data.landline === newLocalentitiesLandline && data.first_name === newLocalentitiesFirstName
                     && data.second_name === newLocalentitiesSecondName && data.president_appointment_date === newLocalentitiesPresidentAppointmentDate && data.surface_extension === newLocalentitiesSurfaceExtension && 
                     data.population === newLocalentitiesPopulation && data.expense === newLocalentitiesExpense && data.income === newLocalentitiesIncome
             );
@@ -206,10 +206,10 @@
             }
             if (to) { 
                 consulta.to = to; 
-            }/*
+            }
             if (landline) { 
                 consulta.landline = landline; 
-            }*/
+            }
             if (first_name) { 
                 consulta.first_name = first_name; 
             }
@@ -298,9 +298,10 @@
         <input bind:value={province} type="text" />
       </label>
 
-
-
-
+    <label>
+        Landline:
+        <input bind:value={landline} type="text" />
+    </label>
 
     <label>
         Nombre:
@@ -372,7 +373,7 @@
         <thead>
           <tr>
             <th>Provincia</th>
-
+            <th>Teléfono</th>
             <th>Nombre</th>
             <th>Apellidos</th>
             <th>Fecha nombramiento presidente</th>
@@ -385,7 +386,7 @@
         </thead>
         <tbody>
             <td><input placeholder="Provincia" bind:value={newLocalentitiesProvince}></td>
-
+            <td><input placeholder="Telefono" bind:value={newLocalentitiesLandline}></td>
             <td><input placeholder="Nombre" bind:value={newLocalentitiesFirstName}></td>
             <td><input placeholder="Apellidos" bind:value={newLocalentitiesSecondName}></td>
             <td><input placeholder="Fecha Nombramiento Presidente" bind:value={newLocalentitiesPresidentAppointmentDate}></td>
@@ -400,7 +401,7 @@
         {#each localentities as localentities}
           <tr>
             <td>{localentities.province}</td>
-            
+            <td>{localentities.landline}</td>
             <td>{localentities.first_name}</td>
             <td>{localentities.second_name}</td>
             <td>{localentities.president_appointment_date}</td>

@@ -9,17 +9,17 @@ function loadBackendIFR(app){
   //API
   
   var localentities_stats = [
-      {province:"Almeria" , /*landline:950351228 , */ first_name:"ANTONIO MANUEL" , second_name:"ORTIZ" , president_appointment_date:2015 , surface_extension: 45.24, population:1342.00, expense: 2224600.00, income: 2224600.00},
-      {province:"Almeria" , /*landline:950350001 , */ first_name:"ANTONIO" , second_name:"TORRES" , president_appointment_date:2013 , surface_extension: 83.68 , population:1279.00, expense: 1602733.00 , income: 1602733.00 },
-      {province:"Cordoba" , /*landline:957166002 , */ first_name:"MANUELA" , second_name:"BOLLERO" , president_appointment_date:2015 , surface_extension: 334.84, population:4317.00, expense: 4227447.74 , income: 4227447.74 },
-      {province:"Almeria" , /*landline:950400400 , */ first_name:"MANUEL" , second_name:"CORTES" , president_appointment_date:2013 , surface_extension: 90.04 , population:24670.00, expense: 19128200.00 , income: 19128200.00 },
-      {province:"Granada" , /*landline:958557379 , */ first_name:"MARIA DEL PILAR" , second_name:"LOPEZ" , president_appointment_date:2015 , surface_extension: 27.00 , population: 310.00, expense: 392000.00 , income: 392000.00},
-      {province:"Sevilla" , /*landline:954816021 , */ first_name:"ESTRELLA" , second_name:"MONTA?O" , president_appointment_date:2014 , surface_extension: 13.69 , population: 2114.00, expense: 2137220.70 , income: 2137220.70 },
-      {province:"Cordoba" , /*landline:957660000 , */ first_name:"FRANCISCO JUAN" , second_name:"MARTIN" , president_appointment_date:2015 , surface_extension: 166.48 , population: 13551.00, expense: 7222732.25 , income: 7257861.14 },
-      {province:"Huelva" , /*landline:959125710 , */ first_name:"M? CARMEN" , second_name:"OSORNO" , president_appointment_date:2016 , surface_extension: 41.46 , population: 813.00, expense: 630073.18 , income: 630073.18 },
-      {province:"Malaga" , /*landline:952710025 , */ first_name:"JUAN LORENZO" , second_name:"PINEDA" , president_appointment_date:2015 , surface_extension: 65.11 , population: 5403.00 , expense: 4325250.80 , income: 4325250.80 },
-      {province:"Granada" , /*landline:958392520 , */ first_name:"TORCUATO" , second_name:"CABRERIZO" , president_appointment_date:2015 , surface_extension: 90.71 , population: 637.00 , expense: 779638.23 , income: 779638.23 },
-      {province:"Sevilla" , /*landline:954885004 , */ first_name:"EVA CRISTINA" , second_name:"RUIZ" , president_appointment_date:2016 , surface_extension: 280.19 , population: 1820.00, expense: 1899419.45 , income: 1899419.45 }
+      {province:"Almeria" , landline:950351228 ,  first_name:"ANTONIO MANUEL" , second_name:"ORTIZ" , president_appointment_date:2015 , surface_extension: 45.24, population:1342.00, expense: 2224600.00, income: 2224600.00},
+      {province:"Almeria" , landline:950350001 ,  first_name:"ANTONIO" , second_name:"TORRES" , president_appointment_date:2013 , surface_extension: 83.68 , population:1279.00, expense: 1602733.00 , income: 1602733.00 },
+      {province:"Cordoba" , landline:957166002 ,  first_name:"MANUELA" , second_name:"BOLLERO" , president_appointment_date:2015 , surface_extension: 334.84, population:4317.00, expense: 4227447.74 , income: 4227447.74 },
+      {province:"Almeria" , landline:950400400 ,  first_name:"MANUEL" , second_name:"CORTES" , president_appointment_date:2013 , surface_extension: 90.04 , population:24670.00, expense: 19128200.00 , income: 19128200.00 },
+      {province:"Granada" , landline:958557379 ,  first_name:"MARIA DEL PILAR" , second_name:"LOPEZ" , president_appointment_date:2015 , surface_extension: 27.00 , population: 310.00, expense: 392000.00 , income: 392000.00},
+      {province:"Sevilla" , landline:954816021 ,  first_name:"ESTRELLA" , second_name:"MONTA?O" , president_appointment_date:2014 , surface_extension: 13.69 , population: 2114.00, expense: 2137220.70 , income: 2137220.70 },
+      {province:"Cordoba" , landline:957660000 ,  first_name:"FRANCISCO JUAN" , second_name:"MARTIN" , president_appointment_date:2015 , surface_extension: 166.48 , population: 13551.00, expense: 7222732.25 , income: 7257861.14 },
+      {province:"Huelva" , landline:959125710 ,  first_name:"M? CARMEN" , second_name:"OSORNO" , president_appointment_date:2016 , surface_extension: 41.46 , population: 813.00, expense: 630073.18 , income: 630073.18 },
+      {province:"Malaga" , landline:952710025 ,  first_name:"JUAN LORENZO" , second_name:"PINEDA" , president_appointment_date:2015 , surface_extension: 65.11 , population: 5403.00 , expense: 4325250.80 , income: 4325250.80 },
+      {province:"Granada" , landline:958392520 ,  first_name:"TORCUATO" , second_name:"CABRERIZO" , president_appointment_date:2015 , surface_extension: 90.71 , population: 637.00 , expense: 779638.23 , income: 779638.23 },
+      {province:"Sevilla" , landline:954885004 ,  first_name:"EVA CRISTINA" , second_name:"RUIZ" , president_appointment_date:2016 , surface_extension: 280.19 , population: 1820.00, expense: 1899419.45 , income: 1899419.45 }
           
   ];
   
@@ -139,7 +139,7 @@ app.get('/api/v1/localentities-stats', (req, res) => {
                       ((req.query.from == undefined)||(parseInt(req.query.from) <= x.president_appointment_date))&&
                       ((req.query.to == undefined)||(parseInt(req.query.to) >= x.president_appointment_date))&&
                       ((req.query.province == undefined)||(req.query.province === x.province))&&
-                      /*((req.query.landline == undefined)||(req.query.landline === x.landline))&&*/
+                      ((req.query.landline == undefined)||(req.query.landline === x.landline))&&
                       ((req.query.first_name == undefined)||(req.query.first_name === x.first_name))&&
                       ((req.query.second_name == undefined)||(req.query.second_name === x.second_name))&&
                       ((req.query.surface_extension_over == undefined)||(parseInt(req.query.surface_extension_over) <= x.surface_extension))&&
@@ -195,7 +195,7 @@ app.get('/api/v1/localentities-stats', (req, res) => {
         res.sendStatus(500, "ERROR CLIENTE");   
       }
       // Validar que se envíen todos los campos necesarios
-      const requiredFields = ['province', /*'landline',*/ 'first_name', 'second_name', 'president_appointment_date', 'surface_extension', 'population', 'expense', 'income'];
+      const requiredFields = ['province',' landline', 'first_name', 'second_name', 'president_appointment_date', 'surface_extension', 'population', 'expense', 'income'];
       for (const field of requiredFields) {
         if (!request.body.hasOwnProperty(field)) {
           response.status(400).json(`Missing required field: ${field}`);
@@ -287,7 +287,7 @@ app.get('/api/v1/localentities-stats/:city', (req, res) => {
   const to = req.query.to;
 
   //const province = req.query.province;
-  //const landline = req.query.landline;
+  const landline = req.query.landline;
   const first_name = req.query.first_name;
   const second_name = req.query.second_name;
   const president_appointment_date = req.query.president_appointment_date;
@@ -316,7 +316,7 @@ app.get('/api/v1/localentities-stats/:city', (req, res) => {
                 res.status(200).json(filteredList);
     }
     // TELEFONOS
-  /*  
+    
   else if(landline){
       filteredList = filteredList.filter((obj)=>
                   {
@@ -328,7 +328,6 @@ app.get('/api/v1/localentities-stats/:city', (req, res) => {
                   });
                   res.status(200).json(filteredList);
     }
-    */
     // POBLACION
     else if(first_name){
       filteredList = filteredList.filter((obj)=>
@@ -500,7 +499,7 @@ app.put('/api/v1/localentities-stats/:city/:year', (req, res) => {
   }else if(tam != 9){
     return res.status(400).json('Estadística errónea');
   }else{
-    //filteredList.landline = req.body.landline || filteredList.landline;
+    filteredList.landline = req.body.landline || filteredList.landline;
     filteredList.first_name = req.body.first_name || filteredList.first_name;
     filteredList.second_name = req.body.second_name || filteredList.second_name;
     filteredList.surface_extension = req.body.surface_extension || filteredList.surface_extension;

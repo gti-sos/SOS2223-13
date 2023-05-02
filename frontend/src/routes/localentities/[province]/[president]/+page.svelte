@@ -20,7 +20,7 @@
             API = 'http://localhost:8080'+API
             
         let updateLocalentitiesProvince = province;
-        //let updateLocalentitiesLandline = "landline";
+        let updateLocalentitiesLandline = "landline";
         let updateLocalentitiesFirstName = "first_name";
         let updateLocalentitiesSecondName = "second_name";
         let updateLocalentitiesPresident = president;
@@ -41,7 +41,7 @@
                 const data = await res.json();
                 result = JSON.stringify(data,null,2);
                 updateLocalentitiesProvince = data.province;
-                //updateLocalentitiesLandline = data.landline;
+                updateLocalentitiesLandline = data.landline;
                 updateLocalentitiesFirstName = data.first_name;
                 updateLocalentitiesSecondName = data.second_name;
                 updateLocalentitiesPresident = data.president;
@@ -70,7 +70,7 @@
                 },
                 body: JSON.stringify({
                     province: updateLocalentitiesProvince,
-                    //landline: updateLocalentitiesLandline,
+                    landline: updateLocalentitiesLandline,
                     first_name: updateLocalentitiesFirstName,
                     second_name: updateLocalentitiesSecondName,
                     president: updateLocalentitiesPresident,
@@ -123,7 +123,7 @@
         <tbody>
             <tr>
                 <td>{updateLocalentitiesProvince}</td>
-                
+                <td><input bind:value={updateLocalentitiesLandline}></td>
                 <td><input bind:value={updateLocalentitiesFirstName}></td>
                 <td><input bind:value={updateLocalentitiesSecondName}></td>
                 <td>{updateLocalentitiesPresident}</td>

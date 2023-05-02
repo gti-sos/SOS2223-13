@@ -53,7 +53,7 @@
                 graph.forEach(graph =>{
                     console.log(graph);
                     provincia_año.push(graph.province+"-"+graph.president_appointment_date);
-                    //telefono.push(graph["landline"]);
+                    telefono.push(graph["landline"]);
                     superficie.push(graph["surface_extension"]);
                     poblacion.push(graph["population"]);
                     gastos.push(graph["expenses"]);
