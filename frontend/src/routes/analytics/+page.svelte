@@ -151,7 +151,7 @@
                     graph3.forEach(graph3 =>{
                         provincia_año.push(graph3.province+"-"+graph3.president_appointment_date + "-" +
                         graph3.first_name + "-" + graph3.second_name);
-                        telefono.push(graph3["landline"]);
+                        //telefono.push(graph3["landline"]);
                         //nombre.push(graph3["first_name"]);
                         //apellido.push(graph3["second_name"]);
                         superficie.push(graph3["surface_extension"]);

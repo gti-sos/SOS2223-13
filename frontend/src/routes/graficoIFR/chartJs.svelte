@@ -9,7 +9,7 @@
     import { dev } from "$app/environment"; 
     import { Button } from "sveltestrap";
 
-    let API = "https://sos2223-13.appspot.com/api/v1/graficoIFR";
+    let API = "/api/v2/graficoIFR";
 
     let graph = [];
 
@@ -49,7 +49,7 @@
                     graph.forEach(graph =>{
                          console.log(graph);
                         provincia_año.push(graph.province+"-"+graph.president_appointment_date);
-                        telefono.push(graph["landline"]);
+                        //telefono.push(graph["landline"]);
                         superficie.push(graph["surface_extension"]);
                         poblacion.push(graph["population"]);
                         gastos.push(graph["expenses"]);
