@@ -2,6 +2,7 @@
     import Integracion2 from "./apiRapid.svelte";
     import Integracion3 from "./Integracion3.svelte";
     import Integracion4 from "./Integracion4.svelte";
+    import Integracion1JLB from "./Integracion1JLB.svelte";
 </script>
 
 <main>
@@ -12,4 +13,6 @@
     <Integracion3></Integracion3>
     <hr style="margin-left: 100%; margin-right: 100%">
     <Integracion4></Integracion4>
+    <hr style="margin-left: 100%; margin-right: 100%">
+    <Integracion1JLB></Integracion1JLB>
 </main>
