@@ -28,7 +28,6 @@
         let employed_person_sevilla = [];
         let employed_person_huelva = [];
         let employed_person_cordoba = [];
-        let advertencia = "";
         let result = "";
         let resultStatus = "";
 

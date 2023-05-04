@@ -14,7 +14,7 @@
        API = 'http://localhost:8080' + API;
 
 
-  let provincia_period = [];
+  
   let employedData = [];
   let inactiveData = [];
   let unemployedData = [];
@@ -27,22 +27,26 @@
             method: "GET"
             });
         if (res.ok) {
-            const json = await res.json();
-            for(let i = 0; i<json.length; i++){
-                employedData.push({ y: json[i].employed_person, label: json[i].region+" "+json[i].year+" "+json[i].period+" "+json[i].date});
-                inactiveData.push({ y: json[i].inactive_person, label: json[i].region+" "+json[i].year+" "+json[i].period+" "+json[i].date});
-                unemployedData.push({ y: json[i].unemployed_person, label: json[i].region+" "+json[i].year+" "+json[i].period+" "+json[i].date});
+            try{
+                const data = await res.json();
+                //result = JSON.stringify(dataReceived, null, 2);
+                //data = dataReceived;
+                for(let i = 0; i<data.length; i++){
+                employedData.push({ y: data[i].employed_person, label: data[i].region+" "+data[i].year+" "+data[i].period+" "+data[i].date});
+                inactiveData.push({ y: data[i].inactive_person, label: data[i].region+" "+data[i].year+" "+data[i].period+" "+data[i].date});
+                unemployedData.push({ y: data[i].unemployed_person, label: data[i].region+" "+data[i].year+" "+data[i].period+" "+data[i].date});
+                }
+                
+            }catch(error){
+                    console.log(`Error devolviendo la gráfica: ${error}`);
             }
-            await delay(1000);
-            loadCharts();
+            const status = await res.status;
+            resultStatus = status;   
         }else{
-            window.alert('no hay registros');
-            employedData = [];
-            inactiveData = [];
-            unemployedData = [];
-            await delay(1000);
-            loadCharts();
+            console.log("Error al cargar la gráfica"); 
         }
+        await delay(1000);
+        loadCharts();
     
   }
   async function loadCharts(graphData) {
