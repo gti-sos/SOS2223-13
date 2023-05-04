@@ -12,16 +12,19 @@
     let equipo1 = [];
     let equipo2 = [];
     let partidos = [];
-
-    async function getData(){
-        const options = {
+    
+    const APIExt = "https://unibet.p.rapidapi.com/live-matches-by-sport?sport=football"
+    const options = {
             method: "GET",
             headers: {
                 "X-RapidAPI-Key": "a9593ce2e3msh1dbc9c19a3932cep106e48jsn6d77e0d951b3",
                 "X-RapidAPI-Host": "unibet.p.rapidapi.com"
             }
-        };
-        let res = await fetch("https://unibet.p.rapidapi.com/live-matches-by-sport?sport=football",options);
+    };
+
+    async function getData(){
+        
+        let res = await fetch(APIExt,options);
         await delay(2000);
         if (res.ok) {
             let json = await res.json();
