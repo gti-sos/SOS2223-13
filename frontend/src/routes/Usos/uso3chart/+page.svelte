@@ -12,24 +12,31 @@
     //import { dev } from "$app/environment";
     let graph = [];
     let provincia_año = [];
-    let pib_current_price = [];
-    let pib_percentage_structure = [];
-    let pib_variation_rate = [];
+    let municipality_size_lt_ft = [];
+    let municipality_size_bt_ft_tht = [];
+    let municipality_size_gt_tht = [];
+    let capital_size = [];
     onMount(async () =>{
         getGraph()
     });
     async function getGraph(){
+        const res1 = await fetch(
+            "https://sos2223-23.appspot.com/api/v2/density-population/loadinitialdata"
+        );
+        if (res1.ok) {
+            console.log("Fetching Pablo....");
             const res = await fetch(
-                "https://sos2223-21.appspot.com/api/v3/market-prices-stats/"
+                "https://sos2223-23.appspot.com/api/v2/density-population/"
             );
             if(res.ok){
                     const valores = await res.json();
                     graph = valores;
                     graph.forEach(graph =>{
-                        provincia_año.push(graph.province+"-"+graph.year);
-                        pib_current_price.push(graph["pib_current_price"]);
-                        pib_percentage_structure.push(graph["pib_percentage_structure"]);
-                        pib_variation_rate.push(graph["pib_variation_rate"]);
+                        provincia_año.push(graph.province+"-"+graph.year+"-"+graph.gender);
+                        municipality_size_lt_ft.push(graph["municipality_size_lt_ft"]);
+                        municipality_size_bt_ft_tht.push(graph["municipality_size_bt_ft_tht"]);
+                        municipality_size_gt_tht.push(graph["municipality_size_gt_tht"]);
+                        capital_size.push(graph["capital_size"]);
                         
                     });
                     await delay(500);
@@ -37,14 +44,15 @@
             }else{
                 console.log("Error al cargar la gráfica");
             }
+        }
     }
     async function loadChart(){  
-        Highcharts.chart('container', {
+        Highcharts.chart('container3', {
         chart: {
-            type: 'column'
+            type: 'scatter'
         },
         title: {
-            text: 'Estadísticas Markets de Jorge Florentino',
+            text: 'Estadísticas Municipales de Pablo',
             style: {
                 fontWeight: 'bold',
                 fontFamily: 'Times New Roman',
@@ -97,14 +105,17 @@
             }
         },
         series: [{
-            name: 'Precio Actual del Pib',
-            data: pib_current_price 
+            name: 'Municipality size < 5,000',
+            data: municipality_size_lt_ft 
         }, {
-            name: 'Estructura de porcentaje de Pib',
-            data: pib_percentage_structure 
+            name: 'Municipality size 5,000-50,000',
+            data: municipality_size_bt_ft_tht 
         }, {
-            name: 'Ratio de variación del Pib',
-            data: pib_variation_rate 
+            name: 'Municipality size > 50,000',
+            data: municipality_size_gt_tht 
+        }, {
+            name: 'Capital size',
+            data: capital_size 
         }],
         responsive: {
                 rules: [{
@@ -121,16 +132,16 @@
                 }]
             }
         });
-    }
+    } 
     
 </script>
 
  
 <main>
     <figure class="highcharts-figure" style="margin-left: 25px; margin-right:25px">
-        <div id="container"></div>
+        <div id="container3"></div>
         <p class="highcharts-description" style="text-align:center">
-            Gráfico de Columnas sobre las Estadísticas Markets de diferentes provincias de Andalucía en diversos años.
+            Gráfico de Donut sobre las Estadísticas Municipales de diferentes provincias de Andalucía en diversos años.
         </p>
     </figure>
 </main>
