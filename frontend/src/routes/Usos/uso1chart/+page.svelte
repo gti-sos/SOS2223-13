@@ -27,9 +27,9 @@
                     graph = valores;
                     graph.forEach(graph =>{
                         provincia_año.push(graph.province+"-"+graph.year);
-                        pib_current_price.push(graph["Precio Actual del Pib"]);
-                        pib_percentage_structure.push(graph["Estructura de porcentaje de Pib"]);
-                        pib_variation_rate.push(graph["Ratio de variación del Pib"]);
+                        pib_current_price.push(graph["pib_current_price"]);
+                        pib_percentage_structure.push(graph["pib_percentage_structure"]);
+                        pib_variation_rate.push(graph["pib_variation_rate"]);
                         
                     });
                     await delay(500);
@@ -39,7 +39,6 @@
             }
     }
     async function loadChart(){  
-        
         Highcharts.chart('container', {
         chart: {
             type: 'column'
@@ -74,9 +73,9 @@
         },
         yAxis: {
             min: 0,
-            max: 50,
+            max: 50000000,
             title: {
-                text: 'Datos',
+                text: 'PIB',
                 style: {
                     fontWeight: 'bold'
                 }
@@ -85,7 +84,7 @@
         tooltip: {
             headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
             pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-            '<td style="padding:0"><b>{point.y: 2f}ºC</b></td></tr>',
+            '<td style="padding:0"><b>{point.y: 2f}</b></td></tr>',
             footerFormat: '</table>',
             shared: true,
             useHTML: true
