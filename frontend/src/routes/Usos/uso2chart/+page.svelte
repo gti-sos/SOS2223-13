@@ -1,4 +1,4 @@
-<script>
+<!--<script>
   // @ts-nocheck
   import { onMount } from 'svelte';
   import { Table } from 'sveltestrap';
@@ -42,4 +42,4 @@
 
     </tbody>
   </Table>
-</main>
+</main>-->

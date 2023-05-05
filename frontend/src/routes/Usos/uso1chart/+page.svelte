@@ -9,32 +9,27 @@
     // @ts-nocheck
     import {onMount} from "svelte";
     const delay = ms => new Promise(res => setTimeout(res, ms));
-    import { dev } from "$app/environment"; 
+    //import { dev } from "$app/environment";
     let graph = [];
     let provincia_año = [];
-    let temp_max = [];
-    let temp_min = [];
-    let temp_med = [];
+    let pib_current_price = [];
+    let pib_percentage_structure = [];
+    let pib_variation_rate = [];
     onMount(async () =>{
         getGraph()
     });
     async function getGraph(){
-        const res1 = await fetch(
-            "https://sos2223-12.appspot.com/api/v2/agroclimatic/loadInitialData"
-        );
-        if (res1.ok) {
             const res = await fetch(
-                "https://sos2223-12.appspot.com/api/v2/agroclimatic"
+                "https://sos2223-21.appspot.com/api/v3/market-prices-stats/"
             );
             if(res.ok){
                     const valores = await res.json();
                     graph = valores;
                     graph.forEach(graph =>{
-                        console.log(graph);
                         provincia_año.push(graph.province+"-"+graph.year);
-                        temp_max.push(graph["maximun_temperature"]);
-                        temp_min.push(graph["minimun_temperature"]);
-                        temp_med.push(graph["medium_temperature"]);
+                        pib_current_price.push(graph["Precio Actual del Pib"]);
+                        pib_percentage_structure.push(graph["Estructura de porcentaje de Pib"]);
+                        pib_variation_rate.push(graph["Ratio de variación del Pib"]);
                         
                     });
                     await delay(500);
@@ -42,7 +37,6 @@
             }else{
                 console.log("Error al cargar la gráfica");
             }
-        }
     }
     async function loadChart(){  
         
@@ -51,7 +45,7 @@
             type: 'column'
         },
         title: {
-            text: 'Estadísticas Agroclimáticas',
+            text: 'Estadísticas Markets de Jorge Florentino',
             style: {
                 fontWeight: 'bold',
                 fontFamily: 'Times New Roman',
@@ -82,7 +76,7 @@
             min: 0,
             max: 50,
             title: {
-                text: 'Temperatura',
+                text: 'Datos',
                 style: {
                     fontWeight: 'bold'
                 }
@@ -104,14 +98,14 @@
             }
         },
         series: [{
-            name: 'Temperatura Máxima',
-            data: temp_max 
+            name: 'Precio Actual del Pib',
+            data: pib_current_price 
         }, {
-            name: 'Temperatura Mínima',
-            data: temp_min 
+            name: 'Estructura de porcentaje de Pib',
+            data: pib_percentage_structure 
         }, {
-            name: 'Temperatura Media',
-            data: temp_med 
+            name: 'Ratio de variación del Pib',
+            data: pib_variation_rate 
         }],
         responsive: {
                 rules: [{
@@ -137,7 +131,7 @@
     <figure class="highcharts-figure" style="margin-left: 25px; margin-right:25px">
         <div id="container"></div>
         <p class="highcharts-description" style="text-align:center">
-            Gráfico de Columnas sobre las Estadísticas Agroclimáticas de diferentes provincias de Andalucía en diversos años.
+            Gráfico de Columnas sobre las Estadísticas Markets de diferentes provincias de Andalucía en diversos años.
         </p>
     </figure>
 </main>

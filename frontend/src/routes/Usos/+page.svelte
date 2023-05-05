@@ -3,31 +3,27 @@
     import { onMount } from "svelte";
     import { Button, Table } from 'sveltestrap';
     onMount(async () =>{
-            getAgroclimatic();
+            getMarket();
         });
-    let agroclimatics = [];
-    async function getAgroclimatic() {
-        const res1 = await fetch(
-            "https://sos2223-12.appspot.com/api/v2/agroclimatic/loadinitialdata"
-        );
-        if (res1.ok) {
-            console.log("Fetching agroclimatics....");
+    let mercado = [];
+    async function getMarket() {
+            console.log("Fetching market....");
             const res = await fetch(
-                "https://sos2223-12.appspot.com/api/v2/agroclimatic"
+                "https://sos2223-21.appspot.com/api/v3/market-prices-stats/"
             );
             if (res.ok) {
                 const data = await res.json();
-                agroclimatics = data;
-                console.log("Received agroclimatics: " + agroclimatics.length);
+                mercado = data;
+                console.log("Received market: " + mercado.length);
             }
-        }
+
     }
 </script>
 
 <main>
     <figure class="text-center">
         <blockquote class="blockquote">
-            <h1>API: agroclimatic</h1>
+            <h1>API: market-prices-stats</h1>
         </blockquote>
     </figure>
     <td align="center">
@@ -40,28 +36,28 @@
             Gráfica
         </Button>
     </td>
-    {#await agroclimatics}
+    {#await mercado}
         loading
-    {:then agroclimatics}
+    {:then mercado}
         <Table bordered>
             <thead id="titulitos">
                 <tr>
                     <th style="text-decoration: underline;">Provincia:</th>
                     <th style="text-decoration: underline;">Año:</th>
-                    <th style="text-decoration: underline;">Máxima Temperatura:</th>
-                    <th style="text-decoration: underline;">Mínima Temperatura:</th>
-                    <th style="text-decoration: underline;">Media Temperatura:</th>
+                    <th style="text-decoration: underline;">Precio Actual del Pib:</th>
+                    <th style="text-decoration: underline;">Estructura de porcentaje de Pib:</th>
+                    <th style="text-decoration: underline;">Ratio de variación del Pib:</th>
                   </tr>
             </thead>
             <tbody>
                 <tr />
-                {#each agroclimatics as agroclimatic }
+                {#each mercado as m }
           <tr>
-            <td>{agroclimatic.province}</td>
-            <td>{agroclimatic.year}</td>
-            <td>{agroclimatic.maximun_temperature}</td>
-            <td>{agroclimatic.minimun_temperature}</td>
-            <td>{agroclimatic.medium_temperature}</td>
+            <td>{m.province}</td>
+            <td>{m.year}</td>
+            <td>{m.pib_current_price}</td>
+            <td>{m.pib_percentage_structure}</td>
+            <td>{m.pib_variation_rate}</td>
           </tr>
         {/each}
             </tbody>
