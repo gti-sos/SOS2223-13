@@ -1,7 +1,4 @@
 /*
-var express = require("express");
-var cool = require("cool-ascii-faces");
-var bodyParser = require("body-parser");
 var appJLB = express();
 var portJLB = process.env.PORT || 8082;
 appJLB.use(bodyParser.json());

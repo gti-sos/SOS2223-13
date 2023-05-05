@@ -41,7 +41,7 @@
     async function loadChart(){  
         Highcharts.chart('container', {
         chart: {
-            type: 'pie'
+            type: 'spline'
         },
         title: {
             text: 'Estadísticas Markets de Jorge Florentino',
