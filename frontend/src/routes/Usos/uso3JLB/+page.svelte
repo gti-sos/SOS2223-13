@@ -1,4 +1,4 @@
-<svelte:head>
+<!--<svelte:head>
     <script src="https://code.highcharts.com/highcharts.js"></script>
     <script src="https://code.highcharts.com/modules/exporting.js"></script>
     <script src="https://code.highcharts.com/modules/export-data.js"></script>
@@ -15,6 +15,8 @@
         
     let deportes = [];
     let directo = [];
+    let result = "";
+    let resultStatus = "";
     //let partidos = [];
     
     const APIExt = "https://sofasport.p.rapidapi.com/v1/sports/number-live";
@@ -28,12 +30,17 @@
 
     async function getData(){
         
+        resultStatus = result = "";
         let res = await fetch(APIExt,options);
         await delay(2000);
         if (res.ok) {
             let json = await res.json();
-            const nombre = json.data.map(item => item.name);
-            deportes.push(nombre);
+            result = JSON.stringify(json, null, 2);
+            //datos = json;
+            json.data.forEach(datos => {
+                deportes.push(datos.name)
+                directo.push(datos.live)
+            })
             //for(let i = 0; i<8; i++){
             //    
             //    deportes.push(datos[i].name);
@@ -55,19 +62,19 @@
         type: 'line'
     },
     title: {
-        text: 'Monthly Average Temperature'
+        text: 'Número de partidos en directo por deporte'
     },
-    subtitle: {
-        text: 'Source: ' +
-            '<a href="https://en.wikipedia.org/wiki/List_of_cities_by_average_temperature" ' +
-            'target="_blank">Wikipedia.com</a>'
-    },
+    //subtitle: {
+    //    text: 'Source: ' +
+    //        '<a href="https://en.wikipedia.org/wiki/List_of_cities_by_average_temperature" ' +
+    //        'target="_blank">Wikipedia.com</a>'
+    //},
     xAxis: {
         categories: deportes
     },
     yAxis: {
         title: {
-            text: 'Temperature (°C)'
+            text: 'Partidos en directo'
         }
     },
     plotOptions: {
@@ -79,7 +86,7 @@
         }
     },
     series: [{
-        name: 'Reggane',
+        name: 'Número de partidos',
         data: directo
     }]
 });
@@ -103,9 +110,8 @@
     <figure class="highcharts-figure">
         <div id="container"></div>
         <p class="highcharts-description">
-            Gráfico en el que se muestra la tendencia del empleo entre los años 2017 y 2020
-            en las provincias de Andalucía.
+            Gráfico en el que se muestra la cantidad de partidos ahora mismo en directo de distintos deportes
         </p>
     </figure>
 
-</main>
+</main>-->
