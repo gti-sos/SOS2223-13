@@ -299,7 +299,7 @@
       </label>
 
     <label>
-        Landline:
+        Teléfono:
         <input bind:value={landline} type="text" />
     </label>
 
@@ -386,7 +386,7 @@
         </thead>
         <tbody>
             <td><input placeholder="Provincia" bind:value={newLocalentitiesProvince}></td>
-            <td><input placeholder="Telefono" bind:value={newLocalentitiesLandline}></td>
+            <td><input placeholder="Teléfono" bind:value={newLocalentitiesLandline}></td>
             <td><input placeholder="Nombre" bind:value={newLocalentitiesFirstName}></td>
             <td><input placeholder="Apellidos" bind:value={newLocalentitiesSecondName}></td>
             <td><input placeholder="Fecha Nombramiento Presidente" bind:value={newLocalentitiesPresidentAppointmentDate}></td>

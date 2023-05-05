@@ -14,7 +14,6 @@
     let graph = [];
 
     let provincia_año = [];
-    let telefono = [];
     let superficie = [];
     let poblacion = [];
     let gastos = [];
@@ -49,10 +48,9 @@
                     graph.forEach(graph =>{
                          console.log(graph);
                         provincia_año.push(graph.province+"-"+graph.president_appointment_date);
-                        telefono.push(graph["landline"]);
                         superficie.push(graph["surface_extension"]);
                         poblacion.push(graph["population"]);
-                        gastos.push(graph["expenses"]);
+                        gastos.push(graph["expense"]);
                         ingresos.push(graph["income"]);
                         console.log(myChart.data);
 
@@ -77,16 +75,8 @@
         const myChart = new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: año,
+                labels: provincia_año,
                 datasets: [{
-                    label: 'Teléfono',
-                    data: telefono,
-                    borderColor: '#000',
-                    backgroundColor: ['red'],
-                    borderWidth: 3,
-                     
-                    
-                }, {
                     label: 'Superficie',
                     data: superficie,
                     borderColor: '#000',
@@ -161,7 +151,7 @@
                         intersect: false,
                         callbacks: {
                             label: function(context) {
-                                return context.dataset.label + ': ' + context.parsed.y.toFixed(2) + 'ºC';
+                                return context.dataset.label + ': ' + context.parsed.y.toFixed(2);
                             }
                         }
                     }
@@ -205,6 +195,8 @@
 
 <main>
     <canvas id="myChart" style="width: 20vw; height: 20vh;"></canvas>
-
     <br>
+    <div style="text-align:center">
+        <Button color="primary" href="/">Volver a Inicio</Button>
+    </div>
 </main>

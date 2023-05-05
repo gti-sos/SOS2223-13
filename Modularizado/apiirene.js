@@ -45,7 +45,7 @@ app.post(BASE_API_URL + "/localentities-stats", (request,response) => {
       res.sendStatus(500, "ERROR CLIENTE");
     }
 
-    const requiredFields = ['province', /*'landline',*/ 'first_name', 'second_name', 'president_appointment_date', 'surface_extension', 'population', 'expense', 'income'];
+    const requiredFields = ['province', 'landline', 'first_name', 'second_name', 'president_appointment_date', 'surface_extension', 'population', 'expense', 'income'];
     for(const field of requiredFields){
       if(!request.body.hasOwnProperty(field)){
         response.status(400).json(`Missing required field: ${field}`);
