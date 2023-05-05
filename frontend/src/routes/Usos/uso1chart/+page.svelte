@@ -41,7 +41,7 @@
     async function loadChart(){  
         Highcharts.chart('container', {
         chart: {
-            type: 'column'
+            type: 'pie'
         },
         title: {
             text: 'Estadísticas Markets de Jorge Florentino',
@@ -73,7 +73,7 @@
         },
         yAxis: {
             min: 0,
-            max: 100,
+            max: 50000000,
             title: {
                 text: 'Datos',
                 style: {
