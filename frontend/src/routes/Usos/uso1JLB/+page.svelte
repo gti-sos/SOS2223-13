@@ -1,4 +1,4 @@
-<script>
+<!--<script>
     // @ts-nocheck
     import { onMount } from 'svelte';
   
@@ -28,4 +28,4 @@
         <li><strong>Desfase respecto GMT:</strong> {data.gmt_offset}<strong>h</strong></li>
         <li><strong>Ciudad:</strong> {data.requested_location}</li>
       </ul>
-  </main>
+  </main>-->

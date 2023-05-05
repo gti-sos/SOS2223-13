@@ -1,4 +1,4 @@
-<svelte:head>
+<!--<svelte:head>
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js" on:load="{loadCharts}"></script>
     
@@ -12,19 +12,16 @@
     let equipo1 = [];
     let equipo2 = [];
     let partidos = [];
-    
-    const APIExt = "https://unibet.p.rapidapi.com/live-matches-by-sport?sport=football"
-    const options = {
+
+    async function getData(){
+        const options = {
             method: "GET",
             headers: {
                 "X-RapidAPI-Key": "a9593ce2e3msh1dbc9c19a3932cep106e48jsn6d77e0d951b3",
                 "X-RapidAPI-Host": "unibet.p.rapidapi.com"
             }
-    };
-
-    async function getData(){
-        
-        let res = await fetch(APIExt,options);
+        };
+        let res = await fetch("https://unibet.p.rapidapi.com/live-matches-by-sport?sport=football",options);
         await delay(2000);
         if (res.ok) {
             let json = await res.json();
@@ -95,4 +92,4 @@
             text-align: center;
             padding: 30px;       
         }
-    </style>
+    </style>-->
