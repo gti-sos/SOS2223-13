@@ -639,7 +639,7 @@ function pagination(req, lista){
   return res;
 
 };
-
+/*
 const TOKEN_KEY = "A1B2C3";
 
 const verifyToken = (req,res,next)=> {
@@ -679,12 +679,12 @@ app.get("/api/v2/usuario/login", (req, res)=>{
     res.status(200).json(nDatos);
   }else{
     res.status(400).send("Credenciales incorrectas");
-  }*/
+  }
 });
 
 app.get("/usuario/:id", verifyToken,(req,res)=>{
   res.json(evolution_stats);
-});
+});*/
 //HASTA AQUÍ LLEGA MI CÓDIGO.
 }
 

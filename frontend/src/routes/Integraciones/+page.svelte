@@ -11,7 +11,8 @@
     const delay = ms => new Promise(res => setTimeout(res, ms));
     //import { dev } from "$app/environment"; 
     let API = "https://sos2223-13.ew.r.appspot.com/api/v2/evolution";
-    let API2 = "https://sos2223-12.ew.r.appspot.com/api/v2/agroclimatic";
+    let API2 = "https://sos2223-13.ew.r.appspot.com/agro";
+    //"http://localhost:8080/agro";// Llama a /agro que esté en el backend y accede a la API de álvaro
     let grafica = [];
     let grafica2 = [];
    

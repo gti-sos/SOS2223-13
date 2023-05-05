@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors";
+import request from "request";
 import {loadBackendJLB} from './Modularizado/apiJLB.js';
 import {loadBackendJLBV2} from './Modularizado/v2/apiJLBV2.js';
 import {loadBackendLMMG} from './Modularizado/api.js';
@@ -13,7 +14,15 @@ import {handler} from "./frontend/build/handler.js";
 var app = express();
 app.use(cors()); 
 var port = process.env.PORT || 8080;
-app.use(express.json());
+app.use(express.json()); //bodyParser
+//Proxy LUIS MIGUEL:
+var paths = "/agro";
+var apiServerHost = "https://sos2223-12.ew.r.appspot.com/api/v2/agroclimatic";
+
+app.use(paths, function(req, res) {
+    var url = apiServerHost + req.url;
+    req.pipe(request(url)).pipe(res);
+});
 //app.use("/",express.static("./public"));
 
 loadBackendJLB(app);
