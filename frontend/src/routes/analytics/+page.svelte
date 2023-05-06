@@ -29,7 +29,6 @@
     let empleadas = [];
     let inactivas = [];
     let noempleadas = [];
-    let telefono = [];
     let nombre = [];
     let apellido = [];
     let superficie = [];
@@ -75,7 +74,6 @@
                  empleadas.push(0); 
                     inactivas.push(0); 
                     noempleadas.push(0);  
-                    telefono.push(0); 
                         nombre.push(0); 
                         apellido.push(0); 
                         superficie.push(0); 
@@ -119,7 +117,6 @@
                         menor16.push(0); 
                         de16a64.push(0); 
                         partir65.push(0);
-                        telefono.push(0); 
                         nombre.push(0); 
                         apellido.push(0); 
                         superficie.push(0); 
@@ -151,7 +148,6 @@
                     graph3.forEach(graph3 =>{
                         provincia_año.push(graph3.province+"-"+graph3.president_appointment_date + "-" +
                         graph3.first_name + "-" + graph3.second_name);
-                        telefono.push(graph3["landline"]);
                         //nombre.push(graph3["first_name"]);
                         //apellido.push(graph3["second_name"]);
                         superficie.push(graph3["surface_extension"]);
@@ -267,9 +263,6 @@
         }, {
             name: 'Personas No Empleadas',
             data: noempleadas 
-        }, {
-            name: 'Teléfono',
-            data: telefono 
         },{
             name: 'Superficie',
             data: superficie

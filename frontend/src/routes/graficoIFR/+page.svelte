@@ -91,7 +91,7 @@
             },
             yAxis: {
                 min: 0,
-                max: 10000000,
+                max: 2000000,
                 title: {
                     text: "Entidades Locales",
                     style: {

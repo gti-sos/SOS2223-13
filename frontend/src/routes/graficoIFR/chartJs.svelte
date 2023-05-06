@@ -42,7 +42,7 @@
             if(res.ok){
                 try{
                     const valores = await res.json();
-                    const fil = valores.filter((x) => x.province == "Sevilla")
+                    const fil = valores.filter((x) => x.province == "Almeria")
                     result = JSON.stringify(fil, null, 2);
                     graph = fil;
                     graph.forEach(graph =>{
@@ -121,7 +121,7 @@
                         }
                     },
                     title:{
-                        text: "Entidades Locales de Sevilla",
+                        text: "Entidades Locales de Almería",
                         display: true,
                         color: 'black',
                         font:{
@@ -167,7 +167,7 @@
                                     weight: 'bold',
                                 }, 
                             },
-                            max: 50
+                            max: 2000000
                         },
                         x: {   
                             display: true,
