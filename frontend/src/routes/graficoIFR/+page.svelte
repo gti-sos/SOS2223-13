@@ -1,3 +1,10 @@
+<svelte:head>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/export-data.js"></script>
+    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+</svelte:head>
+
 <script>
     // @ts-nocheck
     import { onMount } from "svelte";
@@ -37,7 +44,7 @@
                 graph.forEach((graph) => {
                     console.log(graph);
                     provincia_año.push(
-                        graph.province + "-" + graph.president_appointment_date
+                        graph.province + "-" + graph.president_appointment_date + "-" + graph.first_name + "-" + graph.second_name
                     );
                     superficie.push(graph["surface_extension"]);
                     poblacion.push(graph["population"]);
@@ -81,7 +88,7 @@
             },
             xAxis: {
                 title: {
-                    text: "Provincia - Fecha Nombramiento Presidente",
+                    text: "Provincia - Fecha Nombramiento Presidente - Nombre Completo Presidente",
                     style: {
                         fontWeight: "bold",
                     },
@@ -154,12 +161,6 @@
     }
 </script>
 
-<svelte:head>
-    <script src="https://code.highcharts.com/highcharts.js"></script>
-    <script src="https://code.highcharts.com/modules/exporting.js"></script>
-    <script src="https://code.highcharts.com/modules/export-data.js"></script>
-    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
-</svelte:head>
 
 <main>
     <figure class="highcharts-figure">
