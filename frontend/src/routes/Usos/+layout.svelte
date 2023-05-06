@@ -4,6 +4,7 @@
     import Uso1JLB from "./uso1JLB/+page.svelte";
     import Uso2JLB from "./uso2JLB/+page.svelte";
     import Uso3JLB from "./uso3JLB/+page.svelte";
+    import Uso4JLB from "./uso4JLB/+page.svelte";
 </script>
 
 <main>
@@ -19,4 +20,6 @@
     <Uso2JLB></Uso2JLB>
     <hr style="margin-left: 100%; margin-right: 100%">
     <Uso3JLB></Uso3JLB>
+    <hr style="margin-left: 100%; margin-right: 100%">
+    <Uso4JLB></Uso4JLB>
 </main>
