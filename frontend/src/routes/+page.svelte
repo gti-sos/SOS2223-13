@@ -1,3 +1,6 @@
+<svelte:head>
+    <title>SOS2223-13</title>
+</svelte:head>
 <body>
     <h1>BIENVENIDO a SOS2223-13</h1>
     <ul dir="auto">

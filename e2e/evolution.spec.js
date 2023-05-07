@@ -1,37 +1,40 @@
 // @ts-check
 import { test, expect } from '@playwright/test';
 
-test('home has title correct', async ({ page }) => {
+test('Home tiene el título correcto', async ({ page }) => {
   await page.goto('localhost:8080');
 
   // Expect a title "to contain" a substring.
   await expect(page).toHaveTitle("SOS2223-13");
 });
 
-/*test('navigate to evolution page', async ({ page }) => {
+test('Navegar a la página de Evolución', async ({ page }) => {
     await page.goto('localhost:8080');
     // Click the get started link.
-    await page.getByRole('link', { name: 'Evolucion' }).click();
+    await page.getByRole('link', { name: 'Datos-Evolución' }).click();
     // Expects the URL to contain intro.
-    await expect(page).toHaveTitle("SOS2223-13-Evolucion");
-});*/
+    await expect(page).toHaveTitle("SOS2223-13-Datos-Evolución");
 
-test('navigate to graph-evolution page', async ({ page }) => {
-    await page.goto('localhost:8080');
-
-    // Click the get started link.
-    await page.getByRole('link', { name: 'Gráficas-Evolution' }).click();
-
-    // Expects the URL to contain intro.
-    await expect(page).toHaveTitle("SOS2223-13-Gráficas Evoluciones");
+    // Comprobación de que hay datos
+    await expect((await page.locator(".datosEvol").all()).length).toBeGreaterThan(0);
 });
 
-test('navigate to integrations/uses evolution page', async ({ page }) => {
+test('Navegar a la página de grafo Evolution', async ({ page }) => {
     await page.goto('localhost:8080');
 
     // Click the get started link.
-    await page.getByRole('link', { name: 'Usos/Integraciones-Evoluciones' }).click();
+    await page.getByRole('link', { name: 'GrafoLMMG' }).click();
 
     // Expects the URL to contain intro.
-    await expect(page).toHaveTitle("SOS2223-13-Integraciones/Usos Evoluciones");
+    await expect(page).toHaveTitle("SOS2223-13-Gráfica Evolución");
+});
+
+test('Navegar a la página de integraciones', async ({ page }) => {
+    await page.goto('localhost:8080');
+
+    // Click the get started link.
+    await page.getByRole('link', { name: 'Integraciones' }).click();
+
+    // Expects the URL to contain intro.
+    await expect(page).toHaveTitle("SOS2223-13-Integraciones");
 });

@@ -3,6 +3,7 @@
     <script src="https://code.highcharts.com/modules/exporting.js"></script>
     <script src="https://code.highcharts.com/modules/export-data.js"></script>
     <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+    <title>SOS2223-13-Gráfica Localidades</title>
 </svelte:head>
 
 <script>

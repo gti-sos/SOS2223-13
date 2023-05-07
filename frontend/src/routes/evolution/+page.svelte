@@ -1,3 +1,6 @@
+<svelte:head>
+    <title>SOS2223-13-Datos-Evolución</title>
+</svelte:head>
 <script>
     // @ts-nocheck
     
@@ -389,7 +392,7 @@ setTimeout(() => {mensajeUsuario = '';}, 3000);
            
 
         {#each evolutions as evolution}
-          <tr>
+          <tr class="datosEvol">
             <td>{evolution.period}</td>
             <td>{evolution.territory}</td>
             <td>{evolution.total_population}</td>

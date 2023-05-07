@@ -1,3 +1,6 @@
+<svelte:head>
+    <title>SOS2223-13-Personas Empleadas</title>
+</svelte:head>
 <script>
     // @ts-nocheck
     
