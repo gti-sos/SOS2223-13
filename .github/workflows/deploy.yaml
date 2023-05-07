@@ -7,6 +7,7 @@ on:
 
 jobs:
   deploy:
+    timeout-minutes: 20
     name: Deploy to Google Cloud Run
     runs-on: ubuntu-latest
     environment: production
@@ -16,7 +17,10 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16
-      - run: npm ci
+
+      - name: Install backend dependencies    
+        run: npm ci
+        
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
 
