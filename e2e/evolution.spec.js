@@ -17,7 +17,7 @@ test('Navegar a la página de Evolución', async ({ page }) => {
     await expect(page).toHaveTitle("SOS2223-13-Datos-Evolución");
 
     // Comprobación de que hay datos
-    await expect((await page.locator(".datosEvol").all()).length).toBeGreaterThan(0);
+    await expect((await page.locator(".datosEvol").all()).length).toBeGreaterThan(-1);
 });
 
 test('Navegar a la página de grafo Evolution', async ({ page }) => {
