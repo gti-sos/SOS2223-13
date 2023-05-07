@@ -9,5 +9,6 @@
     <a href="/graficoLMMG">GrafoLMMG</a>
     <a href="/graficoJLB">GraficoJLB</a>
     <a href="/graficoIFR">GraficoIFR</a>
+    <a href="/Extras">Extras</a>
 
 </nav>
