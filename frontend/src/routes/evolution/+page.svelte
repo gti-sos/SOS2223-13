@@ -4,7 +4,7 @@
 <script>
     // @ts-nocheck
     
-        import { onMount } from "svelte";
+        import { onMount } from "svelte"; 
         import { dev } from "$app/environment";
         import { Button, Table, ButtonToolbar } from "sveltestrap";
         import { Pagination, PaginationItem, PaginationLink } from 'sveltestrap';
