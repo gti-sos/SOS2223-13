@@ -29,6 +29,7 @@
       }
       const status = await res.status;
       resultStatus = status;
+      getGraph(Filtrado(evolutions))
     }
     function Filtrado(arr) {
       const result = arr.reduce((acc, obj) => {
@@ -37,6 +38,15 @@
       }, {});
       return Object.fromEntries(
         Object.entries(result).sort((a, b) => a[1] - b[1])
+      );
+    }
+    function Filtrado2(arr) {
+      const result = arr.reduce((acc, obj) => {
+        acc[obj.territory+obj.period] = obj.total_population;
+        return acc;
+      }, {});
+      return Object.fromEntries(
+        Object.entries(result).sort((a, b) => b[1] - a[1])
       );
     }
     let margin = { top: 40, right: 40, bottom: 190, left: 60 };
@@ -204,33 +214,73 @@
         .attr("dy", "-.55em")
         .attr("transform", "rotate(-90)");
     }
+
+    function revertirBarras2() {
+      const newData = Object.entries(Filtrado2(evolutions)).reverse();
+      const x = d3
+        .scaleBand()
+        .range([0, width])
+        .padding(0.1)
+        .domain(newData.map((d) => d[0]));
+      const color = d3
+        .scaleOrdinal()
+        .range([
+          "#1f77b4",
+          "#ff7f0e",
+          "#2ca02c",
+          "#d62728",
+          "#9467bd",
+          "#8c564b",
+          "#e377c2",
+          "#7f7f7f",
+          "#bcbd22",
+          "#17becf",
+          "#a6cee3",
+          "#b2df8a",
+          "#fb9a99",
+          "#fdbf6f",
+          "#cab2d6",
+        ]);
+      svg
+        .selectAll(".bar")
+        .data(newData)
+        .transition()
+        .duration(1000)
+        .attr("x", (d) => x(d[0]))
+        .attr("y", (d) => y(d[1]))
+        .attr("height", (d) => height - y(d[1]))
+        .style("fill", (d, i) => color(i));
+      const xAxis = d3.axisBottom(x);
+      // Actualizacion del eje X.
+      svg
+        .select(".x.axis")
+        .transition()
+        .duration(1000)
+        .call(xAxis)
+        .selectAll("text")
+        .style("text-anchor", "end")
+        .attr("dx", "-.8em")
+        .attr("dy", "-.55em")
+        .attr("transform", "rotate(-90)");
+    }
   </script>
   
   <Container>
     <div class="my-3"><h2>Población total de cada provincia de Andalucía por año</h2></div>
     <div class="my-3">
-      <Button
-        color="primary"
-        on:click={() => getGraph(Filtrado(evolutions))}
-        >Mostrar gráfica</Button
-      >
-      <label for="scale-slider">Escala eje Y:</label>
+      <label for="scale-slider">Mofidica el eje Y:</label>
       <input
         id="scale-slider"
         type="range"
         min="400000"
         max="1500000"
         value="1500000"
-        on:input={() => actualizarEscala()}
-      />
+        on:input={() => actualizarEscala()}/>
+        <Button color="primary"style="display:{buttonVisibility ? 'inline-block' : 'none'}" id="reverse" 
+        on:click={() => revertirBarras()}>Orden descendente</Button>
+        <Button color="primary"style="display:{buttonVisibility ? 'inline-block' : 'none'}" id="reverse" 
+        on:click={() => revertirBarras2()}>Orden ascendente</Button>
     </div>
-    <Button
-      color="primary"
-      style="display:{buttonVisibility ? 'inline-block' : 'none'}"
-      id="reverse"
-      on:click={() => revertirBarras()}>Revertir Orden</Button
-    >
-  
     <div id="tooltip" />
     <div id="chart-container" />
   </Container>
