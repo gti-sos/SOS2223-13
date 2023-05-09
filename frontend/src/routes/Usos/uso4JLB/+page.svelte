@@ -13,7 +13,8 @@
 
     async function getData() {
             const res = await fetch(
-                "https://sos2223-15.appspot.com/api/v1/jobseekers-studies"
+                //"http://localhost:8080/job" para testear sin hacer push que el proxy funciona
+                "https://sos2223-13.ew.r.appspot.com/job"
             );
             if (res.ok) {
                 const data = await res.json();

@@ -25,6 +25,18 @@ app.use(paths, function(req, res) {
 });
 //app.use("/",express.static("./public"));
 
+
+
+//Proxy Jose López
+//"http://localhost:8080/job" para testear sin hacer push que el proxy funciona
+var paths = "/job";
+var apiServerHost = "https://sos2223-15.appspot.com/api/v1/jobseekers-studies";
+
+app.use(paths, function(req, res) {
+    var url = apiServerHost + req.url;
+    req.pipe(request(url)).pipe(res);
+});
+
 loadBackendJLB(app);
 loadBackendJLBV2(app);
 loadBackendLMMG(app);

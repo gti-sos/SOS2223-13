@@ -41,15 +41,11 @@
         if (res.ok) {
             try{
                 const json = await res.json();
-                result = JSON.stringify(json, null, 2);
-                datos = json;
-                datos.forEach(dato =>{
+                json.forEach(dato =>{
                         indice.push(dato.region+" "+dato.year+" "+dato.period+" "+dato.date);
                         employedData.push(dato["employed_person"]);
                         inactiveData.push(dato["inactive_person"]); 
                         unemployedData.push(dato["unemployed_person"]);
-                        labelAPIExt.push(0); 
-                        dataAPIExt.push(0);
                                        
                     });
             }catch(error){
@@ -69,12 +65,6 @@
         if (res2.ok) {
             try{
                 const json = await res2.json();
-                //result = JSON.stringify(json, null, 2);
-                //datos = json;
-                indice.push(0);
-                employedData.push(0);
-                inactiveData.push(0);
-                unemployedData.push(0);
                 labelAPIExt.push(json.response[0].country);
                 dataAPIExt.push(json.response[0].population);
                 
@@ -90,7 +80,7 @@
         loadCharts();
 
 
-async function loadCharts(graphData){
+async function loadCharts(){
  var trace1 = {
   x: indice,
   y: employedData,
@@ -105,11 +95,36 @@ var trace2 = {
   connectgaps: true
 };
 
-var data = [trace1, trace2];
+var trace3 = {
+  x: indice,
+  y: inactiveData,
+  mode: 'lines+markers',
+  connectgaps: true
+};
+
+var trace4 = {
+  x: indice,
+  y: unemployedData,
+  mode: 'lines+markers',
+  connectgaps: true
+};
+
+
+var data = [trace1, trace2, trace3, trace4];
 
 var layout = {
-  title: 'Connect the Gaps Between Data',
-  showlegend: false
+  autosize: false,
+  width: 500,
+  height: 500,
+  margin: {
+    l: 50,
+    r: 50,
+    b: 100,
+    t: 100,
+    pad: 4
+  },
+  paper_bgcolor: '#7f7f7f',
+  plot_bgcolor: '#c7c7c7'
 };
 
 Plotly.newPlot('myDiv', data, layout);
@@ -124,6 +139,6 @@ Plotly.newPlot('myDiv', data, layout);
 
 
 <main>
-    <h2>Gráfica sobre la vida laboral en Andalucia y el COVID en Africa</h2>
+    <h2>Gráfica sobre la vida laboral en Andalucia y número de habitantes en un pais aleatoria</h2>
     <div id='myDiv'>// Plotly chart will be drawn inside this DIV</div>
 </main>

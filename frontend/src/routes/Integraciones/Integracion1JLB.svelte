@@ -1,4 +1,4 @@
-<svelte:head>
+<!--<svelte:head>
   <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 </svelte:head>
 
@@ -77,11 +77,14 @@
         await delay(1000);
         loadCharts();
 
+
     
   }
 
 
-  async function loadCharts(graphData) {
+  async function loadCharts() {
+    console.log(JSON.stringify(dataAPIExt,null,2));
+    console.log(JSON.stringify(employedData,null,2));
     
 
 const chart = new CanvasJS.Chart("chartContainer", {
@@ -167,4 +170,4 @@ chart.render();
 <main>
   <h1>&nbsp;&nbsp;Integración datos empleo y población Nueva York</h1>
   <div id="chartContainer" style="height: 300px; width: 100%;"></div>
-</main>
+</main>-->
