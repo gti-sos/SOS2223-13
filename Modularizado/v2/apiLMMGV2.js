@@ -1,4 +1,4 @@
-import Datastore from 'nedb';
+console.log("E"); import Datastore from 'nedb';
 import jwt from "jsonwebtoken";
 import path from "path";
 var db = new Datastore();
@@ -44,9 +44,9 @@ const BASE_API_URL = "/api/v2";
 app.get(BASE_API_URL+"/evolution/docs",(req,res)=>{
   res.redirect(API_DOC_PORTAL);
 });
-
+console.log("F");
 app.post(BASE_API_URL + "/evolution", (request, response) => {
-  //var NewEvolution = request.body;
+  console.log("G");
   const territory = request.body.territory;
   const period = request.body.period;
   const total_population = request.body.total_population;
@@ -56,13 +56,13 @@ app.post(BASE_API_URL + "/evolution", (request, response) => {
   const from_sixteen_to_sixty_four_years = request.body.from_sixteen_to_sixty_four_years;
   const sixty_five_and_over = request.body.sixty_five_and_over;
   const tam = Object.keys(request.body).length;
-  console.log("New POST to /evolution"); //console.log en el servidor
+  console.log("H");console.log("New POST to /evolution"); //console.log en el servidor D
   if (!isNaN(territory) || isNaN(period) || isNaN(total_population) || isNaN(man) || isNaN(woman) || isNaN(under_sixteen_years) 
   || isNaN(from_sixteen_to_sixty_four_years) || isNaN(sixty_five_and_over)) {
-    return response.status(400).json("Uno o más campos no son números");
-}
-  db.find({},function(err,filteredList){
-
+      console.log("I");/*No entra */return response.status(400).json("Uno o más campos no son números");
+  }
+  db.find({},function(err,filteredList){console.log("J");
+  console.log("K");
     if(err){
         res.sendStatus(500, "CLIENT ERROR");
     }else if(tam != 8){
@@ -78,9 +78,9 @@ app.post(BASE_API_URL + "/evolution", (request, response) => {
   }
   // Verificar que la solicitud se hizo en la ruta correcta
   if (request.originalUrl !== '/api/v2/evolution') {
-    res.status(405).json('Método no permitido');
+    console.log("L");/*No entra*/res.status(405).json('Método no permitido');
   }else{ 
-
+    console.log("M");
   // Verificar si el recurso ya existe
   //const existingObject = evolution_stats.find(obj => obj.territory === territory && obj.period === period);
   filteredList = filteredList.filter((obj)=>
@@ -92,15 +92,15 @@ app.post(BASE_API_URL + "/evolution", (request, response) => {
     // Si el recurso ya existe, devolver un código de respuesta 409
     response.status(409).json(`El recurso ya existe.`);
   } else {
-    // Si el recurso no existe, agregarlo a la lista y devolver un código de respuesta 201
+    console.log("N");// Si el recurso no existe, agregarlo a la lista y devolver un código de respuesta 201
     db.insert(request.body);
     //evolution_stats.push(request.body);
     response.sendStatus(201);
   }
-}
-});
-});
-
+  console.log("Ñ");}
+  console.log("O");});
+  console.log("P");});
+console.log("Q");
 
 
 
@@ -689,3 +689,4 @@ app.get("/usuario/:id", verifyToken,(req,res)=>{
 }
 
 export {loadBackendLMMGV2};
+console.log("R");

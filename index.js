@@ -1,4 +1,4 @@
-import express from "express";
+console.log("A"); import express from "express";
 import cors from "cors";
 import request from "request";
 import {loadBackendJLB} from './Modularizado/apiJLB.js';
@@ -10,7 +10,7 @@ import {loadBackendIFRV2} from './Modularizado/v2/apiireneV2.js';
 
 import {handler} from "./frontend/build/handler.js";
 
-
+console.log("B");
 var app = express();
 app.use(cors()); 
 var port = process.env.PORT || 8080;
@@ -18,11 +18,11 @@ app.use(express.json()); //bodyParser
 //Proxy LUIS MIGUEL:
 var paths = "/agro";
 var apiServerHost = "https://sos2223-12.ew.r.appspot.com/api/v2/agroclimatic";
-
 app.use(paths, function(req, res) {
-    var url = apiServerHost + req.url;
+  console.log("C"); var url = apiServerHost + req.url;
     req.pipe(request(url)).pipe(res);
 });
+console.log("D");
 //app.use("/",express.static("./public"));
 
 
