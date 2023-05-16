@@ -4,8 +4,9 @@
     import Integracion4 from "./Integracion4.svelte";
     import Integracion1JLB from "./Integracion1JLB.svelte";
     import Integracion2JLB from "./Integracion2JLB.svelte";
-    import IntegracionIFR1 from "./IntegracionIFR1.svelte";
-    import IntegracionIFR2 from "./IntegracionIFR2.svelte";
+    
+    import IntegracionIFR3 from "./IntegracionIFR3.svelte";
+
 
 </script>
 
@@ -21,8 +22,7 @@
     <Integracion1JLB></Integracion1JLB>
     <hr style="margin-left: 100%; margin-right: 100%">
     <Integracion2JLB></Integracion2JLB>
+
     <hr style="margin-left: 100%; margin-right: 100%">
-    <IntegracionIFR1></IntegracionIFR1>
-    <hr style="margin-left: 100%; margin-right: 100%">
-    <IntegracionIFR2></IntegracionIFR2>
+    <IntegracionIFR3></IntegracionIFR3>
 </main>

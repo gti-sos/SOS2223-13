@@ -6,6 +6,9 @@
     import Uso3JLB from "./uso3JLB/+page.svelte";
     import Uso4JLB from "./uso4JLB/+page.svelte";
     import Uso5JLB from "./uso5JLB/+page.svelte";
+    import UsoIFR1 from "./usoIFR1/+page.svelte";
+    import UsoIFR2 from "./usoIFR2/+page.svelte";
+
 </script>
 
 <main>
@@ -25,4 +28,8 @@
     <Uso4JLB></Uso4JLB>
     <hr style="margin-left: 100%; margin-right: 100%">
     <Uso5JLB></Uso5JLB>
+    <hr style="margin-left: 100%; margin-right: 100%">
+    <UsoIFR1></UsoIFR1>
+    <hr style="margin-left: 100%; margin-right: 100%">
+    <UsoIFR2></UsoIFR2>
 </main>
