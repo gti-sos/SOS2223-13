@@ -3,13 +3,14 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.6.2"></script>
 </svelte:head>
 
-<script>
+ <script>
     //@ts-nocheck
     import { Table } from "sveltestrap";
     import { onMount } from "svelte";
-    const delay = ms => new Promise(res => setTimeout(res, ms));
-    
+    const delay = (ms) => new Promise((res) => setTimeout(res, ms));
+
     let API2 = "https://sos2223-13.ew.r.appspot.com/api/v2/localentities";
+
 
 
     let graph = [];
@@ -32,20 +33,23 @@
     let resultStatus2 = "";
 
 
-
     onMount(async () => {
-        getGraph();
+        getDatos();
     });
 
-    const url = 'https://marktdaten-deutschland.p.rapidapi.com/marketdata?zip=69256';
+
+
+    const url = 'https://league-of-legends-galore.p.rapidapi.com/api/getChampTierList?tier=s%2B&region=kr&rank=master';
     const options = {
-	method: 'GET',
-	headers: {
-		'X-RapidAPI-Key': '14bb23eb3dmshaaee84a74703686p1964ddjsn6905a0bff0f4',
-		'X-RapidAPI-Host': 'marktdaten-deutschland.p.rapidapi.com'
-	}
+        method: 'GET',
+        headers: {
+            'X-RapidAPI-Key':
+                "01cd34b806msh61c7b8a29784bfdp11335ejsnb506b37121ad',
+            'X-RapidAPI-Host': "league-of-legends-galore.p.rapidapi.com',
+        },
     };
-   
+
+
     async function getGraph(){
             resultStatus = result = "";
             const res = await fetch(url, options)
@@ -54,10 +58,10 @@
             try{
                 const dat = await res.json();
                 result = JSON.stringify(dat, null, 2);
-                graph = dat.data;
+                graph = dat.sTier;
                 graph.forEach(element =>{
-                    provincia_año.push(element['localcell'] + '-'+element['unit']);
-                    resu.push(element["marketprice"])
+                    provincia_año.push(element['name'] + '-'+element['role']);
+                    resu.push(element["winRate"])
 
                     superficie.push(0);
                     poblacion.push(0); 
@@ -109,10 +113,10 @@
             
             await delay(500);
             loadChartMAS();
-    }
+}
     async function loadChartMAS() {
-    const ctx = document.getElementById('myChart3').getContext('2d');
-    const myChart3 = new Chart(ctx, {
+    const ctx = document.getElementById('myChart6').getContext('2d');
+    const myChart6 = new Chart(ctx, {
         type: 'scatter',
         data: {
             labels: provincia_año,
@@ -226,19 +230,6 @@
     });
 }
 
-    
-</script>
 
-<main>
-    <br>
-    <div style="text-align:center;">
-        <strong >Número de datos: {graph.length+graph2.length}</strong>
-    </div>
-    
-    <canvas id="myChart3" style="width: 20vw; height: 20vh;"></canvas>
-    <p style="text-align:center">
-        Estadísticas Entidades Locales y Mercado Alemania.
-    </p>
-    <br>
-</main>
+
 -->
