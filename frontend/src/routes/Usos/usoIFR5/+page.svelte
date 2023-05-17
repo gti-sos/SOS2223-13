@@ -1,5 +1,6 @@
 <!--
-    <script>
+
+<script>
     //@ts-nocheck
     import { Table } from "sveltestrap";
     import { onMount } from "svelte";
@@ -8,9 +9,8 @@
 
     let datos = [];
 
-    let pais = [];
     let codigo = [];
-    let prefijo=[];
+    let nombre = [];
     
 
     let result = "";
@@ -20,12 +20,12 @@
     onMount(async () => {
         getDatos();
     });
-    const url = 'https://truecaller4.p.rapidapi.com/api/v1/getCountryCodes';
-    const options = {
+    const url = 'https://online-code-compiler.p.rapidapi.com/v1/languages/';
+const options = {
 	method: 'GET',
 	headers: {
 		'X-RapidAPI-Key': '01cd34b806msh61c7b8a29784bfdp11335ejsnb506b37121ad',
-		'X-RapidAPI-Host': 'truecaller4.p.rapidapi.com'
+		'X-RapidAPI-Host': 'online-code-compiler.p.rapidapi.com'
 	}
 };
 
@@ -38,12 +38,12 @@
             try{
                 const dat = await res.json();
                 result = JSON.stringify(dat, null, 2);
-                datos = dat.data;
+                datos = dat;
                 console.log(datos);
                 datos.forEach(element => {
-                    pais.push(element['country']);
-                    prefijo.push(element['isdCode']);
-                    codigo.push(element['countryCode']);
+                    codigo.push(element['id']);
+                    nombre.push(element['name']);
+
 
                 });
             }catch(error){
@@ -71,10 +71,8 @@
     <Table striped hover style="text-align: center;">
         <thead>
           <tr style="font-weight: bold; text-decoration:underline">
-            <th>Pais:</th>
-            <th>Prefijo:</th>
-            <th>Codigo Pais:</th>
-
+            <th>ID:</th>
+            <th>Nombre:</th>
 
           </tr>
         </thead>
@@ -83,9 +81,8 @@
 
         {#each datos as d}
           <tr>
-            <td>{d["country"]}</td>
-            <td>{d["isdCode"]}</td>
-            <td>{d["countryCode"]}</td>
+            <td>{d["id"]}</td>
+            <td>{d["name"]}</td>
 
 
           </tr>

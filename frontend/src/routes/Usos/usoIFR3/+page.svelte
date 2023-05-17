@@ -1,6 +1,4 @@
-<svelte:head>
-    <script src="https://cdn.plot.ly/plotly-2.20.0.min.js"></script>
-</svelte:head>
+<!--
 
 <script>
     //@ts-nocheck
@@ -14,25 +12,22 @@
 
     let datos = [];
 
-    let inicio = [];
-    let fin = [];
-    let precio = [];
-    let unidad = [];
-    let precio_local = [];
-    let lugar = [];
+    let titulo = [];
+    let año = [];
+    let pais = [];
 
     onMount(async () => {
         getDatos();
     });
 
     const url =
-        "https://marktdaten-deutschland.p.rapidapi.com/marketdata?zip=69256";
+        "https://where-can-i-watch1.p.rapidapi.com/search/uk/back%20to%20the%20future";
     const options = {
         method: "GET",
         headers: {
             "X-RapidAPI-Key":
-                "14bb23eb3dmshaaee84a74703686p1964ddjsn6905a0bff0f4",
-            "X-RapidAPI-Host": "marktdaten-deutschland.p.rapidapi.com",
+                "01cd34b806msh61c7b8a29784bfdp11335ejsnb506b37121ad",
+            "X-RapidAPI-Host": "where-can-i-watch1.p.rapidapi.com",
         },
     };
 
@@ -45,15 +40,12 @@
             try {
                 const dat = await res.json();
                 result = JSON.stringify(dat, null, 2);
-                datos = dat.data;
+                datos = dat;
                 console.log(datos);
                 datos.forEach((element) => {
-                    inicio.push(element["start_timestamp"]);
-                    fin.push(element["end_timestamp"]);
-                    precio.push(element["marketprice"]);
-                    unidad.push(element["unit"]);
-                    precio_local.push(element["localprice"]);
-                    lugar.push(element["localcell"]);
+                    titulo.push(element["title"]);
+                    año.push(element["year"]);
+                    pais.push(element["country"]);
                 });
             } catch (error) {
                 console.log(`Error parseando el resultado: ${error}`);
@@ -68,40 +60,48 @@
     }
 
     async function loadChart3() {
-  var trace1 = {
-    y: inicio,
-    type: "box",
-    name: "inicio"
-  };
+        var trace1 = {
+            x: titulo,
+            y: año,
+            mode: "markers",
+            type: "scatter",
+            marker: {
+                symbol: "x",
+                size: 8,
+            },
+            name: "nombre",
+        };
 
-  var trace2 = {
-    y: fin,
-    type: "box",
-    name: "fin"
-  };
+        var trace2 = {
+            x: pais,
+            y: año,
+            mode: "markers",
+            type: "scatter",
+            marker: {
+                symbol: "x",
+                size: 8,
+            },
+            name: "rol",
+        };
+        var data = [trace1, trace2];
 
-  var trace3 = {
-    y: precio_local,
-    type: "box",
-    name: "precio local"
-  };
+        var layout = {
+            showlegend: true,
+            font: { size: 15 },
+        };
 
-  var data = [trace1, trace2, trace3];
-
-  var layout = {
-    showlegend: true,
-    font: { size: 15 }
-  };
-
-  Plotly.newPlot("myDiv", data, layout, { responsive: true });
-}
-
+        Plotly.newPlot("myDiv", data, layout, { responsive: true });
+    }
 </script>
+
+<svelte:head>
+    <script src="https://cdn.plot.ly/plotly-2.20.0.min.js"></script>
+</svelte:head>
 
 <h1
     style="text-align: center; font-family:'Times New Roman', Times, serif; font-size: 45px; text-decoration:underline;"
 >
-    Datos: Market Alemania
+    Datos: Where I can Watch
 </h1>
 <br />
 <div style="text-align:center;">
@@ -109,12 +109,11 @@
 </div>
 <br />
 
-
 <main>
     <h2
         style="font-size:40px; font-family: 'Times New Roman', Times, serif; text-align:center; font-weight: bold;"
     >
-        Gráfica de Market Alemania
+        Gráfica de Películas de Reino Unido.
     </h2>
     <h4
         style="font-size:12px; font-family: 'Times New Roman', Times, serif; text-align:center; font-weight: bold;"
@@ -126,7 +125,9 @@
     <div id="myDiv" />
 
     <p style="text-align: center;">
-        Gráfica que obtiene datos de los precios de la electricidad en alemania.
+        Gráfica que obtiene algunas películas y series de Reino Unido.
     </p>
     <br />
 </main>
+
+-->

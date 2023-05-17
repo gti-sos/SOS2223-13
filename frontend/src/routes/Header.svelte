@@ -1,14 +1,19 @@
 <nav data-sveltekit-reload>
-    <a href="/">Menú</a>
-    <a href="/employment">Empleos</a>
-    <a href="/evolution">Datos-Evolución</a>
-    <a href="/localentities">Entidades locales</a>
-    <a href="/Usos">Usos</a>
-    <a href="/Integraciones">Integraciones</a>
-    <a href="/analytics">Analíticas</a>
-    <a href="/graficoLMMG">GrafoLMMG</a>
-    <a href="/graficoJLB">GraficoJLB</a>
-    <a href="/graficoIFR">GraficoIFR</a>
-    <a href="/Extras">Extras</a>
+    <a href="/"  style="font-size: 23px;">Menú</a>
+    <a href="/employment" style="font-size: 23px;">Empleos</a>
+    <a href="/evolution" style="font-size: 23px;">Datos-Evolución</a>
+    <a href="/localentities" style="font-size: 23px;">Entidades locales</a>
+    <a href="/Usos" style="font-size: 23px;">Usos</a>
+    <a href="/Integraciones" style="font-size: 23px;">Integraciones</a>
+    <a href="/analytics" style="font-size: 23px;">Analíticas</a>
+    <a href="/graficoLMMG" style="font-size: 23px;">GrafoLMMG</a>
+    <a href="/graficoJLB" style="font-size: 23px;">GraficoJLB</a>
+    <a href="/graficoIFR" style="font-size: 23px;">GraficoIFR</a>
+    <a href="/Extras" style="font-size: 23px;">Extras</a>
 
 </nav>
+<style>
+    nav a {
+      margin-right: 10px;
+    }
+  </style>

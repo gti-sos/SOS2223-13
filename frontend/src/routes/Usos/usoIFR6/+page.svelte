@@ -8,10 +8,9 @@
 
     let datos = [];
 
-    let pais = [];
-    let codigo = [];
-    let prefijo=[];
-    
+    let nombre = [];
+    let daño = [];
+    let ident = [];
 
     let result = "";
     let resultStatus = "";
@@ -20,14 +19,15 @@
     onMount(async () => {
         getDatos();
     });
-    const url = 'https://truecaller4.p.rapidapi.com/api/v1/getCountryCodes';
-    const options = {
+    const url = 'https://pokemon-unite-pokemons.p.rapidapi.com/pokemon?page=1&pageSize=10';
+const options = {
 	method: 'GET',
 	headers: {
 		'X-RapidAPI-Key': '01cd34b806msh61c7b8a29784bfdp11335ejsnb506b37121ad',
-		'X-RapidAPI-Host': 'truecaller4.p.rapidapi.com'
+		'X-RapidAPI-Host': 'pokemon-unite-pokemons.p.rapidapi.com'
 	}
 };
+
 
     async function getDatos(){
         resultStatus = result = "";
@@ -38,13 +38,12 @@
             try{
                 const dat = await res.json();
                 result = JSON.stringify(dat, null, 2);
-                datos = dat.data;
+                datos = dat.items;
                 console.log(datos);
                 datos.forEach(element => {
-                    pais.push(element['country']);
-                    prefijo.push(element['isdCode']);
-                    codigo.push(element['countryCode']);
-
+                    nombre.push(element['name']);
+                    daño.push(element['id']);
+                    ident.push(element['damageType']);
                 });
             }catch(error){
                 console.log(`Error parseando el resultado: ${error}`);
@@ -71,11 +70,9 @@
     <Table striped hover style="text-align: center;">
         <thead>
           <tr style="font-weight: bold; text-decoration:underline">
-            <th>Pais:</th>
-            <th>Prefijo:</th>
-            <th>Codigo Pais:</th>
-
-
+            <th>Rango:</th>
+            <th>División:</th>
+            <th>MMR:</th>
           </tr>
         </thead>
         <tbody>
@@ -83,11 +80,10 @@
 
         {#each datos as d}
           <tr>
-            <td>{d["country"]}</td>
-            <td>{d["isdCode"]}</td>
-            <td>{d["countryCode"]}</td>
-
-
+            <td>{d["id"]}</td>
+            <td>{d["name"]}</td>
+            <td>{d["damageType"]}</td>
+            <td>{d["streak"]}</td>
           </tr>
         {/each}
           
@@ -99,5 +95,4 @@
     </p>
     <br>
 </main>
-
 -->
