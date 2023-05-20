@@ -319,15 +319,15 @@ app.post(rutaRaiz, (request, response) => {
   const year = request.body.year;
   const period = request.body.period;
   const date = request.body.date;
-  const employed = request.body.employed_person;
-  const inactive = request.body.inactive_person;
-  const unemployed = request.body.unemployed_person;
+  const employed_person = request.body.employed_person;
+  const inactive_person = request.body.inactive_person;
+  const unemployed_person = request.body.unemployed_person;
   const tam = Object.keys(request.body).length;
   console.log("New POST to /employment"); //console.log en el servidor 
-  if (!isNaN(year) || isNaN(period) || isNaN(date) || isNaN(region) || isNaN(employed) || isNaN(inactive) 
-  || isNaN(unemployed)) {
+  if (!isNaN(region) || !isNaN(period) || !isNaN(date) || isNaN(year) || isNaN(employed_person) || isNaN(inactive_person) 
+  || isNaN(unemployed_person)) {
     return response.status(400).json("Uno o más campos no son números");
-} 
+  } 
   db.find({},function(err, filteredList){
 
     if(err){
@@ -355,7 +355,7 @@ app.post(rutaRaiz, (request, response) => {
                 {
                     return(region == obj.region && year == obj.year)
                 });
-  //const existingObject = db.find({region : NewEvolution.region, year : NewEvolution.year});
+
   if (filteredList.length !=0) {
     // Si el recurso ya existe, devolver un código de respuesta 409
     response.status(409).json(`El recurso ya existe.`);
