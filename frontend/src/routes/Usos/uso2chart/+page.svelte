@@ -1,4 +1,4 @@
-<!--<script>
+<script>
   // @ts-nocheck
   import { onMount } from 'svelte';
   import { Table } from 'sveltestrap';
@@ -20,7 +20,7 @@
 <main>
   <figure class="text-center">
     <blockquote class="blockquote">
-      <h1>API: IP Geolocation</h1>
+      <h1>API: IP Geolocation de Luis Miguel</h1>
     </blockquote>
   </figure>
   <Table bordered>
@@ -42,4 +42,4 @@
 
     </tbody>
   </Table>
-</main>-->
+</main>

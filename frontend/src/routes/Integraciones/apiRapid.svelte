@@ -1,4 +1,4 @@
-<!--<svelte:head>
+<svelte:head>
     <script src="https://code.highcharts.com/highcharts.js"></script>
     <script src="https://code.highcharts.com/modules/exporting.js"></script>
     <script src="https://code.highcharts.com/modules/export-data.js"></script>
@@ -131,7 +131,7 @@
         },
         
         subtitle: {
-            text: 'Gráfica con HighCharts',
+            text: 'Gráfica con HighCharts de Luis Miguel',
             style:{
                 fontFamily: 'Times New Roman',
                 fontWeight: 'bold',
@@ -222,4 +222,4 @@
     </figure>
 
     <Button outline color="secondary" href="/">Volver</Button>
-</main>-->
+</main>

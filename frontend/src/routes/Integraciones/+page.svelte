@@ -129,7 +129,7 @@
         },
         
         subtitle: {
-            text: 'Gráfica con HighCharts',
+            text: 'Gráfica con HighCharts de Luis Miguel',
             style:{
                 fontFamily: 'Times New Roman',
                 fontWeight: 'bold',

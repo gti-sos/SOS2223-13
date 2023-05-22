@@ -1,4 +1,3 @@
-<!--
 <svelte:head>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.6.2"></script>
 </svelte:head>
@@ -181,7 +180,7 @@
                         }
                     },
                     title:{
-                        text: "Evolution + ApiEspaña",
+                        text: "Evolution + ApiEspaña de Luis Miguel",
                         display: true,
                         color: 'black',
                         font:{
@@ -260,4 +259,3 @@
         <Button color="primary" href="/">Volver a Inicio</Button>
     </div>
 </main>
--->
