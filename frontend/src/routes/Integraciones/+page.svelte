@@ -81,7 +81,6 @@
                 try{
                     const valores2 = await res2.json();
                     result2 = JSON.stringify(valores2, null, 2);
-                    
                     grafica2 = valores2;
                     grafica2.sort((a, b) => (a.province > b.province) ? 1 : ((b.province > a.province) ? -1 : 0));
                     grafica2.sort((a, b) => (a.year > b.year) ? 1 : ((b.year > a.year) ? -1 : 0));

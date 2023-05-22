@@ -19,8 +19,9 @@ app.use(express.json()); //bodyParser
 var paths = "/agro";
 var apiServerHost = "https://sos2223-12.ew.r.appspot.com/api/v2/agroclimatic";
 app.use(paths, function(req, res) {
-  console.log("C"); var url = apiServerHost + req.url;
-    req.pipe(request(url)).pipe(res);
+  //console.log("C"); 
+  var url = apiServerHost + req.url;
+  req.pipe(request(url)).pipe(res);
 });
 console.log("D");
 //app.use("/",express.static("./public"));
@@ -29,12 +30,12 @@ console.log("D");
 
 //Proxy Jose López
 //"http://localhost:8080/job" para testear sin hacer push que el proxy funciona
-var paths = "/job";
-var apiServerHost = "https://sos2223-15.appspot.com/api/v1/jobseekers-studies";
+var paths2 = "/job";
+var apiServerHost2 = "https://sos2223-15.appspot.com/api/v1/jobseekers-studies";
 
-app.use(paths, function(req, res) {
-    var url = apiServerHost + req.url;
-    req.pipe(request(url)).pipe(res);
+app.use(paths2, function(req2, res2) {
+    var url2 = apiServerHost2 + req2.url;
+    req2.pipe(request(url2)).pipe(res2);
 });
 
 loadBackendJLB(app);

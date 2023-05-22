@@ -165,7 +165,7 @@ const options = {
 <main>
     <h2>Gráfica de datos sobre las Provincias y Años de andalucia</h2>
     <h4>Biblioteca: Plotly de Luis Miguel</h4>
-    <div id='myDiv'>// Plotly chart will be drawn inside this DIV</div>
+    <div id='myDiv'></div>
 </main>
 
 <style>

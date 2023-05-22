@@ -127,7 +127,7 @@ var layout = {
   plot_bgcolor: '#c7c7c7'
 };
 
-Plotly.newPlot('myDiv', data, layout);
+Plotly.newPlot('myDiv8', data, layout);
         }
 
     
@@ -140,5 +140,5 @@ Plotly.newPlot('myDiv', data, layout);
 
 <main>
     <h2>Gráfica sobre la vida laboral en Andalucia y número de habitantes en un pais aleatoria</h2>
-    <div id='myDiv'>// Plotly chart will be drawn inside this DIV</div>
+    <div id='myDiv8'>// Plotly chart will be drawn inside this DIV</div>
 </main>
