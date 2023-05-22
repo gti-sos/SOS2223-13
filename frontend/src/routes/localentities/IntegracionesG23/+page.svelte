@@ -15,15 +15,20 @@
     const delay = ms => new Promise(res => setTimeout(res, ms));
     //import { dev } from "$app/environment"; 
     let API = "https://sos2223-13.appspot.com/api/v2/localentities";
-    let API2 = "https://sos2223-23.ew.r.appspot.com/api/v2/density-population";
+    let API2 = "https://sos2223-23.appspot.com/api/v2/hired-people";
 
     let graph = [];
     let graph2 = [];
 
-    let municipio_menor = [];
-    let municipio_entre = [];
-    let municipio_mayor = [];
-    let tam_capital = [];
+
+    let cont_indef = [];
+    let cont_unico_constr = [];
+    let cont_mult_constr = [];
+    let cont_unico_event = [];
+    let cont_mult_event = [];
+
+
+
 
 
     let provincia_año = [];
@@ -65,10 +70,13 @@
                     gastos.push(graph["expense"]);
                     ingresos.push(graph["income"]);
 
-                    municipio_menor.push(0);
-                    municipio_entre.push(0);
-                    municipio_mayor.push(0);
-                    tam_capital.push(0);
+
+                    cont_indef.push(0);
+                    cont_unico_constr.push(0);
+                    cont_mult_constr.push(0);
+                    cont_unico_event.push(0);
+                    cont_mult_event.push(0);
+
 
                 });
                 await delay(500);
@@ -95,12 +103,13 @@
                     graph2.sort((a, b) => (a.province > b.province) ? 1 : ((b.province > a.province) ? -1 : 0));
                     graph2.sort((a, b) => (a.year > b.year) ? 1 : ((b.year > a.year) ? -1 : 0));
                     graph2.forEach(graph2 =>{
-                        municipio_menor.push(graph2["municipality_size_lt_ft"]);
-                        municipio_entre.push(graph2["municipality_size_bt_ft_tht"]);
-                        municipio_mayor.push(graph2["municipality_size_gt_tht"]);
-                        tam_capital.push(graph2["capital_size"]);
+                        cont_indef.push(graph2["indefinite_contract"]);
+                        cont_unico_constr.push(graph2["single_construction_contract"]);
+                        cont_mult_constr.push(graph2["multiple_construction_contract"]);
+                        cont_unico_event.push(graph2["single_eventual_contract"]);
+                        cont_mult_event.push(graph2["multiple_eventual_contract"]);
 
-                        provincia_año.push(graph2.province+"-"+graph2.year);
+                        provincia_año.push(graph2.province+"-"+graph2.year+"-"+graph2.gender);
 
                         superficie.push(0);
                         poblacion.push(0); 
@@ -131,7 +140,7 @@
             
         },
         title: {
-            text: 'Estadísticas Densidad y Entidades Locales',
+            text: 'Estadísticas Contratos y Entidades Locales',
             style: {
                 fontWeight: 'bold',
                 fontFamily: 'Times New Roman',
@@ -183,17 +192,20 @@
             }
         },
         series: [{
-            name: 'Municipios Menores que 5000',
-            data: municipio_menor 
+            name: 'Contratos Indefinidos',
+            data: cont_indef 
         }, {
-            name: 'Municipios Entre 5000 y 50000',
-            data: municipio_entre 
+            name: 'Contratos únicos de construcción',
+            data: cont_unico_constr 
         }, {
-            name: 'Municipios MeMayoresnores que 5000',
-            data: municipio_mayor 
+            name: 'Contratos Múltiples de Construcción',
+            data: cont_mult_constr 
         }, {
-            name: 'Tamaño Capital',
-            data: tam_capital
+            name: 'Contratos Únicos Eventuales',
+            data: cont_unico_event
+        },{
+            name: 'Contratos Múltiples Eventuales',
+            data: cont_mult_event
         },{
             name: 'Superficie',
             data: superficie
@@ -231,7 +243,7 @@
     <figure class="highcharts-figure" style="margin-left: 25px; margin-right:25px">
         <div id="container2"></div>
         <p class="highcharts-description" style="text-align:center">
-            Gráfico de Donut sobre las Densidades de población y Entidades Locales.
+            Gráfico de Área sobre las Personas Contratadas y las Entidades Locales de Andalucía.
         </p>
     </figure>
     <Button outline color="secondary" href="/">Volver</Button>
