@@ -1,5 +1,5 @@
 
-<head>
+<!--<head>
 	// Load plotly.js into the DOM 
 	<script src='https://cdn.plot.ly/plotly-2.20.0.min.js'></script>
 </head>
@@ -176,3 +176,4 @@ const options = {
         text-align: center;
     }
 </style>
+-->
