@@ -45,21 +45,21 @@
                 data = dataReceived;
                 data.forEach(data => {
                     if(data.region === "Almeria"){
-                        employed_person_almeria.push(data["employed_person"]);
+                        employed_person_almeria.push(parseFloat(data["employed_person"]));
                     }else if(data.region === "Granada"){
-                        employed_person_granada.push(data["employed_person"]);
+                        employed_person_granada.push(parseFloat(data["employed_person"]));
                     }else if(data.region === "Malaga"){
-                        employed_person_malaga.push(data["employed_person"]);
+                        employed_person_malaga.push(parseFloat(data["employed_person"]));
                     }else if(data.region === "Jaen"){
-                        employed_person_jaen.push(data["employed_person"]);
+                        employed_person_jaen.push(parseFloat(data["employed_person"]));
                     }else if(data.region === "Cadiz"){
-                        employed_person_cadiz.push(data["employed_person"]);
+                        employed_person_cadiz.push(parseFloat(data["employed_person"]));
                     }else if(data.region === "Sevilla"){
-                        employed_person_sevilla.push(data["employed_person"]);
+                        employed_person_sevilla.push(parseFloat(data["employed_person"]));
                     }else if(data.region === "Huelva"){
-                        employed_person_huelva.push(data["employed_person"]);
+                        employed_person_huelva.push(parseFloat(data["employed_person"]));
                     }else if(data.region === "Cordoba"){
-                        employed_person_cordoba.push(data["employed_person"]);
+                        employed_person_cordoba.push(parseFloat(data["employed_person"]));
                     }
                 });
                 await delay(300);
@@ -75,7 +75,7 @@
         }
 
     async function loadChart(graphData){
-
+console.log(data);
         Highcharts.chart('container', {
     chart: {
         type: 'area'
@@ -113,7 +113,7 @@
         }
     },
     tooltip: {
-        pointFormat: '{series.name} tenía <b>{point.y:,.0f}</b> mil<br/>personas empleadas en {point.x}'
+        pointFormat: '{series.name} tenía <b>{point.y:,.2f}</b> mil<br/>personas empleadas en {point.x}'
     },
     plotOptions: {
         area: {

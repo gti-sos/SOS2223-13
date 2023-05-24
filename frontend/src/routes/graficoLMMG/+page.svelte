@@ -43,12 +43,13 @@
                 graph = valores;
                 graph.forEach(graph => {
                   provincia_period.push(graph.territory+"-"+graph.period);
-                  poblaciontotal.push(graph["total_population"]);
-                  hombres.push(graph["man"]);
-                  mujeres.push(graph["woman"]);
-                  menor16.push(graph["under_sixteen_years"]);
-                  de16a64.push(graph["from_sixteen_to_sixty_four_years"]);
-                  partir65.push(graph["sixty_five_and_over"]);                  
+                  poblaciontotal.push(parseInt(graph.total_population));
+                  hombres.push(parseInt(graph.man));
+                  mujeres.push(parseInt(graph.woman));
+                  menor16.push(parseInt(graph.under_sixteen_years));
+                  de16a64.push(parseInt(graph.from_sixteen_to_sixty_four_years));
+                  partir65.push(parseInt(graph.sixty_five_and_over));   
+
             });
                 await delay(500);
                 loadChart(); //,3
@@ -63,6 +64,7 @@
           
     }
     async function loadChart(){  //,dataIndex
+      console.log(poblaciontotal);
 Highcharts.chart('container', {
   chart: {
     type: 'column'
