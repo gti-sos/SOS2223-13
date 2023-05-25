@@ -71,7 +71,7 @@
             method: 'GET',
             headers: {
     'content-type': 'application/octet-stream',
-    'X-RapidAPI-Key': '855564e830mshf28ff549a54319bp1c402cjsnf5e497f427c7',
+    'X-RapidAPI-Key': 'a9593ce2e3msh1dbc9c19a3932cep106e48jsn6d77e0d951b3',
     'X-RapidAPI-Host': 'country-facts.p.rapidapi.com',
   }
         };
