@@ -402,7 +402,7 @@
            
 
         {#each localentities as localentities}
-          <tr>
+        <tr class="datosLocal">
             <td>{localentities.province}</td>
             <td>{localentities.landline}</td>
             <td>{localentities.first_name}</td>

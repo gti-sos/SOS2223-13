@@ -8,7 +8,7 @@ test('Navegar a la página de Local Entities', async ({ page }) => {
     await page.getByRole('link', { name: 'Datos-Localentities' }).click();
 
     // Expects the URL to contain intro.
-    await expect(page).toHaveTitle("SOS2223-13-Datos-LocalEntities");
+    await expect(page).toHaveTitle("SOS2223-13-Entidades Locales");
 
     await page.waitForTimeout(1000);
     
@@ -23,5 +23,5 @@ test('Navegar a la página de gráfica Local Entities', async ({ page }) => {
     await page.getByRole('link', { name: 'GraficoIFR' }).click();
 
     // Expects the URL to contain intro.
-    await expect(page).toHaveTitle("SOS2223-13-Gráfica Local Entities");
+    await expect(page).toHaveTitle("SOS2223-13-Gráfica Localidades");
 });
