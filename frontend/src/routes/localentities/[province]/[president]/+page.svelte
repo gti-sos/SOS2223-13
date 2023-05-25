@@ -13,7 +13,9 @@
         let aviso = "";
         let province = $page.params.province;
         let president = $page.params.president;
-        let API = "/api/v2/localentities/"+ province + '/' + president;
+        console.log(province);
+        console.log(president);
+        let API = "/api/v2/localentities/"+province +'/'+president;
 
         if(dev)
             API = 'http://localhost:8080'+API
@@ -38,7 +40,6 @@
             });
             try{
                 const data = await res.json();
-                console.log(data);
                 result = JSON.stringify(data,null,2);
                 updateLocalentitiesProvince = data.province;
                 updateLocalentitiesLandline = data.landline;
@@ -80,9 +81,9 @@
 
                 })
             });
-           console.log(updateLocalentitiesExpense);
             const status = await res.status;
             resultStatus = status;
+            console.log(status);
             if(status==200){
                 getLocalentities_dato();
                 aviso = "Se ha actualizado el dato";

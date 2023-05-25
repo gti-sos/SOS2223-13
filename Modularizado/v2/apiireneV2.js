@@ -440,7 +440,7 @@ app.put('/api/v2/localentities/:city/:year', (req, res) => {
   const city = req.params.city;
   const year = parseInt(req.params.year);
   const city_body = req.body.province;
-  const year_body = parseInt(req.body.president_appointment_date);
+  const year_body = parseInt(req.body.president);
   const body = req.body;
   const tam = Object.keys(req.body).length;
 

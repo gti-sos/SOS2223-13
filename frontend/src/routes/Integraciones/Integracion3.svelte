@@ -44,12 +44,12 @@
                     grafica.sort((a, b) => (a.period > b.period) ? 1 : ((b.period > a.period) ? -1 : 0));
                     grafica.forEach(grafica =>{
                         provincia_año2.push(grafica.territory+"-"+grafica.period);
-                        total_population.push(grafica["total_population"]);
-                        hombres.push(grafica["man"]); 
-                        mujeres.push(grafica["woman"]); 
-                        debajo16.push(grafica["under_sixteen_years"]); 
-                        entre16y64.push(grafica["from_sixteen_to_sixty_four_years"]); 
-                        mayor65.push(grafica["sixty_five_and_over"]); 
+                        total_population.push(parseInt(grafica["total_population"]));
+                        hombres.push(parseInt(grafica["man"])); 
+                        mujeres.push(parseInt(grafica["woman"])); 
+                        debajo16.push(parseInt(grafica["under_sixteen_years"])); 
+                        entre16y64.push(parseInt(grafica["from_sixteen_to_sixty_four_years"])); 
+                        mayor65.push(parseInt(grafica["sixty_five_and_over"])); 
                         
                         count.push(0);
                                        

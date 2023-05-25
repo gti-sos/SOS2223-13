@@ -64,12 +64,12 @@
                     graph.sort((a, b) => (a.period > b.period) ? 1 : ((b.period > a.period) ? -1 : 0));
                     graph.forEach(graph => {
                   provincia_año.push(graph.territory+"-"+graph.period);
-                  poblaciontotal.push(graph["total_population"]);
-                  hombres.push(graph["man"]);
-                  mujeres.push(graph["woman"]);
-                  menor16.push(graph["under_sixteen_years"]);
-                  de16a64.push(graph["from_sixteen_to_sixty_four_years"]);
-                  partir65.push(graph["sixty_five_and_over"]);
+                  poblaciontotal.push(parseInt(graph["total_population"]));
+                  hombres.push(parseInt(graph["man"]));
+                  mujeres.push(parseInt(graph["woman"]));
+                  menor16.push(parseInt(graph["under_sixteen_years"]));
+                  de16a64.push(parseInt(graph["from_sixteen_to_sixty_four_years"]));
+                  partir65.push(parseInt(graph["sixty_five_and_over"]));
                   periodo.push(0); 
                  fecha.push(0); 
                  empleadas.push(0); 
@@ -109,9 +109,9 @@
                         provincia_año.push(graph2.region+"-"+graph2.year + "-" + graph2.period+"-"+graph2.date);
                         //periodo.push(graph2["period"]);
                         //fecha.push(graph2["date"]);
-                        empleadas.push(graph2["employed_person"]);
-                        inactivas.push(graph2["inactive_person"]);
-                        noempleadas.push(graph2["unemployed_person"]);
+                        empleadas.push(parseInt(graph2["employed_person"]));
+                        inactivas.push(parseInt(graph2["inactive_person"]));
+                        noempleadas.push(parseInt(graph2["unemployed_person"]));
                         poblaciontotal.push(0);
                         hombres.push(0); 
                         mujeres.push(0); 
@@ -151,10 +151,10 @@
                         graph3.first_name + "-" + graph3.second_name);
                         //nombre.push(graph3["first_name"]);
                         //apellido.push(graph3["second_name"]);
-                        superficie.push(graph3["surface_extension"]);
-                        poblacion.push(graph3["population"]);
-                        gastos.push(graph3["expense"]);
-                        beneficios.push(graph3["income"]);
+                        superficie.push(parseInt(graph3["surface_extension"]));
+                        poblacion.push(parseInt(graph3["population"]));
+                        gastos.push(parseInt(graph3["expense"]));
+                        beneficios.push(parseInt(graph3["income"]));
                         poblaciontotal.push(0);
                         hombres.push(0); 
                         mujeres.push(0); 

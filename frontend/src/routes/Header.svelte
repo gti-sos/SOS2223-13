@@ -2,7 +2,7 @@
     <a href="/"  style="font-size: 23px;">Menú</a>
     <a href="/employment" style="font-size: 23px;">Empleos</a>
     <a href="/evolution" style="font-size: 23px;">Datos-Evolución</a>
-    <a href="/localentities" style="font-size: 23px;">Entidades locales</a>
+    <a href="/localentities" style="font-size: 23px;">Datos-Localentities</a>
     <a href="/Usos" style="font-size: 23px;">Usos</a>
     <a href="/Integraciones" style="font-size: 23px;">Integraciones</a>
     <a href="/analytics" style="font-size: 23px;">Analíticas</a>
