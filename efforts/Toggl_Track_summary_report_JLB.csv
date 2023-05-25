@@ -1,0 +1,87 @@
+﻿Project,Client,Description,Duration
+SOS2223-13,,# 41 POSTMAN,00:55:15
+SOS2223-13,,#1 Update readme with the real data,00:01:02
+SOS2223-13,,#12 Actualización hoja de grupo,02:40:29
+SOS2223-13,,#13 Tarea Google chrome,00:37:45
+SOS2223-13,,#14 Tarea extensión Toggl,01:10:52
+SOS2223-13,,#15 Tarea Cuenta de GitHub,01:09:19
+SOS2223-13,,#16 Google cloud,01:09:08
+SOS2223-13,,#17 TareasGrupoF04,02:44:22
+SOS2223-13,,#18 creacionIssues,00:15:42
+SOS2223-13,,#19 ComprobarInformacionRepositorio,00:16:53
+SOS2223-13,,#2 Descargar extensión de Toggl en Chrome,00:14:14
+SOS2223-13,,#20 ReplicarAlgoritmo,00:47:50
+SOS2223-13,,#21 Crearse cuenta en piazza.,01:01:51
+SOS2223-13,,#22 Crear cuenta en postman.,00:57:25
+SOS2223-13,,#23 Realizar tarea del index,01:40:29
+SOS2223-13,,#24 Tarea 1 - archivo index.js,00:16:27
+SOS2223-13,,#25 Tarea 2 - Cuenta postman,00:23:26
+SOS2223-13,,#26 Tarea 3 - Hoja propuesta,00:22:59
+SOS2223-13,,#27 API REST,01:53:04
+SOS2223-13,,#27 Google cloud,02:24:16
+SOS2223-13,,#28 NombreRecurso(FFFFF),00:24:19
+SOS2223-13,,#29 LoadInitialData,00:51:24
+SOS2223-13,,#3 Descargar extensión de Toggl en Chrome,00:15:19
+SOS2223-13,,#30 BuenasPrácticas,01:05:51
+SOS2223-13,,#30 Ruta API loadInitialData,00:59:56
+SOS2223-13,,#31 PatronesFuncionamiento,03:24:05
+SOS2223-13,,#32 LlamadasPOSTMAN,02:33:48
+SOS2223-13,,#34 Modificar fichero excel,01:31:00
+SOS2223-13,,#35 Desplegar en google cloud una api rest,13:56:05
+SOS2223-13,,#35 Provincias y fecha,01:01:40
+SOS2223-13,,#36 Hacer un GET se obtengan 10 elementos de la lista,02:03:11
+SOS2223-13,,#37 Modularizar,00:37:27
+SOS2223-13,,#38 Tabla azul,00:23:51
+SOS2223-13,,#39 Seguir los patrones de funcionamiento en la API que vienen en el word,03:44:34
+SOS2223-13,,#40 RevisiónFinal,01:41:55
+SOS2223-13,,#42 PersistenciaAPI,06:40:50
+SOS2223-13,,#43 Busquedas,00:24:23
+SOS2223-13,,#44 Paginación,00:45:43
+SOS2223-13,,#45 PortalDocumentacionPostman,01:54:38
+SOS2223-13,,#46 CodigoAjeno,00:20:17
+SOS2223-13,,#47 Realizar parte del README,00:43:25
+SOS2223-13,,#48 Implementar persistencia basada en Nedb,03:17:59
+SOS2223-13,,#49 Permitirse búsqueda por todos los campos,03:38:01
+SOS2223-13,,#53 ColecciónPOSTMAN,05:10:11
+SOS2223-13,,#54 AñoyPaís,00:17:37
+SOS2223-13,,#55 ScriptLanzamiento,00:19:58
+SOS2223-13,,#56 Script de lanzamiento test-FFFF,01:02:55
+SOS2223-13,,#57 Modularizar código principal,01:02:00
+SOS2223-13,,#58 Correcto uso de identificadores de recursos,01:37:00
+SOS2223-13,,#66 Implementar V2,02:04:10
+SOS2223-13,,"#67 Hacer los metodos PUT,POST,GET y DELETE",01:11:05
+SOS2223-13,,#68 Advertencias de fallos entendibles para el usuario,01:12:28
+SOS2223-13,,Búsquedas por campos,01:51:53
+SOS2223-13,,CorrecciónF03,00:26:17
+SOS2223-13,,Crear una cuenta de github #10,00:15:26
+SOS2223-13,,F02,00:37:24
+SOS2223-13,,F03(grupo),00:05:09
+SOS2223-13,,Información repositorio #11,00:21:34
+SOS2223-13,,ISSUE1F03-CREARISSUES,00:19:25
+SOS2223-13,,ISSUE2F03-POSTMAN,00:28:05
+SOS2223-13,,ISSUE3F03-PROPUESTA,00:16:11
+SOS2223-13,,ISSUE4F03-NODEJS,01:41:07
+SOS2223-13,,Persistencia db,00:46:29
+SOS2223-13,,PorGrupoF02,00:10:28
+SOS2223-13,,TareaF02,00:24:16
+SOS2223-13,,TEST,01:15:38
+SOS2223-13,,Tests,03:16:14
+SOS2223-13,,,03:29:16
+,,#62 ApiRestv2,02:47:26
+,,#63 Front-end Svelte,02:36:36
+,,#64 Interfaz,02:49:46
+,,#65 MensajeInformativo,00:52:41
+,,#69 Búsqueda,00:26:57
+,,#70 Paginación,03:15:00
+,,#71 Recarga,04:55:10
+,,#72 CrearMiGrafico,02:45:00
+,,#73 GraficaFusionCharts,06:31:31
+,,#73 GraficaPlotly,01:07:14
+,,#74 Proxy,05:19:01
+,,#75 Integraciones,06:31:01
+,,#76 GraficaGrupo,00:38:31
+,,#77 Extra.D3.js,00:48:28
+,,#78 Autenticación,03:22:00
+,,#79 Proxy,01:55:00
+,,#80 L13,01:51:15
+,,#81 Video,02:04:00

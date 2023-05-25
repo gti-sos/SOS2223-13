@@ -1,4 +1,4 @@
-<!--<svelte:head>
+<svelte:head>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.6.2"></script>
 </svelte:head>
 <script>
@@ -259,4 +259,3 @@
         <Button color="primary" href="/">Volver a Inicio</Button>
     </div>
 </main>
--->

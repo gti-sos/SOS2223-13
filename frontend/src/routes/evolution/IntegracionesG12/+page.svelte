@@ -1,8 +1,9 @@
-<!--<svelte:head>
+<svelte:head>
     <script src="https://code.highcharts.com/highcharts.js"></script>
     <script src="https://code.highcharts.com/modules/exporting.js"></script>
     <script src="https://code.highcharts.com/modules/export-data.js"></script>
     <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+    <title>SOS2223-13-Integraciones</title>
 </svelte:head>
 <script>
     // @ts-nocheck
@@ -11,11 +12,14 @@
     const delay = ms => new Promise(res => setTimeout(res, ms));
     //import { dev } from "$app/environment"; 
     let API = "https://sos2223-13.ew.r.appspot.com/api/v2/evolution";
-    let API2;
+    let API2 = "https://sos2223-13.ew.r.appspot.com/agro";
+    //"http://localhost:8080/agro";// Llama a /agro que esté en el backend y accede a la API de álvaro
     let grafica = [];
     let grafica2 = [];
    
-    let population = [];
+    let temp_max = [];
+    let temp_min = [];
+    let temp_med = [];
     let provincia_año2 = [];
     let total_population = [];
     let hombres = [];
@@ -36,6 +40,7 @@
             method: "GET"
                 
             });
+            
             if(res.ok){
                 try{
                     const valores = await res.json();
@@ -52,7 +57,9 @@
                         entre16y64.push(parseInt(grafica["from_sixteen_to_sixty_four_years"])); 
                         mayor65.push(parseInt(grafica["sixty_five_and_over"])); 
                         
-                        population.push(0);
+                        temp_max.push(0);
+                        temp_min.push(0);
+                        temp_med.push(0);
                                        
                     });
                     
@@ -66,39 +73,28 @@
             }
         
         resultStatus2 = result2 = "";
-        API2 = 'https://country-facts.p.rapidapi.com/region/europe';
-        const options = {
-            method: 'GET',
-            headers: {
-    'content-type': 'application/octet-stream',
-    'X-RapidAPI-Key': '855564e830mshf28ff549a54319bp1c402cjsnf5e497f427c7',
-    'X-RapidAPI-Host': 'country-facts.p.rapidapi.com',
-  }
-        };
-        resultStatus = result = "";
-            const res2 = await fetch(API2, options, {
-            method: "GET"
-                
+            const res2 = await fetch(API2, {
+                method: "GET"
             });
+            
             if(res2.ok){
                 try{
                     const valores2 = await res2.json();
                     result2 = JSON.stringify(valores2, null, 2);
-                    
                     grafica2 = valores2;
-                    grafica2.sort((a, b) => (a.name.common > b.name.common) ? 1 : ((b.name.common > a.name.common) ? -1 : 0));
+                    grafica2.sort((a, b) => (a.province > b.province) ? 1 : ((b.province > a.province) ? -1 : 0));
+                    grafica2.sort((a, b) => (a.year > b.year) ? 1 : ((b.year > a.year) ? -1 : 0));
                     grafica2.forEach(grafica2 =>{
-                        provincia_año2.push(grafica2.name.common+"- 2022");
+                        temp_max.push(parseFloat(grafica2["maximun_temperature"]));
+                        temp_min.push(parseInt(grafica2["minimun_temperature"]));
+                        temp_med.push(parseInt(grafica2["medium_temperature"]));
+                        provincia_año2.push(grafica2.province+"-"+grafica2.year);
                         total_population.push(0);
                         hombres.push(0); 
                         mujeres.push(0); 
                         debajo16.push(0); 
                         entre16y64.push(0); 
                         mayor65.push(0);
-                        var numeroConComas = grafica2.population;
-                        var numeroSinComas = numeroConComas.replace(/,/g, "");
-                        population.push(Number(numeroSinComas));
-
                         
                     });
                     
@@ -117,12 +113,13 @@
             
     }
     async function loadChart(){  
-        Highcharts.chart('container2', {
+        
+        Highcharts.chart('container1', {
         chart: {
-            type: 'column'
+            type: 'area'
         },
         title: {
-            text: 'Estadísticas Evolución + ApiPaisesEuropeos',
+            text: 'Estadísticas Agroclimáticas y Evolución',
             style: {
                 fontWeight: 'bold',
                 fontFamily: 'Times New Roman',
@@ -174,6 +171,15 @@
             }
         },
         series: [{
+            name: 'Temperatura Máxima',
+            data: temp_max 
+        }, {
+            name: 'Temperatura Mínima',
+            data: temp_min 
+        }, {
+            name: 'Temperatura Media',
+            data: temp_med 
+        }, {
             name: 'Población Total',
             data: total_population
         }, {
@@ -191,10 +197,7 @@
         }, {
             name: 'Mas de 65 años',
             data: mayor65
-        },{
-            name: 'Población',
-            data: population 
-        },],
+        }],
         responsive: {
                 rules: [{
                     condition: {
@@ -212,15 +215,14 @@
         });
     }
 </script>
-
 <main>
-    <figure class="highcharts-figure">
-        <div id="container2"></div>
-        <p class="highcharts-description">
-            Gráfico con Api de Países Europeos.
+    <h1 style="text-align: center; font-family:'Times New Roman', Times, serif; font-size: 45px; text-decoration:underline">Datos Evolución</h1>
+    <figure class="highcharts-figure" style="margin-left: 25px; margin-right:25px">
+        <div id="container1"></div>
+        <p class="highcharts-description" style="text-align:center">
+            Gráfico de Columnas sobre las Estadísticas Agroclimáticas y Evolución.
         </p>
     </figure>
-
     <Button outline color="secondary" href="/">Volver</Button>
-</main>
--->
+    <hr style="text-align: right; margin-left: 100px; margin-right: 100px;">
+</main> 
