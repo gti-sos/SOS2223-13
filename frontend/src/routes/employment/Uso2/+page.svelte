@@ -1,4 +1,4 @@
-<!--<svelte:head>
+<svelte:head>
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js" on:load="{loadCharts}"></script>
     
@@ -94,4 +94,4 @@
             padding: 30px;       
         }
     </style>
-    -->
+    
