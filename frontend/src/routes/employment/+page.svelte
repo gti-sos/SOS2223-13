@@ -262,7 +262,7 @@
            
 
         {#each employments as employment}
-          <tr>
+        <tr class="datosEmpleo">
             <td>{employment.year}</td>
             <td>{employment.period}</td>
             <td>{employment.date}</td>
