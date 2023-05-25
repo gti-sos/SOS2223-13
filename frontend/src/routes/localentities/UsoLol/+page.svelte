@@ -1,4 +1,4 @@
-<!--
+
     <script>
         //@ts-nocheck
         import { Table } from "sveltestrap";
@@ -98,4 +98,3 @@ const options = {
         </p>
         <br>
     </main>
--->
