@@ -153,8 +153,8 @@
                         //apellido.push(graph3["second_name"]);
                         superficie.push(parseInt(graph3["surface_extension"]));
                         poblacion.push(parseInt(graph3["population"]));
-                        gastos.push(parseInt(graph3["expense"]));
-                        beneficios.push(parseInt(graph3["income"]));
+                        gastos.push(parseFloat(graph3["expense"]));
+                        beneficios.push(parseFloat(graph3["income"]));
                         poblaciontotal.push(0);
                         hombres.push(0); 
                         mujeres.push(0); 

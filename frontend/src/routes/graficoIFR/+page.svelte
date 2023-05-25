@@ -47,10 +47,10 @@
                     provincia_año.push(
                         graph.province + "-" + graph.president_appointment_date + "-" + graph.first_name + "-" + graph.second_name
                     );
-                    superficie.push(graph["surface_extension"]);
-                    poblacion.push(graph["population"]);
-                    gastos.push(graph["expense"]);
-                    ingresos.push(graph["income"]);
+                    superficie.push(parseInt(graph["surface_extension"]));
+                    poblacion.push(parseInt(graph["population"]));
+                    gastos.push(parseFloat(graph["expense"]));
+                    ingresos.push(parseFloat(graph["income"]));
                 });
                 await delay(500);
                 loadChart();
