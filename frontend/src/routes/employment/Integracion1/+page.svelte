@@ -1,4 +1,4 @@
-<!--<svelte:head>
+<svelte:head>
   <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 </svelte:head>
 
@@ -107,6 +107,13 @@ toolTip: {
 data: [{
     type: "bar",
     showInLegend: true,
+    name: "Población Nueva York",
+    color: "blue",
+    dataPoints: dataAPIExt
+},
+{
+    type: "bar",
+    showInLegend: true,
     name: "Empleadas",
     color: "gold",
     dataPoints: employedData
@@ -124,13 +131,6 @@ data: [{
     name: "Desempleadas",
     color: "#A57164",
     dataPoints: unemployedData
-},
-{
-    type: "bar",
-    showInLegend: true,
-    name: "Población Nueva York",
-    color: "blue",
-    dataPoints: dataAPIExt
 }]
 });
 chart.render();
@@ -145,7 +145,10 @@ for (var i = 0; i < e.entries.length; i++){
     total = e.entries[i].dataPoint.y + total;
     str = str.concat(str1);
 }
+
 str2 = "<strong>" + e.entries[0].dataPoint.label + "</strong> <br/>";
+str2 += e.entries[1].dataPoint.label + "<br/>";
+
 str3 = "<span style = \"color:Tomato\">Total: </span><strong>" + total + "</strong><br/>";
 return (str2.concat(str)).concat(str3);
 }
@@ -170,4 +173,4 @@ chart.render();
 <main>
   <h1>&nbsp;&nbsp;Integración datos empleo y población Nueva York</h1>
   <div id="chartContainer" style="height: 300px; width: 100%;"></div>
-</main>-->
+</main>
