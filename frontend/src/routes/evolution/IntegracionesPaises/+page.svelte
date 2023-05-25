@@ -141,7 +141,7 @@
         },
         xAxis: {
             title:{
-                text: "Provincia-Año",
+                text: "Lugar-Año",
                 style: {
                     fontWeight: 'bold'
                 }
@@ -221,5 +221,5 @@
         </p>
     </figure>
 
-    <Button outline color="secondary" href="/">Volver</Button>
+    <Button outline color="secondary" href="/integrations">Volver</Button>
 </main>

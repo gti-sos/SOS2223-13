@@ -223,6 +223,6 @@
             Gráfico de Columnas sobre las Estadísticas Agroclimáticas y Evolución.
         </p>
     </figure>
-    <Button outline color="secondary" href="/">Volver</Button>
+    <Button outline color="secondary" href="/integrations">Volver</Button>
     <hr style="text-align: right; margin-left: 100px; margin-right: 100px;">
 </main> 

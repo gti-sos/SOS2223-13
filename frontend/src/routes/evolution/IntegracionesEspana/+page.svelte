@@ -180,7 +180,7 @@
                         }
                     },
                     title:{
-                        text: "Evolution + ApiEspaña de Luis Miguel",
+                        text: "Evolución + ApiEspaña de Luis Miguel",
                         display: true,
                         color: 'black',
                         font:{
@@ -256,6 +256,6 @@
 
     <br>
     <div style="text-align:center">
-        <Button color="primary" href="/">Volver a Inicio</Button>
+        <Button color="primary" href="/integrations">Volver a Inicio</Button>
     </div>
 </main>

@@ -163,10 +163,10 @@ const options = {
 </script>
 
 <main>
-    <h2>Gráfica de datos sobre las Provincias y Años de andalucia</h2>
+    <h2>Gráfica de datos sobre las Provincias y Años de andalucia + Población del Mundo</h2>
     <h4>Biblioteca: Plotly de Luis Miguel</h4>
     <div id='myDiv'></div>
-    <Button outline color="secondary" href="/">Volver</Button>
+    <Button outline color="secondary" href="/integrations">Volver</Button>
 </main>
 
 <style>

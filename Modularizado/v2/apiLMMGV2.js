@@ -97,9 +97,12 @@ app.post(BASE_API_URL + "/evolution", (request, response) => {
     //evolution_stats.push(request.body);
     response.sendStatus(201);
   }
-  console.log("Ñ");}
-  console.log("O");});
-  console.log("P");});
+  console.log("Ñ");
+}
+  console.log("O");
+});
+  console.log("P");
+});
 console.log("Q");
 
 

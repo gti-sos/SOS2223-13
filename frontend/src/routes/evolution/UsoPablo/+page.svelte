@@ -8,6 +8,7 @@
 <script>
     // @ts-nocheck
     import {onMount} from "svelte";
+    import { Button } from "sveltestrap";
     const delay = ms => new Promise(res => setTimeout(res, ms));
     //import { dev } from "$app/environment";
     let graph = [];
@@ -141,7 +142,8 @@
     <figure class="highcharts-figure" style="margin-left: 25px; margin-right:25px">
         <div id="container3"></div>
         <p class="highcharts-description" style="text-align:center">
-            Gráfico de Donut sobre las Estadísticas Municipales de diferentes provincias de Andalucía en diversos años.
+            Gráfico sobre las Estadísticas Municipales de diferentes provincias de Andalucía en diversos años.
         </p>
     </figure>
+    <Button outline color="secondary" href="/integrations">Volver</Button>
 </main>

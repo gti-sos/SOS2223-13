@@ -41,7 +41,6 @@
                     <ul><a href="/evolution/UsoJorge" style="font-size: 20px;">Uso Compañero Jorge Florentino</ul>
                     <ul><a href="/evolution/UsoLocalización" style="font-size: 20px;">Uso API Rapid Localización</a></ul>
                     <ul><a href="/evolution/UsoPablo" style="font-size: 20px;">Uso Compañero Pablo Pérez</a></ul>
-                    <ul><a href="/evolution/IntegracionesEspana" style="font-size: 20px;">Integración API Rapid España.</a></ul>
                     
     
             </ul>
