@@ -50,12 +50,12 @@
                     grafica.sort((a, b) => (a.period > b.period) ? 1 : ((b.period > a.period) ? -1 : 0));
                     grafica.forEach(grafica =>{
                         provincia_año2.push(grafica.territory+"-"+grafica.period);
-                        total_population.push(grafica["total_population"]);
-                        hombres.push(grafica["man"]); 
-                        mujeres.push(grafica["woman"]); 
-                        debajo16.push(grafica["under_sixteen_years"]); 
-                        entre16y64.push(grafica["from_sixteen_to_sixty_four_years"]); 
-                        mayor65.push(grafica["sixty_five_and_over"]); 
+                        total_population.push(parseInt(grafica["total_population"]));
+                        hombres.push(parseInt(grafica["man"])); 
+                        mujeres.push(parseInt(grafica["woman"])); 
+                        debajo16.push(parseInt(grafica["under_sixteen_years"])); 
+                        entre16y64.push(parseInt(grafica["from_sixteen_to_sixty_four_years"])); 
+                        mayor65.push(parseInt(grafica["sixty_five_and_over"])); 
                         
                         temp_max.push(0);
                         temp_min.push(0);
@@ -85,9 +85,9 @@
                     grafica2.sort((a, b) => (a.province > b.province) ? 1 : ((b.province > a.province) ? -1 : 0));
                     grafica2.sort((a, b) => (a.year > b.year) ? 1 : ((b.year > a.year) ? -1 : 0));
                     grafica2.forEach(grafica2 =>{
-                        temp_max.push(grafica2["maximun_temperature"]);
-                        temp_min.push(grafica2["minimun_temperature"]);
-                        temp_med.push(grafica2["medium_temperature"]);
+                        temp_max.push(parseFloat(grafica2["maximun_temperature"]));
+                        temp_min.push(parseInt(grafica2["minimun_temperature"]));
+                        temp_med.push(parseInt(grafica2["medium_temperature"]));
                         provincia_año2.push(grafica2.province+"-"+grafica2.year);
                         total_population.push(0);
                         hombres.push(0); 
