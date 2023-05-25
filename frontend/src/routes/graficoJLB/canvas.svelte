@@ -32,9 +32,9 @@
                 //result = JSON.stringify(dataReceived, null, 2);
                 //data = dataReceived;
                 for(let i = 0; i<data.length; i++){
-                employedData.push({ y: data[i].employed_person, label: data[i].region+" "+data[i].year+" "+data[i].period+" "+data[i].date});
-                inactiveData.push({ y: data[i].inactive_person, label: data[i].region+" "+data[i].year+" "+data[i].period+" "+data[i].date});
-                unemployedData.push({ y: data[i].unemployed_person, label: data[i].region+" "+data[i].year+" "+data[i].period+" "+data[i].date});
+                employedData.push({ y: parseFloat(data[i].employed_person), label: data[i].region+" "+data[i].year+" "+data[i].period+" "+data[i].date});
+                inactiveData.push({ y: parseFloat(data[i].inactive_person), label: data[i].region+" "+data[i].year+" "+data[i].period+" "+data[i].date});
+                unemployedData.push({ y: parseFloat(data[i].unemployed_person), label: data[i].region+" "+data[i].year+" "+data[i].period+" "+data[i].date});
                 }
                 
             }catch(error){
@@ -50,6 +50,7 @@
     
   }
   async function loadCharts(graphData) {
+    console.log(employedData);
     
 
 const chart = new CanvasJS.Chart("chartContainer", {

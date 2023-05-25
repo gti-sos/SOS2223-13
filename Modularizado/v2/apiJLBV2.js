@@ -110,8 +110,9 @@ app.get('/api/v2/employment', (req, res) => {
 
                   // Tenemos que filtrar los datos, para ver cada posible campo y devolver true si no se pasa en la query, 
                   // y si es un parámetro en la query se comprueba la condicion
+                  console.log(req.query);
                   let datos = filteredList.filter((x) => {
-                    return (((req.query.year == undefined)||(parseInt(req.query.year) === x.year))&&
+                    return (((req.query.year == undefined)||(req.query.year === x.year))&&
                     ((req.query.from == undefined)||(parseInt(req.query.from) <= x.year))&&
                     ((req.query.to == undefined)||(parseInt(req.query.to) >= x.year))&&
                     ((req.query.period == undefined)||(req.query.period === x.period))&&
@@ -316,7 +317,7 @@ const rutaRaiz = '/api/v2/employment';
 // Método POST para la ruta base
 app.post(rutaRaiz, (request, response) => {
   const region = request.body.region;
-  const year = request.body.year;
+  const year = parseInt(request.body.year);
   const period = request.body.period;
   const date = request.body.date;
   const employed_person = request.body.employed_person;
@@ -390,6 +391,7 @@ app.post(rutaEsp, (req, res) => {
 //CODIGO PARA PODER HACER UN GET A UNA CIUDAD Y FECHA ESPECÍFICA.
 app.get('/api/v2/employment/:region/:year', (req, res) => {
   const { region, year } = req.params;
+  console.log(req.params);
   db.find({},function(err, filteredList){
 
     if(err){
@@ -427,7 +429,7 @@ app.put('/api/v2/employment/:city/:year', (req, res) => {
   const city = req.params.city;
   const year = parseInt(req.params.year);
   const citybody = req.body.region;
-  const yearbody = req.body.year;
+  const yearbody = parseInt(req.body.year);
   const body = req.body;
   const tam = Object.keys(req.body).length;
   db.find({},function(err, filteredList){
