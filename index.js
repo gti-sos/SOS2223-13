@@ -1,4 +1,4 @@
-console.log("A"); import express from "express";
+import express from "express";
 import cors from "cors";
 import request from "request";
 import {loadBackendJLB} from './Modularizado/apiJLB.js';
@@ -10,7 +10,6 @@ import {loadBackendIFRV2} from './Modularizado/v2/apiireneV2.js';
 
 import {handler} from "./frontend/build/handler.js";
 
-console.log("B");
 var app = express();
 app.use(cors()); 
 var port = process.env.PORT || 8080;
@@ -19,11 +18,9 @@ app.use(express.json()); //bodyParser
 var paths = "/agro";
 var apiServerHost = "https://sos2223-12.ew.r.appspot.com/api/v2/agroclimatic";
 app.use(paths, function(req, res) {
-  //console.log("C"); 
   var url = apiServerHost + req.url;
   req.pipe(request(url)).pipe(res);
 });
-console.log("D");
 //app.use("/",express.static("./public"));
 
 
@@ -96,6 +93,4 @@ app.use((req, res) => {
   // Enviar una respuesta con un código de estado 404 Not Found si la ruta no se encuentra
   res.status(404).json('La ruta solicitada no existe');
 });
-
-console.log("LUIS");
 
