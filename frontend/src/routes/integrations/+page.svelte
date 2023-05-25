@@ -1,6 +1,6 @@
 
 <svelte:head>
-    <title>SOS2223-13-Integraciones</title>
+    <title>SOS2223-13-Integraciones-Usos</title>
 </svelte:head><ul>
     <li><b style="font-size: 25px;">INTEGRACIONES DE IRENE:</b></li>
     <br>

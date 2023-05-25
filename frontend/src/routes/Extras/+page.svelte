@@ -1,3 +1,4 @@
+<title>SOS2223-13-Extras</title>
 <script>
     // @ts-nocheck
     import { onMount } from "svelte";
