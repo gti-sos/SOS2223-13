@@ -38,6 +38,18 @@ app.use(paths2, function(req2, res2) {
     req2.pipe(request(url2)).pipe(res2);
 });
 
+
+
+//Proxy Irene:
+var paths3 = "/hire";
+var apiServerHost3 = "https://sos2223-23.appspot.com/api/v2/hired-people";
+app.use(paths3, function(req3, res3) {
+  //console.log("C"); 
+  var url3 = apiServerHost3 + req.url3;
+  req3.pipe(request(url3)).pipe(res3);
+});
+
+
 loadBackendJLB(app);
 loadBackendJLBV2(app);
 loadBackendLMMG(app);
