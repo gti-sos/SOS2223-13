@@ -225,4 +225,4 @@
     </figure>
     <Button outline color="secondary" href="/">Volver</Button>
     <hr style="text-align: right; margin-left: 100px; margin-right: 100px;">
-</main>
+</main> 
