@@ -36,4 +36,28 @@
 
         </ul>
         <br>
+        <li><b style="font-size: 25px;">USOS DE LUIS MIGUEL:</b></li>
+        <br>
+            <ul>
+    
+                    <ul><a href="/evolution/UsoJorge" style="font-size: 20px;">Uso Compañero Jorge Florentino</ul>
+                    <ul><a href="/evolution/UsoLocalización" style="font-size: 20px;">Uso API Rapid Localización</a></ul>
+                    <ul><a href="/evolution/UsoPablo" style="font-size: 20px;">Uso Compañero Pablo Pérez</a></ul>
+                    <ul><a href="/evolution/IntegracionesEspana" style="font-size: 20px;">Integración API Rapid España.</a></ul>
+                    
+    
+            </ul>
+            <br>
+            <li><b style="font-size: 25px;">USOS DE IRENE:</b></li>
+            <br>
+            <ul>
+                    <ul><a href="/localentities/UsoTelefonos" style="font-size: 20px;">Prefijo de Teléfonos de algunos países.</a></ul>
+                    <ul><a href="/localentities/UsoLol" style="font-size: 20px;">Campeones Lol con su porcentaje de victorias.</a></ul>
+                    <ul><a href="/localentities/UsoPokemon" style="font-size: 20px;">Tipo de ataques de algunos Pokemons.</a></ul>
+                    <ul><a href="/localentities/UsoCodigo" style="font-size: 20px;">Códigos con sus abreviaturas.</a></ul>
+                    <ul><a href="/localentities/Pelis" style="font-size: 20px;">Películas en Reino Unido.</a></ul>
+
+
+            </ul>
+            <br>
 </ul>

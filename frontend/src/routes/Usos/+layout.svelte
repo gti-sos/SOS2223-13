@@ -1,6 +1,4 @@
 <script>
-    import Uso2 from "./uso2chart/+page.svelte";
-    import Uso3 from "./uso3chart/+page.svelte";
     import Uso1JLB from "./uso1JLB/+page.svelte";
     import Uso2JLB from "./uso2JLB/+page.svelte";
     import Uso3JLB from "./uso3JLB/+page.svelte";
@@ -15,10 +13,6 @@
 <main>
 
     <slot></slot>
-    <hr style="margin-left: 100%; margin-right: 100%">
-    <Uso2></Uso2>
-    <hr style="margin-left: 100%; margin-right: 100%">
-    <Uso3></Uso3> 
     <hr style="margin-left: 100%; margin-right: 100%">
     <Uso1JLB></Uso1JLB>
     <hr style="margin-left: 100%; margin-right: 100%">

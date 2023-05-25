@@ -1,7 +1,8 @@
-<!--<script>
+<script>
   // @ts-nocheck
   import { onMount } from 'svelte';
   import { Table } from 'sveltestrap';
+  import { Button } from "sveltestrap";
 
   let data = {};
 
@@ -42,5 +43,5 @@
 
     </tbody>
   </Table>
+  <Button outline color="secondary" href="/integrations">Volver</Button>
 </main>
- -->

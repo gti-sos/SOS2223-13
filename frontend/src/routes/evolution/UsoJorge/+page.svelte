@@ -8,6 +8,7 @@
 <script>
     // @ts-nocheck
     import {onMount} from "svelte";
+    import { Button } from "sveltestrap";
     const delay = ms => new Promise(res => setTimeout(res, ms));
     //import { dev } from "$app/environment";
     let graph = [];
@@ -133,4 +134,5 @@
             Gráfico de Columnas sobre las Estadísticas Markets de diferentes provincias de Andalucía en diversos años.
         </p>
     </figure>
+    <Button outline color="secondary" href="/integrations">Volver</Button>
 </main>
