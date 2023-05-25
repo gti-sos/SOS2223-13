@@ -225,18 +225,4 @@
     </figure>
     <Button outline color="secondary" href="/">Volver</Button>
     <hr style="text-align: right; margin-left: 100px; margin-right: 100px;">
-<ul>
-    <li><b style="font-size: 25px;">INTEGRACIONES DE IRENE:</b></li>
-    <br>
-        <ul>
-
-                <ul><a href="/localentities/IntegracionesG23" style="font-size: 20px;">G23 - Personas Contratadas</ul>
-                <ul><a href="/localentities/IntegracionesG15" style="font-size: 20px;">G15 - Salario </a></ul>
-                <ul><a href="/localentities/IntegracionesMercado" style="font-size: 20px;">Precio de la luz en Alemania.</a></ul>
-                
-
-        </ul>
-        <br>
-</ul>
-
 </main>

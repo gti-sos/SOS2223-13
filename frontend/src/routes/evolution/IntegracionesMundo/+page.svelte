@@ -1,5 +1,5 @@
 
-<!--<head>
+<head>
 	// Load plotly.js into the DOM 
 	<script src='https://cdn.plot.ly/plotly-2.20.0.min.js'></script>
 </head>
@@ -166,6 +166,7 @@ const options = {
     <h2>Gráfica de datos sobre las Provincias y Años de andalucia</h2>
     <h4>Biblioteca: Plotly de Luis Miguel</h4>
     <div id='myDiv'></div>
+    <Button outline color="secondary" href="/">Volver</Button>
 </main>
 
 <style>
@@ -176,4 +177,3 @@ const options = {
         text-align: center;
     }
 </style>
--->

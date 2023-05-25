@@ -1,4 +1,4 @@
-<!--<svelte:head>
+<svelte:head>
     <script src="https://code.highcharts.com/highcharts.js"></script>
     <script src="https://code.highcharts.com/modules/exporting.js"></script>
     <script src="https://code.highcharts.com/modules/export-data.js"></script>
@@ -223,4 +223,3 @@
 
     <Button outline color="secondary" href="/">Volver</Button>
 </main>
--->
