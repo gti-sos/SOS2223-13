@@ -20,7 +20,7 @@ test('Navegar a la página de gráfica Local Entities', async ({ page }) => {
     await page.goto('localhost:8080');
 
     // Click the get started link.
-    await page.getByRole('link', { name: 'GraficaIFR' }).click();
+    await page.getByRole('link', { name: 'GraficoIFR' }).click();
 
     // Expects the URL to contain intro.
     await expect(page).toHaveTitle("SOS2223-13-Gráfica Local Entities");
