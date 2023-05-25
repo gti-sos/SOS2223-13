@@ -53,7 +53,6 @@
             }catch(error){
                 console.log(`Error al parsear el resultado: ${error}`);
             }
-
             const status = await res.status;
             resultStatus = status;	
             if(status==404){
@@ -81,7 +80,7 @@
 
                 })
             });
-           
+           console.log(updateLocalentitiesExpense);
             const status = await res.status;
             resultStatus = status;
             if(status==200){

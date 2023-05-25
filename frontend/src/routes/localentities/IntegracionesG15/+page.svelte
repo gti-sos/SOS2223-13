@@ -7,7 +7,7 @@
 
 
     let API = "https://sos2223-13.ew.r.appspot.com/api/v2/localentities";
-    let API2 = "https://sos2223-13.ew.r.appspot.com/hire";
+    let API2 = "https://sos2223-15.ew.r.appspot.com/api/v2/salary-stats";
 
     let graph = [];
     let graph2 = [];
