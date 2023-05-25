@@ -1,5 +1,5 @@
 <svelte:head>
-    <title>SOS2223-13-Personas Empleadas</title>
+    <title>SOS2223-13-Entidades Locales</title>
 </svelte:head>
 <script>
     // @ts-nocheck

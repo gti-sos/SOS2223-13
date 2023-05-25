@@ -43,10 +43,10 @@ app.use(paths2, function(req2, res2) {
 //Proxy Irene:
 var paths3 = "/hire";
 var apiServerHost3 = "https://sos2223-23.appspot.com/api/v2/hired-people";
-app.use(paths3, function(req3, res3) {
-  //console.log("C"); 
-  var url3 = apiServerHost3 + req.url3;
-  req3.pipe(request(url3)).pipe(res3);
+
+app.use(paths3, function(req, res) {
+    var url = apiServerHost3 + req.url;
+    req.pipe(request(url)).pipe(res);
 });
 
 

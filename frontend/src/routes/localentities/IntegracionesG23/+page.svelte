@@ -14,8 +14,8 @@
     import { Button } from "sveltestrap";
     const delay = ms => new Promise(res => setTimeout(res, ms));
     //import { dev } from "$app/environment"; 
-    let API = "https://sos2223-13.appspot.com/api/v2/localentities";
-    let API2 = "https://sos2223-23.appspot.com/hire";
+    let API = "https://sos2223-13.ew.r.appspot.com/api/v2/localentities";
+    let API2 = "https://sos2223-13.ew.r.appspot.com/hire";
 
     let graph = [];
     let graph2 = [];

@@ -4,8 +4,10 @@
     import { Button } from "sveltestrap";
     const delay = (ms) => new Promise((res) => setTimeout(res, ms));
     //import { dev } from "$app/environment";
-    let API = "https://sos2223-13.appspot.com/api/v2/localentities";
-    let API2 = "https://sos2223-15.appspot.com/api/v2/salary-stats";
+
+
+    let API = "https://sos2223-13.ew.r.appspot.com/api/v2/localentities";
+    let API2 = "https://sos2223-13.ew.r.appspot.com/hire";
 
     let graph = [];
     let graph2 = [];
@@ -59,14 +61,7 @@
                 graph.forEach((graph) => {
                     console.log(graph);
                     provincia_año.push(
-                        graph.province +
-                            "-" +
-                            graph.president_appointment_date +
-                            "-" +
-                            graph.first_name +
-                            "-" +
-                            graph.second_name
-                    );
+                        graph.province +"-" +graph.president_appointment_date +"-" +graph.first_name +"-" +graph.second_name);
                     superficie.push(graph["surface_extension"]);
                     poblacion.push(graph["population"]);
                     gastos.push(graph["expense"]);

@@ -167,7 +167,7 @@
                                     weight: 'bold',
                                 }, 
                             },
-                            max: 2000000
+                            max: 20000000
                         },
                         x: {   
                             display: true,
