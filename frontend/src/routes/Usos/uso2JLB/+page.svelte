@@ -1,4 +1,4 @@
-<!--<svelte:head>
+<svelte:head>
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js" on:load="{loadCharts}"></script>
     
@@ -15,21 +15,22 @@
 
     async function getData(){
         const options = {
-            method: "GET",
+            method: 'GET',
             headers: {
-                "X-RapidAPI-Key": "a9593ce2e3msh1dbc9c19a3932cep106e48jsn6d77e0d951b3",
-                "X-RapidAPI-Host": "unibet.p.rapidapi.com"
-            }
+                'X-RapidAPI-Key': 'a9593ce2e3msh1dbc9c19a3932cep106e48jsn6d77e0d951b3',
+                'X-RapidAPI-Host': 'api-football-beta.p.rapidapi.com'
+                    }
         };
-        let res = await fetch("https://unibet.p.rapidapi.com/live-matches-by-sport?sport=football",options);
+        let res = await fetch("https://api-football-beta.p.rapidapi.com/fixtures/headtohead?h2h=33-34&status=ft&last=10",options);
         await delay(2000);
+        console.log(res);
         if (res.ok) {
             let json = await res.json();
+            //let firsResponse = json.response[]
             for(let i = 0; i<8; i++){
-                
-                partidos.push(json[i].name);
-                equipo1.push(json[i].team1.score);
-                equipo2.push(json[i].team2.score);
+                partidos.push(json.response[i].teams.home.name + "-" + json.response[i].teams.away.name);
+                equipo1.push(json.response[i].goals.home);
+                equipo2.push(json.response[i].goals.away);
             }
             loadCharts();
         }else{
@@ -50,14 +51,14 @@
                 labels: partidos,
                 datasets: [
                     {
-                        label: "Goles equipo 1",
+                        label: "Goles equipo local",
                         backgroundColor: 'rgb(190,190,190)',
                         pointBackgroundColor: 'rgb(255, 99, 132)',
                         pointHoverBorderColor: 'rgb(255, 99, 132)',
                         data: equipo1,
                     },
                     {
-                        label: "Goles equipo 2",
+                        label: "Goles equipo visitante",
                         backgroundColor: 'rgb(255,255,255)',
                         pointBackgroundColor: 'rgb(54, 162, 235)',
                         pointHoverBorderColor: 'rgb(54, 162, 235)',
@@ -75,7 +76,7 @@
     <main>
         <div>
             <h1>
-                API: Football 
+                API: Partidos de fútbol entre Manchester United y Newcastle
             </h1>
         </div>
         <div id="chartBox" >
@@ -92,4 +93,4 @@
             text-align: center;
             padding: 30px;       
         }
-    </style>-->
+    </style>
