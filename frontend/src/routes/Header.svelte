@@ -9,6 +9,7 @@
     <a href="/graficoLMMG" style="font-size: 23px;">GrafoLMMG</a>
     <a href="/graficoJLB" style="font-size: 23px;">GraficoJLB</a>
     <a href="/graficoIFR" style="font-size: 23px;">GraficoIFR</a>
+    <a href="/about" style="font-size: 23px;">Sobre</a>
     <a href="/Extras" style="font-size: 23px;">Extras</a>
 
 </nav>
