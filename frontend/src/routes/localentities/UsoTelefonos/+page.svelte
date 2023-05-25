@@ -1,4 +1,4 @@
-<!--
+
     <script>
     //@ts-nocheck
     import { Table } from "sveltestrap";
@@ -100,4 +100,3 @@
     <br>
 </main>
 
--->

@@ -44,20 +44,9 @@
                 result = JSON.stringify(valores, null, 2);
                 graph = valores;
                 graph.sort((a, b) =>
-                    a.province > b.province
-                        ? 1
-                        : b.province > a.province
-                        ? -1
-                        : 0
-                );
+                    a.province > b.province ? 1 : b.province > a.province ? -1 : 0 );
                 graph.sort((a, b) =>
-                    a.president_appointment_date > b.president_appointment_date
-                        ? 1
-                        : b.president_appointment_date >
-                          a.president_appointment_date
-                        ? -1
-                        : 0
-                );
+                    a.president_appointment_date > b.president_appointment_date ? 1 : b.president_appointment_date > a.president_appointment_date ? -1 : 0);
                 graph.forEach((graph) => {
                     console.log(graph);
                     provincia_año.push(

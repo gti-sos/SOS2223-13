@@ -55,7 +55,7 @@
                     <ul><a href="/localentities/UsoLol" style="font-size: 20px;">Campeones Lol con su porcentaje de victorias.</a></ul>
                     <ul><a href="/localentities/UsoPokemon" style="font-size: 20px;">Tipo de ataques de algunos Pokemons.</a></ul>
                     <ul><a href="/localentities/UsoCodigo" style="font-size: 20px;">Códigos con sus abreviaturas.</a></ul>
-                    <ul><a href="/localentities/Pelis" style="font-size: 20px;">Películas en Reino Unido.</a></ul>
+                    <ul><a href="/localentities/UsoPelis" style="font-size: 20px;">Películas en Reino Unido.</a></ul>
 
 
             </ul>
