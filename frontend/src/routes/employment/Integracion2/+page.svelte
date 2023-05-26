@@ -1,4 +1,4 @@
-<!--<head>
+<head>
 
 	<script src='https://cdn.plot.ly/plotly-2.20.0.min.js'></script>
 </head>
@@ -141,4 +141,4 @@ Plotly.newPlot('myDiv8', data, layout);
 <main>
     <h2>Gráfica sobre la vida laboral en Andalucia y número de habitantes en un pais aleatoria</h2>
     <div id='myDiv8'>// Plotly chart will be drawn inside this DIV</div>
-</main>-->
+</main>
